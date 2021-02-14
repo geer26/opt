@@ -11,8 +11,10 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config.from_object(SQLite)
+print(app.config)
 
 login = LoginManager(app)
+
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -26,16 +28,5 @@ with app.app_context():
 socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
-
-# define event class
-class Event():
-    code = 0
-    name = ''
-    response = ''
-
-    def __init__(self, code, response, name):
-        self.name = name
-        self.code = code
-        self.response = response
 
 from app import routes, models

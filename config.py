@@ -15,9 +15,6 @@ class Config:
     TEMPLATES_FOLDER = 'templates'
 
     TEMPLATES_AUTO_RELOAD = True
-    FLASK_ENV = 'development'
-    DEBUG = True
-    TESTING = True
 
     UPLOAD_FOLDER = path.join('app/uploads/')
     #CLIENT_LISTS = path.join('app/temp/')
