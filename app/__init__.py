@@ -11,7 +11,6 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config.from_object(SQLite)
-print(app.config)
 
 login = LoginManager(app)
 
