@@ -22,10 +22,7 @@ class User(UserMixin, db.Model):
     is_superuser = db.Column(db.Boolean, default = False)
     password_hash = db.Column(db.String(128), default = '')
     salt = db.Column(db.String(128), default = '')
-    settings = db.Column(db.String(256), default = '')
-
-    #testpacket = db.relationship('TestPacket', backref = '_user', lazy = 'dynamic')
-
+    settings = db.Column(db.String(2048), default = '')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -50,10 +47,10 @@ class User(UserMixin, db.Model):
 class Module(db.Model):
     id = db.Column(db.Integer, primary_key=True, index = True)
     uuid = db.Column(db.String(14), index=True, unique=True)
-    short_name = db.Column(db.String(32), unique=True)
+    short_name = db.Column(db.String(16), unique=True)
     verbose_name = db.Column(db.String(128), default = '')
-    description = db.Column(db.String(256), default = '')
-    attributes = db.Column(db.String(512), default = '')  #JSON
+    description = db.Column(db.String(1024), default = '')
+    attributes = db.Column(db.String(1024), default = '')  #JSON
 
     def __repr__(self):
         return f'Modulnév: {self.short_name}'
@@ -71,11 +68,11 @@ class Testbattery(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
     uuid = db.Column(db.String(14), index=True, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    name = db.Column(db.String(32), default = '')
-    description = db.Column(db.String(256), default='')
+    name = db.Column(db.String(64), default = '')
+    description = db.Column(db.String(1024), default='')
     created = db.Column(db.Date(), default=datetime.now())
     last_modified = db.Column(db.Date(), default=datetime.now())
-    modules = db.Column(db.String(128), default='')
+    modules = db.Column(db.String(512), default='')
 
     def __repr__(self):
         return f'Modulnév: {self.name}'
@@ -99,9 +96,9 @@ class Testsession(db.Model):
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
     uuid = db.Column(db.String(14), index=True, unique=True)
-    name = db.Column(db.String(14), default = '')
+    name = db.Column(db.String(16), default = '')
+    state = db.Column(db.Integer, default=-1)
     session_id = db.Column(db.Integer, db.ForeignKey('testsession.id'))
-    log_id = db.Column(db.Integer, db.ForeignKey('clientlog.id'))
 
     def __repr__(self):
         return f'Modulnév: {self.name}'
@@ -110,12 +107,10 @@ class Client(db.Model):
 #DONE
 class Clientlog(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
-    #ez meg minek??? -> uuid = db.Column(db.String(14), index=True, unique=True)
-    state = db.Column(db.Integer, default = -1)
-    log = db.Column(db.String(128), default = '')
-    #ezek nincsenek a megadott spec.-ben!
+    client_id = db.Column(db.Integer, db.ForeignKey('testsession.id'))
+    message = db.Column(db.String(128), default = '')
+    source = db.Column(db.Integer, db.ForeignKey('module.id'))
     timestamp = db.Column(db.Date(), default=datetime.now())
-    client = db.Column(db.Integer, db.ForeignKey('client.id'))
 
     def __repr__(self):
         return f'Modulnév: {self.log}'
@@ -127,9 +122,8 @@ class Result(db.Model):
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
     session_id = db.Column(db.Integer, db.ForeignKey('testsession.id'))
     module_id = db.Column(db.Integer, db.ForeignKey('module.id'))
-    log_id = db.Column(db.Integer, db.ForeignKey('clientlog.id'))
     timestamp = db.Column(db.Date(), default=datetime.now())
-    result_raw = db.Column(db.String(128), default = '')
+    result_raw = db.Column(db.String(8192), default = '')
 
     def __repr__(self):
         return f'Modulnév: {self.result_raw}'
