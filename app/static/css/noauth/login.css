@@ -1,0 +1,59 @@
+.loginwrapper{
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    /*background-color: #bbbbbb;*/
+}
+
+
+.loginframe{
+    position: relative;
+    margin: auto;
+    padding: 10px;
+    width: 50vw;
+    height: 50vh;
+    background-color: white;
+    border-radius: 2px;
+
+    display: grid
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: 3px;
+    justify-content: space-evenly;
+    grid-template-areas:
+        "logo titlebar"
+        "creditentials creditentials"
+        "button button";
+}
+
+
+.logoimg{
+    grid-area: logo;
+    display: inline-block;
+    border: 1px solid red;
+    position: relative;
+}
+
+
+.tbar{
+    grid-area: titlebar;
+    display: inline-block;
+    border: 1px solid red;
+    position: relative;
+}
+
+
+.credits{
+    grid-area: creditentials;
+    display: inline-block;
+    border: 1px solid red;
+    position: relative;
+}
+
+
+.submit_btn{
+    grid-area: button;
+    display: inline-block;
+    border: 1px solid red;
+    position: relative;
+}
