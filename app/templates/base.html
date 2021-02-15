@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Online Pszichológia Tesztelő">
+        <meta name="keywords" content="teszt, pszichológia, online">
+        <meta name="author" content="geer26">
+
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>Welcome to OPT!</title>
+        {% endif %}
+
+        <link rel="shortcut icon" type="image/png" href="/static/img/icons/favicon.png"/>
+
+        <link href="/static/css/generics/materialize.min.css" type="text/css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="/static/css/generics/buttons.css" type="text/css" rel="stylesheet">
+        <link href="/static/css/generics/animate.css" type="text/css" rel="stylesheet">
+        <link href="/static/css/generics/generic.css" type="text/css" rel="stylesheet">
+
+        <script src="/static/js/generics/query-3.5.1.min.js"></script>
+        <script src="/static/js/generics/materialize.min.js"></script>
+        <script src="/static/js/generics/socket.io.js"></script>
+
+        {% block headercontent %}
+        {% endblock %}
+
+    </head>
+
+    <body>
+
+        {% block bodycontent %}
+        {% endblock %}
+
+    </body>
+
+</html>
