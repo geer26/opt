@@ -7,12 +7,24 @@
 {% block bodycontent %}
 <div class="valign-wrapper loginwrapper">
 <div class="loginframe">
-    <div class="logoimg"></div>
+
+    <div class="logoimg">
+        <img src="/static/img/logo.png">
+    </div>
+
     <div class="tbar">
         bejelentkezés
     </div>
-    <div class="credits"></div>
-    <div class="submit_btn"></div>
+    <br>
+    <div class="credits">
+        <input type="text" placeholder="felhasználónév">
+        <input type="password" placeholder="jelszó">
+    </div>
+    <br>
+    <div class="submit_btn">
+        elfelejtett jelszó
+        <button>belépés</button>
+    </div>
 </div>
 </div>
 {% endblock %}

@@ -10,8 +10,8 @@
     position: relative;
     margin: auto;
     padding: 10px;
-    width: 50vw;
-    height: 50vh;
+    max-width: 50vw;
+    max-height: 50vh;
     background-color: white;
     border-radius: 2px;
 
@@ -36,6 +36,7 @@
 
 
 .tbar{
+    position: relative;
     grid-area: titlebar;
     display: inline-block;
     border: 1px solid red;
