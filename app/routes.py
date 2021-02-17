@@ -1,10 +1,12 @@
 import json
 import os
 
-from flask import render_template
+from flask import render_template, redirect
 from flask_login import current_user, login_user, logout_user, login_required
 
 from app import app, socket, db
+from app.workers import hassu, generate_rnd
+from app.models import User
 
 
 @app.route('/', methods=['GET'])
@@ -24,3 +26,27 @@ def index():
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('/noauth/login.html', title = 'Belépés')
+
+
+@login_required
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
+
+
+@app.route('/addsu/<suname>/<password>')
+def addsu(suname, password):
+    if not hassu():
+
+        user = User()
+        user.username = suname
+        user.set_description('Adminisztrátor felhasználó')
+        user.set_contact('none@none.no')
+        user.set_password(password)
+        user.is_superuser = True
+        user.settings = ''
+        db.session.add(user)
+        db.session.commit()
+
+    return redirect('/')
