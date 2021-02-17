@@ -1,3 +1,5 @@
+import base64
+
 from flask import Flask
 from config import SQLite
 
@@ -31,6 +33,7 @@ socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
 #secret = os.getenv('FERMET_SECRET').encode('utf-8')
-fernet = Fernet(os.getenv('FERMET_SECRET').encode('utf-8'))
+#fernet = Fernet(os.getenv('FERMET_SECRET').encode('utf-8'))
+fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERMET_SECRET').encode('utf-8')))
 
 from app import routes, models
