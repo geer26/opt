@@ -28,5 +28,6 @@ with app.app_context():
 socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
+secret = os.getenv('FERMET_SECRET').encode('utf-8')
 
 from app import routes, models
