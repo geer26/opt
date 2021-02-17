@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_socketio import SocketIO
 
 from flask_login import LoginManager
-
+import os
 
 app = Flask(__name__)
 app.config.from_object(SQLite)
