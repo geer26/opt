@@ -269,3 +269,12 @@ MESSAGES
  - message (str/512/, enc)
 ===================================
 '''
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True, index=True)
+    rec_id = db.Column(db.Integer, db.ForeignKey('user.id'))  #a címzett ID-je
+    sen_id = db.Column(db.Integer, db.ForeignKey('user.id'))  #a feladó ID-je
+    ant = db.Column(db.Integer, db.ForeignKey('message.id'), nullable = True)  #előzmény
+    status = db.Column(db.Integer, default = -1)
+    timestamp = db.Column(db.Date(), default=datetime.now())
+    subject = db.Column(db.LargeBinary)
+    message = db.Column(db.LargeBinary)
