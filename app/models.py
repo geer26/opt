@@ -1,5 +1,5 @@
 
-from app import db, login
+from app import db, login, fernet
 
 import bcrypt
 
@@ -20,8 +20,8 @@ USERS
 -------------------------------
  - id (int, u)
  - username (str/16/, u)
- - description (str/64/, enc)
- - contact (str/256/, enc)
+ !- description (str/64/, enc)
+ !- contact (str/256/, enc)
  - is_superuser (bool)
  - password_hash (str/128/)
  - salt (str/128/)
@@ -56,6 +56,20 @@ class User(UserMixin, db.Model):
             return True
         else:
             return False
+
+    def set_description(self, desc):
+        self.description = fernet.encrypt(desc.encode('utf-8'))
+        return True
+
+    def set_contact(self,contact):
+        self.contact = fernet.encrypt(contact.encode('utf-8'))
+        return True
+
+    def get_description(self):
+        return fernet.decrypt(self.description).decode('utf-8')
+
+    def get_contact(self):
+        return fernet.decrypt(self.contact).decode('utf-8')
 
 
 #DONE
@@ -136,7 +150,7 @@ TESTSESSIONS
  - user_id (int)  |--> USERS.id
  - testbattery_id (int)  |--> TESTBATTERIES.id
  - created (timestamp)
- - invitation_text (str/1024/, enc)
+ !- invitation_text (str/1024/, enc)
  - due (timestamp)
  - state (int)
 =================================================
@@ -149,10 +163,17 @@ class Testsession(db.Model):
     created = db.Column(db.Date(), default=datetime.now())
     due = db.Column(db.Date(), default=datetime.now())
     state = db.Column(db.Integer, default = -1)
-    invitation_text = db.Column(db.String(1024), default = '')
+    invitation_text = db.Column(db.LargeBinary)
 
     def __repr__(self):
         return f'Modulnév: {self.uuid}'
+
+    def set_invitation(self, text):
+        self.invitation_text = fernet.encrypt(text.encode('utf-8'))
+        return True
+
+    def get_invitation(self):
+        return fernet.decrypt(self.invitation_text).decode('utf-8')
 
 
 #DONE
@@ -162,8 +183,8 @@ CLIENTS
 -----------------------------------------
  - id (int, u)
  - uuid (str, u)
- - name (str/32/, enc)
- - email (str/256/, enc)
+ !- name (str/32/, enc)
+ !- email (str/256/, enc)
  - session_id (int)  |--> TESTSESSIONS.id
  - invitation_status (int)  # 0 = not sent yet, 1 = error (wrong or missing email), 2 = sent
  - state (int)
@@ -181,6 +202,19 @@ class Client(db.Model):
     def __repr__(self):
         return f'Modulnév: {self.name}'
 
+    def set_name(self,name):
+        self.name = fernet.encrypt(name.encode('utf-8'))
+        return True
+
+    def set_email(self,email):
+        self.email = fernet.encrypt(email.encode('utf-8'))
+        return True
+
+    def get_name(self):
+        return fernet.decrypt(self.name).decode('utf-8')
+
+    def get_email(self):
+        return fernet.decrypt(self.email).decode('utf-8')
 
 #DONE
 '''
@@ -216,7 +250,7 @@ RESULTS
  - session_id (int)  |--> TESTSESSIONS.id
  - module_id (int)  |--> MODULES.id
  - timestamp (timestamp)
- - result_raw (str/2048/, #json, enc)
+ !- result_raw (str/2048/, #json, enc)
 ============================================
 '''
 class Result(db.Model):
@@ -229,6 +263,13 @@ class Result(db.Model):
 
     def __repr__(self):
         return f'Modulnév: {self.timestamp}'
+
+    def set_result(self, result):
+        self.result_raw = fernet.encrypt(result.encode('utf-8'))
+        return True
+
+    def get_result(self):
+        return fernet.decrypt(self.result_raw).decode('utf-8')
 
 
 #DONE
@@ -265,8 +306,8 @@ MESSAGES
  - reply_to (int)  |--> MESSAGES.id   # Egy korábbi üzenetre való hivatkozás, ennek a segítségével az üzenetek akár láncba is rendezhetők - lehet üres!
  - status (int)    # pl. 0 ha olvasatlan az üzenet, 1 ha le van kezelve (user = megnyitotta, admin = megjelölte, mint kezelt üzenetet)
  - timestamp (timestamp)
- - subject (str/32/, enc)
- - message (str/512/, enc)
+ !- subject (str/32/, enc)
+ !- message (str/512/, enc)
 ===================================
 '''
 class Message(db.Model):
@@ -278,3 +319,20 @@ class Message(db.Model):
     timestamp = db.Column(db.Date(), default=datetime.now())
     subject = db.Column(db.LargeBinary)
     message = db.Column(db.LargeBinary)
+
+    def __repr__(self):
+        return f'Sender: {self.sen_id}, recepient: {self.rec_id}, timestamp: {self.timestamp}'
+
+    def set_subject(self, subject):
+        self.subject = fernet.encrypt(subject.encode('utf-8'))
+        return True
+
+    def set_message(self, message):
+        self.message = fernet.encrypt(message.encode('utf-8'))
+        return True
+
+    def get_subject(self, subject):
+        return fernet.decrypt(self.subject).decode('utf-8')
+
+    def get_message(self):
+        return fernet.decrypt(self.message).decode('utf-8')

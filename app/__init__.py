@@ -9,6 +9,8 @@ from flask_socketio import SocketIO
 from flask_login import LoginManager
 import os
 
+from cryptography.fernet import Fernet
+
 app = Flask(__name__)
 app.config.from_object(SQLite)
 
@@ -28,6 +30,7 @@ with app.app_context():
 socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
-secret = os.getenv('FERMET_SECRET').encode('utf-8')
+#secret = os.getenv('FERMET_SECRET').encode('utf-8')
+fernet = Fernet(os.getenv('FERMET_SECRET').encode('utf-8'))
 
 from app import routes, models
