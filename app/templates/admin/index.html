@@ -1,13 +1,76 @@
 {% extends 'base.html' %}
 
 {% block headercontent %}
-
+<link href="/static/css/admin/admin_temp.css" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block bodycontent %}
 
-    Admin logged in
+{% include 'admin/adduser_modal.html' %}
 
-    <button onclick="location.href='/logout'">kilépés</button>
+<div style="width: 100vw; height:100vh; position: absolute; top:0; left:0; padding: 10px;">
+
+    <div class="admin_frame">
+
+        {{current_user.username}} logged in
+        <button onclick="location.href='/logout'" class="btn_gen">kilépés</button>
+        <br>
+
+        <ul class="collapsible" data-collapsible="accordion">
+
+            <li>
+                <div class="collapsible-header">
+                    <i class="material-icons">manage_accounts</i>
+                    Felhasználók
+                    <i class="material-icons" style="color: green; left-margin: 10px;">add_circle</i>
+                </div>
+
+                <div class="collapsible-body">
+                <table class="striped">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Felhasználónév</th>
+                            <th>Leírás</th>
+                            <th>Kontakt</th>
+                            <th>Admin</th>
+                            <th>Beállítások</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for user in data['users'] %}
+                        <tr>
+                            <td>
+                                <span class="valign-wrapper">
+                                {{user['id']}}
+                                <i class="material-icons" style="color: red;">delete_forever</i>
+                                </span>
+                            </td>
+                            <td>{{user['username']}}</td>
+                            <td>{{user['description']}}</td>
+                            <td>{{user['contact']}}</td>
+                            <td>{{user['is_superuser']}}</td>
+                            <td>{{user['settings']}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+                </div>
+
+            </li>
+
+
+        </ul>
+
+    </div>
+
+</div>
+
+<script>
+    $('.collapsible').collapsible();
+</script>
 
 {% endblock %}
