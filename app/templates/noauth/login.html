@@ -13,18 +13,50 @@
     </div>
 
     <div class="tbar">
-        bejelentkezés
+        <a>bejelentkezés</a>
     </div>
+
     <br>
-    <div class="credits">
-        <input type="text" placeholder="felhasználónév">
-        <input type="password" placeholder="jelszó">
+    <div class="credits" id="credits">
+
+        <a id="error">
+            Hibás adatok!
+        </a>
+
+        <form id="creditentials" method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="inp">
+                {{ form.username( id="username", placeholder="felhasználónév", style="text-align: center; width: 80%;", onkeypress="inputkeypress()") }}
+            </div>
+
+            <div class="inp">
+                {{ form.password( id="password", placeholder="jelszó", style="text-align: center; width: 80%;", onkeypress="inputkeypress()" ) }}
+            </div>
+
+            <label class="inp">
+                {{ form.remember_me(id="remember_me", type="checkbox") }}
+                <span style="color: black;">Emlékezz rám!</span>
+            </label>
+
+        </form>
+
     </div>
+
     <br>
-    <div class="submit_btn">
-        elfelejtett jelszó
-        <button>belépés</button>
-    </div>
+    <span class="submit_btn valign-wrapper">
+
+        <a href="#">Elfelejtett jelszó</a>
+
+        <button form="creditentials" class="btn_gen">
+            <span class="valign-wrapper">
+                <i class="material-icons" style="margin-right: 2px;">login</i>
+                belépés
+            </span>
+        </button>
+
+    </span>
+
 </div>
 </div>
 {% endblock %}

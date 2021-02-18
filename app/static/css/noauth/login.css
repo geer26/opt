@@ -14,6 +14,7 @@
     max-height: 50vh;
     background-color: white;
     border-radius: 2px;
+    border: 2px solid #333333;
     text-align: center;
 
     display: grid
@@ -31,7 +32,6 @@
 .logoimg{
     grid-area: logo;
     display: inline-block;
-    border: 1px solid red;
     position: relative;
     float: left;
 }
@@ -41,29 +41,68 @@
     position: relative;
     grid-area: titlebar;
     display: inline-block;
-    border: 1px solid red;
     position: relative;
     float: left;
+    padding-left:5px;
+}
+
+
+.tbar a{
+    color: #333333;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 
 .credits{
     grid-area: creditentials;
     display: inline-block;
-    border: 1px solid red;
     position: relative;
+}
+
+
+.credits_error{
+    border: 2px solid red;
+    border-radius: 2px;
+}
+
+
+.credits a{
+    display: none;
+    position: absolute;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 2px;
+    top: -15px;
+    right: 0;
+    color: red;
+    background-color: white;
 }
 
 
 .credits input{
     max-width: 90%;
     text-align: center;
+    margin-top: 10px;
 }
 
 
 .submit_btn{
     grid-area: button;
     display: inline-block;
-    border: 1px solid red;
     position: relative;
+    margin-top: 10px;
+    text-align: center;
 }
+
+
+.submit_btn a{
+    color: #333333;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.submit_btn button{
+    vertical-align: middle;
+}
+

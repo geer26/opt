@@ -34,11 +34,22 @@ def login():
     if request.method == 'POST' and not current_user.is_authenticated:
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
+            if not user:
+                mess = {}
+                mess['event'] = 1109
+                socket.emit('generic', mess)
+                return '',204
+
             if user.check_password(form.password.data):
                 login_user(user, remember=form.remember_me.data)
-            return redirect('/')
-        else:
-            return redirect('/') #SEND ERROR MESSAGE?
+                return redirect('/')
+
+            else:
+                mess = {}
+                mess['event'] = 1109
+                socket.emit('generic', mess)
+                return '', 204
+
     return render_template('/noauth/login.html', title = 'Belépés', form = form)
 
 

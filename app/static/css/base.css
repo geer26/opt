@@ -25,3 +25,23 @@ body{
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
+
+
+/*---GENERIC BUTTON---*/
+.btn_gen{
+    background-color: white;
+    color: #333333;
+    border-radius: 2px;
+    border: 2px solid black;
+    transition: .2s;
+}
+
+
+.btn_gen:hover{
+    background-color: rgb(219,219,219);
+}
+
+
+.btn_gen:active{
+    background-color: rgb(150,150,150);
+}
