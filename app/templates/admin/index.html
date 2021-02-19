@@ -2,6 +2,9 @@
 
 {% block headercontent %}
 <link href="/static/css/admin/admin_temp.css" type="text/css" rel="stylesheet">
+<link href="/static/css/modals.css" type="text/css" rel="stylesheet">
+
+<script src="/static/js/admin/admin.js"></script>
 {% endblock %}
 
 {% block bodycontent %}
@@ -13,7 +16,12 @@
     <div class="admin_frame">
 
         {{current_user.username}} logged in
-        <button onclick="location.href='/logout'" class="btn_gen">kilépés</button>
+        <button onclick="location.href='/logout'" class="btn_gen">
+            <span class="valign-wrapper">
+                <i class="material-icons" style="margin-right: 2px;">logout</i>
+                kilépés
+            </span>
+        </button>
         <br>
 
         <ul class="collapsible" data-collapsible="accordion">
@@ -22,7 +30,7 @@
                 <div class="collapsible-header">
                     <i class="material-icons">manage_accounts</i>
                     Felhasználók
-                    <i class="material-icons" style="color: green; left-margin: 10px;">add_circle</i>
+                    <i class="material-icons" style="color: green; left-margin: 10px;" onclick="$('#adduser_modal').show();">add_circle</i>
                 </div>
 
                 <div class="collapsible-body">
@@ -45,7 +53,9 @@
                             <td>
                                 <span class="valign-wrapper">
                                 {{user['id']}}
-                                <i class="material-icons" style="color: red;">delete_forever</i>
+                                {% if current_user.id != user['id'] %}
+                                <i class="material-icons" style="color: red; cursor: pointer;" onclick="del_user( {{user['id']}} )">delete_forever</i>
+                                {% endif %}
                                 </span>
                             </td>
                             <td>{{user['username']}}</td>

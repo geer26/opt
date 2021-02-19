@@ -1,7 +1,74 @@
-<div id="adduser_modal" class="modalback">
+<div id="adduser_modal" class="modalback valign-wrapper" style="display: none;">
     <div id="adduser_frame" class="frame">
-        <p>
-            Hello World!
-        </p>
+
+        <div class="closeicon" onclick="$('#adduser_modal').hide();">
+            <i class="material-icons" style="color: red;">disabled_by_default</i>
+        </div>
+
+        <div class="logoimg">
+            <img src="/static/img/logo.png">
+        </div>
+
+        <div class="tbar">
+            <a>felhasználó hozzáadása</a>
+        </div>
+
+    <br>
+    <div class="credits" id="credits">
+
+        <a id="error">
+            Hibás adatok!
+        </a>
+
+        <form id="adduser" method="POST" onsubmit=loadstart()">
+            {{ adduserform.hidden_tag() }}
+
+            <div class="inp">
+                <i class="material-icons tiny warningicon tooltipped" data-position="left"
+                   data-delay="50" data-tooltip="Kötelező mező!" style="color: red;">priority_high</i>
+                {{ adduserform.username( id="username", placeholder="felhasználónév", style="text-align: center; width: 80%;", onkeypress="inputkeypress()" ) }}
+            </div>
+
+            <div class="inp">
+                {{ adduserform.description( id="description", placeholder="leírás", style="text-align: center; width: 80%;") }}
+            </div>
+
+            <div class="inp">
+                {{ adduserform.contact( id="contact", placeholder="elérhetőség", style="text-align: center; width: 80%;") }}
+            </div>
+
+            <div class="inp">
+                <i class="material-icons tiny warningicon tooltipped" data-position="left"
+                   data-delay="50" data-tooltip="Kötelező, legalább 8 karakter, kisbetű, nagybetű, szám, különleges karakter!" style="color: red;">priority_high</i>
+                {{ adduserform.password1( id="password1", placeholder="jelszó", style="text-align: center; width: 80%;", onkeypress="inputkeypress()" ) }}
+            </div>
+
+            <div class="inp">
+                <i class="material-icons tiny warningicon tooltipped" data-position="left"
+                   data-delay="50" data-tooltip="Kötelező mező!" style="color: red;">priority_high</i>
+                {{ adduserform.password2( id="password2", placeholder="jelszó mégegyszer", style="text-align: center; width: 80%;", onkeypress="inputkeypress()" ) }}
+            </div>
+
+            <label class="inp">
+                {{ adduserform.is_superuser(id="is_superuser", type="checkbox") }}
+                <span style="color: #333333;">Adminisztrátor</span>
+            </label>
+
+        </form>
+
+    </div>
+
+    <br>
+    <span class="submit_btn valign-wrapper">
+
+        <button class="btn_gen" onclick="adm_post_adduser()">
+            <span class="valign-wrapper">
+                <i class="material-icons" style="margin-right: 2px;">person_add</i>
+                hozzáadás
+            </span>
+        </button>
+
+    </span>
+
     </div>
 </div>

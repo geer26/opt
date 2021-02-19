@@ -3,9 +3,9 @@ import os
 
 from flask import render_template, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm
+from app.forms import LoginForm, AddUserForm
 from app import app, socket, db
-from app.workers import hassu, generate_rnd, get_sudata
+from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user
 from app.models import User
 
 
@@ -17,9 +17,8 @@ def index():
         return render_template('/noauth/index.html')
     #else if user is superuser display admin index.html
     elif current_user.is_authenticated and current_user.is_superuser:
-        data = get_sudata()
-        print(data)
-        return render_template('/admin/index.html', data = data)
+        adduserform = AddUserForm()
+        return render_template('/admin/index.html', data = get_sudata(), adduserform = adduserform)
     # else if user is not superuser display user index.html
     elif current_user.is_authenticated and not current_user.is_superuser:
         return render_template('/user/index.html')
@@ -77,3 +76,30 @@ def addsu(suname, password):
         db.session.commit()
 
     return redirect('/')
+
+
+@socket.on('admin')
+def new_admin_message(data):
+
+    if not current_user.is_authenticated or not current_user.is_superuser:
+        return False
+
+    # where to send the answer -> sid
+    sid = request.sid
+
+    #check adduser creditentials
+    if data['event'] == 2201:
+        mess = {}
+        mess['event'] = 1201
+        mess['status'] = check_adduser(data)
+        socket.emit('admin', mess, room=sid)
+        return True
+
+
+    #del user by id
+    if data['event'] == 2251:
+        mess = {}
+        mess['event'] = 1251
+        mess['status'] = del_user(data)
+        socket.emit('admin', mess, room=sid)
+        return True

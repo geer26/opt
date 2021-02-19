@@ -9,6 +9,8 @@ $(document).ready(function(){
         $('#loadanim').offset({ top: e.pageY-h/2, left: e.pageX-w/2 });
     });
 
+    $('.tooltipped').tooltip({delay: 50});
+
 });
 
 
