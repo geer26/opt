@@ -13,7 +13,7 @@ function adm_post_adduser(){
     //check all neccessary filled
     if(!username || !pw1 || !pw2){
         $('#credits').addClass('credits_error');
-        $('#error').text('Hiányos kötelező mezők!!');
+        $('#error').text('Hiányos kötelező mezők!');
         $('#error').show();
         return;
     };
