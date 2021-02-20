@@ -39,6 +39,9 @@ class User(UserMixin, db.Model):
     salt = db.Column(db.String(128), default = '')
     settings = db.Column(db.String(2048), default = '')
 
+    added = db.Column(db.Date(), default = datetime.now())
+    last_modified = db.Column(db.Date(), default = datetime.now())
+
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -93,6 +96,9 @@ class Module(db.Model):
     description = db.Column(db.String(2048), default = '')
     attributes = db.Column(db.String(1024), default = '')  #JSON
 
+    added = db.Column(db.Date(), default=datetime.now())
+    last_modified = db.Column(db.Date(), default=datetime.now())
+
     def __repr__(self):
         return f'Modulnév: {self.short_name}'
 
@@ -136,6 +142,9 @@ class Testbattery(db.Model):
     last_modified = db.Column(db.Date(), default=datetime.now())
     modules = db.Column(db.String(512), default='')  #JSON
 
+    added = db.Column(db.Date(), default=datetime.now())
+    last_modified = db.Column(db.Date(), default=datetime.now())
+
     def __repr__(self):
         return f'Modulnév: {self.name}'
 
@@ -164,6 +173,9 @@ class Testsession(db.Model):
     due = db.Column(db.Date(), default=datetime.now())
     state = db.Column(db.Integer, default = -1)
     invitation_text = db.Column(db.LargeBinary)
+
+    added = db.Column(db.Date(), default=datetime.now())
+    last_modified = db.Column(db.Date(), default=datetime.now())
 
     def __repr__(self):
         return f'Modulnév: {self.uuid}'
@@ -199,6 +211,9 @@ class Client(db.Model):
     session_id = db.Column(db.Integer, db.ForeignKey('testsession.id'))
     invitation_status = db.Column(db.Integer, default = -1)
 
+    added = db.Column(db.Date(), default=datetime.now())
+    last_modified = db.Column(db.Date(), default=datetime.now())
+
     def __repr__(self):
         return f'Modulnév: {self.name}'
 
@@ -215,6 +230,7 @@ class Client(db.Model):
 
     def get_email(self):
         return fernet.decrypt(self.email).decode('utf-8')
+
 
 #DONE
 '''
@@ -261,6 +277,9 @@ class Result(db.Model):
     timestamp = db.Column(db.Date(), default=datetime.now())
     result_raw = db.Column(db.LargeBinary)
 
+    added = db.Column(db.Date(), default=datetime.now())
+    last_modified = db.Column(db.Date(), default=datetime.now())
+
     def __repr__(self):
         return f'Modulnév: {self.timestamp}'
 
@@ -291,6 +310,9 @@ class Userlog(db.Model):
     type = db.Column(db.String(8), default = '')
     message = db.Column(db.String(128), default = '')
 
+    added = db.Column(db.Date(), default=datetime.now())
+    last_modified = db.Column(db.Date(), default=datetime.now())
+
     def __repr__(self):
         return f'Timestamp: {self.timestamp}, Message: {self.message}'
 
@@ -317,6 +339,8 @@ class Message(db.Model):
     ant = db.Column(db.Integer, db.ForeignKey('message.id'), nullable = True)  #előzmény
     status = db.Column(db.Integer, default = -1)
     timestamp = db.Column(db.Date(), default=datetime.now())
+    added = db.Column(db.Date(), default=datetime.now())
+    last_modified = db.Column(db.Date(), default=datetime.now())
     subject = db.Column(db.LargeBinary)
     message = db.Column(db.LargeBinary)
 
