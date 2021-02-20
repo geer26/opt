@@ -27,11 +27,12 @@
             {{ form.hidden_tag() }}
 
             <div class="inp">
-                {{ form.username( id="username", placeholder="felhasználónév", style="text-align: center; width: 80%;", onkeypress="inputkeypress()") }}
+                {{ form.username( id="username", placeholder="felhasználónév", style="text-align: center; width: 100%;", onkeypress="inputkeypress()") }}
             </div>
 
             <div class="inp">
-                {{ form.password( id="password", placeholder="jelszó", style="text-align: center; width: 80%;", onkeypress="inputkeypress()" ) }}
+                <i class="material-icons small visibility_icon" id="login_pw">visibility</i>
+                {{ form.password( id="password", placeholder="jelszó", style="text-align: center; width: 100%;", onkeypress="inputkeypress()" ) }}
             </div>
 
             <label class="inp">
@@ -59,4 +60,13 @@
 
 </div>
 </div>
+
+<script>
+    $('#login_pw').mouseenter( event =>{
+        $('#password').attr('type','text');
+    }).mouseleave( event => {
+        $('#password').attr('type','password');
+    });
+</script>
+
 {% endblock %}

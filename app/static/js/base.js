@@ -55,3 +55,4 @@ socket.on('generic', function(data){
 function send_message(message, namespace='generic'){
     socket.emit(namespace,message);
 };
+

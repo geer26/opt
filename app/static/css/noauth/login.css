@@ -107,3 +107,27 @@
     vertical-align: middle;
 }
 
+.inp{
+    position: relative;
+    padding: 0;
+}
+
+.inp input{
+    margin: 0;
+}
+
+
+.visibility_icon{
+    position: absolute;
+    top: 25%;
+    right: -15px;
+    color: #bbbbbb;
+    cursor: pointer;
+    transition: .2s;
+}
+
+
+.visibility_icon:hover{
+    color: #333333;
+}
+
