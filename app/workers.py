@@ -57,6 +57,8 @@ def get_sudata():
         u['contact'] = user.get_contact()
         u['is_superuser'] = user.is_superuser
         u['settings'] = user.settings
+        u['added'] = user.added
+        u['last_modified'] = user.last_modified
         users.append(u)
 
     data['users'] = users

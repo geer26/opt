@@ -57,9 +57,29 @@ function adm_post_adduser(){
 };
 
 
+function add_user(){
+    //prepare modal interface
+    $('#adduser_titlebar').text('felhasználó hozzáadása');
+    $('#adduser_submitbutton').text('hozzáadás');
+    $('#button_icon').text('person_add');
+    //display modal interface
+    $('#adduser_modal').show();
+};
+
+
 function del_user(userid){
     loadstart();
     send_message({event: 2251, userid: parseInt(userid)}, 'admin');
+};
+
+
+function edit_user(){
+    //prepare modal interface
+    $('#adduser_titlebar').text('felhasználó módosítása');
+    $('#adduser_submitbutton').text('módosítás');
+    $('#button_icon').text('edit');
+    //display modal interface
+    $('#adduser_modal').show();
 };
 
 

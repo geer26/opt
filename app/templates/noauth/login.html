@@ -31,7 +31,7 @@
             </div>
 
             <div class="inp">
-                <i class="material-icons small visibility_icon" id="login_pw">visibility</i>
+                <i class="material-icons visibility_icon" id="login_pw">visibility</i>
                 {{ form.password( id="password", placeholder="jelszó", style="text-align: center; width: 100%;", onkeypress="inputkeypress()" ) }}
             </div>
 
@@ -63,8 +63,10 @@
 
 <script>
     $('#login_pw').mouseenter( event =>{
+        $('#login_pw').text('visibility_off');
         $('#password').attr('type','text');
     }).mouseleave( event => {
+        $('#login_pw').text('visibility');
         $('#password').attr('type','password');
     });
 </script>
