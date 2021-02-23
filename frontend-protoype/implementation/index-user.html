@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="css/opt-adminuser-generic.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+	<script src="js/opt-adminuser-generic.js" defer></script>
+	<script src="js/opt-ui-user.js" defer></script>
+</head>
+<body>
+	<div class="app-container">
+		<div class="app-main-menu">
+			<div class="opt-logo"></div>
+			<div class="info-box">
+				<div class="username">Felhasználónév</div>
+				<div class="small-menu">
+					<a class="menuitem" id="menuitem_logout"><i class="fa fa-power-off"></i></a>
+				</div>
+			</div>
+			<div class="big-menu">
+				<a class="menuitem" id="menuitem_messages"><i class="fa fa-envelope"></i><span>üzenetek</span></a>
+				<a class="menuitem" id="menuitem_sessions"><i class="fa fa-clipboard-list"></i><span>tesztelések</span></a>
+				<a class="menuitem" id="menuitem_reports"><i class="fa fa-chart-bar"></i><span>kimutatások</span></a>
+				<a class="menuitem" id="menuitem_catalog"><i class="fa fa-book"></i><span>katalógus</span></a>
+			</div>
+		</div>
+		<div class="app-content">
+			<!-- ÜZENETEK -->
+			<div id="tab-messages" class="app-tab">
+			</div>
+
+			<!-- USERS -->
+			<div id="tab-sessions" class="app-tab">
+			</div>
+
+			<!-- MODULES -->
+			<div id="tab-reports" class="app-tab">
+			</div>
+
+			<!-- REPORTS -->
+			<div id="tab-catalog" class="app-tab">
+			</div>
+		</div>
+	</div>
+</body>
+</html>
