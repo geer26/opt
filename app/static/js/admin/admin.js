@@ -1,3 +1,4 @@
+
 function adm_post_adduser(){
 
     var username = $('#username').val();
@@ -67,12 +68,6 @@ function add_user(){
 };
 
 
-function del_user(userid){
-    loadstart();
-    send_message({event: 2251, userid: parseInt(userid)}, 'admin');
-};
-
-
 function edit_user(){
     //prepare modal interface
     $('#adduser_titlebar').text('felhasználó módosítása');
@@ -114,6 +109,7 @@ socket.on('admin', function(data){
                     $('#is_superuser').prop( "checked", false );
                     $('#adduser_modal').hide();
                     //refresh page!
+                    adminapp.$users = data['userdata'];
                 }
             };
             break;
@@ -122,6 +118,7 @@ socket.on('admin', function(data){
             loadend();
             if (data['status'] == 0){
                 //refresh page!
+                adminapp.$users = data['userdata'];
             }
             };
             break;
@@ -130,3 +127,23 @@ socket.on('admin', function(data){
 
 });
 
+
+var adminapp = new Vue({
+
+    el: '#adminapp',
+
+    delimiters: ['{@', '@}'],
+
+    data: {
+        users: userdata['users'],
+        current_user: current_user
+    },
+
+    methods:{
+        del_user: function(userid){
+            loadstart();
+            send_message({event: 2251, userid: parseInt(userid)}, 'admin');
+        }
+    },
+
+});

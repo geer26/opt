@@ -2,6 +2,7 @@ import json
 import re
 from random import SystemRandom
 from app import db
+from flask_login import current_user
 
 from app.models import User
 
@@ -47,7 +48,24 @@ def get_sudata():
     '''
 
     data = {}
+
     users = []
+
+    cu = {}
+
+    cu['id'] = current_user.id
+    cu['username'] = current_user.username
+    cu['description'] = current_user.get_description()
+    cu['contact'] = current_user.get_contact()
+    cu['is_superuser'] = current_user.is_superuser
+    cu['settings'] = current_user.settings
+    #cu['added'] = current_user.added
+    cu['added'] = current_user.added.strftime("%Y.%m.%d")
+    #cu['last_modified'] = current_user.last_modified
+    cu['last_modified'] = current_user.last_modified.strftime("%Y.%m.%d, %H:%M:%S")
+
+    data['current_user'] = cu
+
 
     for user in User.query.all():
         u = {}
@@ -57,8 +75,10 @@ def get_sudata():
         u['contact'] = user.get_contact()
         u['is_superuser'] = user.is_superuser
         u['settings'] = user.settings
-        u['added'] = user.added
-        u['last_modified'] = user.last_modified
+        #u['added'] = user.added
+        u['added'] = user.added.strftime("%Y.%m.%d")
+        #u['last_modified'] = user.last_modified
+        u['last_modified'] = user.last_modified.strftime("%Y.%m.%d, %H:%M:%S")
         users.append(u)
 
     data['users'] = users

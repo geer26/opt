@@ -92,6 +92,7 @@ def new_admin_message(data):
         mess = {}
         mess['event'] = 1201
         mess['status'] = check_adduser(data)
+        mess['userdata'] = get_sudata()
         socket.emit('admin', mess, room=sid)
         return True
 
@@ -101,5 +102,6 @@ def new_admin_message(data):
         mess = {}
         mess['event'] = 1251
         mess['status'] = del_user(data)
+        mess['userdata'] = get_sudata()
         socket.emit('admin', mess, room=sid)
         return True
