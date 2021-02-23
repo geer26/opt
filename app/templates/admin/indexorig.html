@@ -3,8 +3,6 @@
 {% block headercontent %}
 <link href="/static/css/admin/admin_temp.css" type="text/css" rel="stylesheet">
 <link href="/static/css/modals.css" type="text/css" rel="stylesheet">
-
-<script src="/static/js/vue.js"></script>
 {% endblock %}
 
 {% block bodycontent %}
@@ -78,7 +76,7 @@
                             <td>{{user['description']}}</td>
                             <td>{{user['contact']}}</td>
                             <td>
-                                {{ user['added'].strftime('%Y-%m-%d') }}
+                                {{ user['added']}}
                             </td>
                             <td>{{user['settings']}}</td>
                         </tr>
