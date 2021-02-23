@@ -66,7 +66,6 @@ const TableComponent = {
 	methods: {
 		// A lapozást megvalósító függvény
 		changePage: function(command) {
-			console.log("sadfasdf");
 			switch(command) {
 				case "inc":
 					this.currentPage = Math.min(this.currentPage + 1, Math.floor(this.records.length / this.currentCount));
