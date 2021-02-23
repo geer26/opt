@@ -15,10 +15,10 @@
 
 		<table-component
 			:fields="[
-				{name: 'id', title: 'ID', alignment: 'right'},
-				{name: 'author', title: 'szerző', alignment: 'left'},
-				{name: 'title', title: 'cím', alignment: 'left', stretch: true},
-				{name: 'genre', title: 'műfaj', alignment: 'center'}
+				{name: 'id', title: 'ID', alignment: 'right', sortable: true},
+				{name: 'author', title: 'szerző', alignment: 'left', sortable: false},
+				{name: 'title', title: 'cím', alignment: 'left', stretch: true, sortable: true},
+				{name: 'genre', title: 'műfaj', alignment: 'center', sortable: true}
 			 ]"
 			:records="konyvek"
 			:page="0"

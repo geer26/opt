@@ -37,3 +37,9 @@
 .table-component tbody tr.selected {
 	background-color: steelblue;
 }
+.table-component .sorter {
+	cursor: pointer;
+}
+.table-component .sorter.sort-selected {
+	color: red;
+}
