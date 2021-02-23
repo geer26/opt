@@ -4,7 +4,7 @@ from random import SystemRandom
 from app import db
 from flask_login import current_user
 
-from app.models import User, Module
+from app.models import User, Module, Modaux, Testbattery
 
 
 def validate_password(password):
@@ -62,10 +62,12 @@ def get_sudata():
 
     data = {}
 
-    users = []
+    users = []  #DONE
+    modules = []  #DONE
+    modauxs = []  #DONE
+    testbatteries = [] #DONE
 
     cu = {}
-
     cu['id'] = current_user.id
     cu['username'] = current_user.username
     cu['description'] = current_user.get_description()
@@ -97,8 +99,39 @@ def get_sudata():
     data['users'] = users
 
     for module in Module.query.all():
-        pass
-        #get all
+        m = {}
+        m['id'] = module.id
+        m['uuid'] = module.uuid
+        m['short_name'] = module.short_name
+        m['verbose_name'] = module.verbose_name
+        m['description'] = module.description
+        m['attributes'] = module.attributes
+        m['added'] = module.added.strftime("%Y-%m-%dT%H:%M:%S")
+        m['last_modified'] = module.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        modules.append(module)
+
+    data['modules'] = modules
+
+    for modaux in Modaux.query.all():
+        ma = {}
+        ma[id] = modaux.id
+        ma['user_id'] = module.user_id
+        ma['module_id'] = module.module_id
+        modauxs.append(ma)
+    data['modaux'] = modauxs
+
+    for testbattery in Testbattery.query.all():
+        tb = {}
+        tb['id'] = testbattery.id
+        tb['user_id'] = testbattery.user_id
+        tb['name'] = testbattery.name
+        tb['description'] = testbattery.description
+        tb['created'] = testbattery.created.strftime("%Y-%m-%dT%H:%M:%S")
+        tb['last_modified'] = testbattery.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        tb['modules'] = testbattery.modules
+        testbatteries.append(tb)
+    data['testbatteries'] = testbatteries
+
 
     return json.dumps(data)
 
