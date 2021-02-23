@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+	<script src="https://unpkg.com/vue@next"></script>
+
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="../table-component/TableComponent.css"/>
+	<script src="../table-component/TableComponent.js"></script>
+	<script src="appTabUsers.js" defer></script>
+</head>
+<body>
+
+
+	<div id="tab-users">
+
+
+		<table-component
+			:fields="[
+				{name: 'id', title: 'ID', alignment: 'right'},
+				{name: 'username', title: 'felhasználónév', alignment: 'left'},
+				{name: 'role', title: 'szerepkör', alignment: 'left'},
+				{name: 'description', title: 'leírás', alignment: 'left', stretch: true}
+			 ]"
+			:records="usersEnhanced"
+			:page="0"
+			:count="9"
+			>
+		</table-component>
+
+	</div>
+
+
+	<script>
+
+		const admin_data = {
+		  "current_user": {
+		    "id": 2,
+		    "username": "LeoMinor",
+		    "description": "Adminisztrátor felhasználó",
+		    "contact": "sgsgh@asdf.com",
+		    "is_superuser": true,
+		    "settings": "",
+		    "added": "2021-02-21T05:42:02",
+		    "last_modified": "2021-02-21T05:42:02"
+		  },
+		  "users": [
+		    {
+		      "id": 1,
+		      "username": "geer26",
+		      "description": "Adminisztrátor felhasználó",
+		      "contact": "none@none.no",
+		      "is_superuser": true,
+		      "settings": "",
+		      "added": "2021-02-21T05:42:02",
+		      "last_modified": "2021-02-21T05:42:02"
+		    },
+		    {
+		      "id": 2,
+		      "username": "LeoMinor",
+		      "description": "Adminisztrátor felhasználó",
+		      "contact": "sgsgh@asdf.com",
+		      "is_superuser": true,
+		      "settings": "",
+		      "added": "2021-02-21T05:42:02",
+		      "last_modified": "2021-02-21T05:42:02"
+		    }
+		  ],
+		  "modules": [],
+		  "modaux": [],
+		  "testbatteries": [],
+		  "testsessions": [],
+		  "clients": [],
+		  "clientlogs": [],
+		  "results": []
+		};		
+
+	</script>
+</body>
+</html>
