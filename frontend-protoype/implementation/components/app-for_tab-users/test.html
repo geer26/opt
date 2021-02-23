@@ -16,6 +16,7 @@
 
 
 		<table-component
+			ref="users-table"
 			:fields="[
 				{name: 'id', title: 'ID', alignment: 'right'},
 				{name: 'username', title: 'felhasználónév', alignment: 'left'},
@@ -27,6 +28,8 @@
 			:count="9"
 			>
 		</table-component>
+
+		<button v-on:click="this.$refs['users-table'].resetSelection()">RESET</button>
 
 	</div>
 
