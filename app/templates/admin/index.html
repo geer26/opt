@@ -1,83 +1,22 @@
 {% extends 'base.html' %}
 
 {% block headercontent %}
-<link href="/static/css/admin/admin_temp.css" type="text/css" rel="stylesheet">
-<link href="/static/css/modals.css" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block bodycontent %}
 
-{% include 'admin/adduser_modal.html' %}
+<button onclick="location.href='/logout'" class="btn_gen">
+    <span class="valign-wrapper">
+        <i class="material-icons" style="margin-right: 2px;">logout</i>
+        kilépés
+    </span>
+</button>
 
-<div style="width: 100vw; height:100vh; position: absolute; top:0; left:0; padding: 10px;" id="adminapp">
+<p>HELLO WOLRD!</p>
 
-    <div class="admin_frame">
-
-        {@current_user.username@}
-        <button onclick="location.href='/logout'" class="btn_gen">
-            <span class="valign-wrapper">
-                <i class="material-icons" style="margin-right: 2px;">logout</i>
-                kilépés
-            </span>
-        </button>
-        <br>
-
-        <hr>
-        VUEIZED
-        <hr>
-
-        <i class="material-icons">manage_accounts</i>
-        Felhasználók
-        <i class="material-icons" style="color: green; left-margin: 10px;" onclick="add_user()">add_circle</i>
-
-        <table class="striped" style="margin: auto; width: 90%;">
-            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Felhasználónév</th>
-                                <th>Leírás</th>
-                                <th>Kontakt</th>
-                                <th>Regisztráció</th>
-                                <th>Beállítások</th>
-                            </tr>
-                        </thead>
-
-            <tbody>
-                <tr v-for="user in users" v-bind:key="user.id">
-                    <td>
-                        <span class="valign-wrapper">
-                            {@user.id@}
-                            <i v-if="user.id!=current_user.id" class="material-icons" style="color: red; cursor: pointer;"
-                               v-on:click="del_user(user.id)">delete_forever</i>
-
-                            <i v-if="!user.is_superuser || user.id==current_user.id" class="material-icons" style="color: blue; cursor: pointer;">
-                                edit</i>
-                        </span>
-                    </td>
-
-                    <td>
-                        <span class="valign-wrapper">
-                            <i v-if="user.is_superuser" class="material-icons" style="color: red;">local_police</i>
-                            {@user.username@}
-                        </span>
-                    </td>
-
-                    <td>{@user['description']@}</td>
-                    <td>{@user['contact']@}</td>
-                    <td>{@user['added']@}</td>
-                    <td>{@user['settings']@}</td>
-                </tr>
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
 
 <script>
-    userdata = {{data|tojson}};
-    current_user = {{data['current_user']|tojson}}
+    admin_data = {{data|safe}};
 </script>
 
 <script src="/static/js/admin/admin.js"></script>

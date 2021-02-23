@@ -4,7 +4,7 @@ from random import SystemRandom
 from app import db
 from flask_login import current_user
 
-from app.models import User
+from app.models import User, Module
 
 
 def validate_password(password):
@@ -33,6 +33,17 @@ def get_sudata():
 
     return a json, format:
     {
+    current_user{
+        id: <id>,
+        id : <id>,
+        username : <username>
+        description : <description> !
+        contact : <contact> !
+        is_superuser : <is_superuser>
+        settings : <settings>
+        added : <formatted string>
+        last_modified : <formatted string>
+    },
     users : [
         {
             id : <id>,
@@ -41,6 +52,8 @@ def get_sudata():
             contact : <contact> !
             is_superuser : <is_superuser>
             settings : <settings>
+            added : <formatted string>
+            last_modified : <formatted string>
         }
     ]
     }
@@ -60,9 +73,9 @@ def get_sudata():
     cu['is_superuser'] = current_user.is_superuser
     cu['settings'] = current_user.settings
     #cu['added'] = current_user.added
-    cu['added'] = current_user.added.strftime("%Y.%m.%d")
+    cu['added'] = current_user.added.strftime("%Y-%m-%dT%H:%M:%S")
     #cu['last_modified'] = current_user.last_modified
-    cu['last_modified'] = current_user.last_modified.strftime("%Y.%m.%d, %H:%M:%S")
+    cu['last_modified'] = current_user.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
 
     data['current_user'] = cu
 
@@ -76,14 +89,18 @@ def get_sudata():
         u['is_superuser'] = user.is_superuser
         u['settings'] = user.settings
         #u['added'] = user.added
-        u['added'] = user.added.strftime("%Y.%m.%d")
+        u['added'] = user.added.strftime("%Y-%m-%dT%H:%M:%S")
         #u['last_modified'] = user.last_modified
-        u['last_modified'] = user.last_modified.strftime("%Y.%m.%d, %H:%M:%S")
+        u['last_modified'] = user.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
         users.append(u)
 
     data['users'] = users
 
-    return data
+    for module in Module.query.all():
+        pass
+        #get all
+
+    return json.dumps(data)
 
 
 def check_adduser(data):
