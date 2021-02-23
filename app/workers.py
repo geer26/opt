@@ -4,7 +4,7 @@ from random import SystemRandom
 from app import db
 from flask_login import current_user
 
-from app.models import User, Module, Modaux, Testbattery
+from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result
 
 
 def validate_password(password):
@@ -65,7 +65,13 @@ def get_sudata():
     users = []  #DONE
     modules = []  #DONE
     modauxs = []  #DONE
-    testbatteries = [] #DONE
+    testbatteries = []  #DONE
+    testsessions = []  #DONE
+    clients = []  #DONE
+    clientlogs = []  #DONE
+    results = []  #DONE
+
+
 
     cu = {}
     cu['id'] = current_user.id
@@ -131,6 +137,59 @@ def get_sudata():
         tb['modules'] = testbattery.modules
         testbatteries.append(tb)
     data['testbatteries'] = testbatteries
+
+    for testsession in Testsession.query.all():
+        ts = {}
+        ts['id'] = testsession.id
+        ts['uuid'] = testsession.uuid
+        ts['user_id'] = testsession.user_id
+        ts['testbattery_id'] = testsession.testbattery_id
+        ts['created'] = testsession.created.strftime("%Y-%m-%dT%H:%M:%S")
+        ts['due'] = testsession.due.strftime("%Y-%m-%dT%H:%M:%S")
+        ts['state'] = testsession.state
+        ts['invitation_text'] = testsession.get_invitation()
+        ts['added'] = testsession.added.strftime("%Y-%m-%dT%H:%M:%S")
+        ts['last_modified'] = testsession.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        testsessions.append(ts)
+    data['testsessions'] = testsessions
+
+    for client in Client.query.all():
+        c = {}
+        c['id'] = client.id
+        c['uuid'] = client.uuid
+        c['name'] = client.get_name()
+        c['email'] = client.get_email()
+        c['state'] = client.state
+        c['session_id'] = client.session_id
+        c['invitation_status'] = client.invitation_status
+        c['added'] = client.added.strftime("%Y-%m-%dT%H:%M:%S")
+        c['last_modified'] = client.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        clients.append(c)
+    data['clients'] = clients
+
+    for clientlog in Clientlog.query.all():
+        cl = {}
+        cl['id'] = clientlog.id
+        cl['client_id'] = clientlog.client_id
+        cl['message'] = clientlog.message
+        cl['source'] = clientlog.source
+        cl['timestamp'] = clientlog.timestamp.strftime("%Y-%m-%dT%H:%M:%S")
+        clientlogs.append(cl)
+    data['clientlogs'] = clientlogs
+
+    for result in Result.query.all():
+        r = {}
+        r['id'] = result.id
+        r['client_id'] = result.client_id
+        r['session_id'] = result.session_id
+        r['module_id'] = result.module_id
+        r['timestamp'] = result.timestamp.strftime("%Y-%m-%dT%H:%M:%S")
+        r['result_raw'] = result.get_result()
+        r['added'] = result.added.strftime("%Y-%m-%dT%H:%M:%S")
+        r['last_modified'] = result.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        results.append(r)
+    data['results'] = results
+
 
 
     return json.dumps(data)
