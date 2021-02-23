@@ -93,6 +93,10 @@ const TableComponent = {
 			// FIGYELEM! az lehet null is!
 			// Az esemény payloadja maga a kiválasztott rekord
 			this.$emit("selectionChanged", this.selected);
+		},
+
+		resetSelection() {
+			this.selected = null;
 		}
 	},
 
