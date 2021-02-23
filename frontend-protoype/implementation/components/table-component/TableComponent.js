@@ -21,7 +21,7 @@ const TableComponent = {
 		<div class="table-component-pager">
 			<a @click="changePage('first')"><i class="fa fa-angle-double-left"></i></a> 		
 			<a @click="changePage('dec')"><i class="fa fa-angle-left"></i></a> 
-			<span>{@ (currentPage + 1) + "/" + (1+Math.floor(records.length/currentCount)) @}</span>
+			<span>{@ (currentPage + 1) + "/" + numPages @}</span>
 			<a @click="changePage('inc')"><i class="fa fa-angle-right"></i></a> 
 			<a @click="changePage('last')"><i class="fa fa-angle-double-right"></i></a>
 		</div>
@@ -68,7 +68,7 @@ const TableComponent = {
 		changePage: function(command) {
 			switch(command) {
 				case "inc":
-					this.currentPage = Math.min(this.currentPage + 1, Math.floor(this.records.length / this.currentCount));
+					this.currentPage = Math.min(this.currentPage+1, this.numPages-1);
 					break;
 				case "dec":
 					this.currentPage = Math.max(0, this.currentPage - 1)
@@ -77,7 +77,7 @@ const TableComponent = {
 					this.currentPage = 0;
 					break;
 				case "last":
-					this.currentPage = Math.floor(this.records.length / this.currentCount);
+					this.currentPage = this.numPages-1;
 					break;
 			}
 		},
@@ -106,6 +106,10 @@ const TableComponent = {
 		selectedRecords() {
 			var start = this.currentCount * this.currentPage;
 			return this.records.slice(start, start + this.currentCount);
+		},
+
+		numPages() {
+			return Math.ceil(this.records.length / this.currentCount);
 		}
 	}
 };
