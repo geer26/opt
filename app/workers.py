@@ -4,7 +4,7 @@ from random import SystemRandom
 from app import db
 from flask_login import current_user
 
-from app.models import User
+from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result
 
 
 def validate_password(password):
@@ -33,6 +33,17 @@ def get_sudata():
 
     return a json, format:
     {
+    current_user{
+        id: <id>,
+        id : <id>,
+        username : <username>
+        description : <description> !
+        contact : <contact> !
+        is_superuser : <is_superuser>
+        settings : <settings>
+        added : <formatted string>
+        last_modified : <formatted string>
+    },
     users : [
         {
             id : <id>,
@@ -41,6 +52,8 @@ def get_sudata():
             contact : <contact> !
             is_superuser : <is_superuser>
             settings : <settings>
+            added : <formatted string>
+            last_modified : <formatted string>
         }
     ]
     }
@@ -49,10 +62,18 @@ def get_sudata():
 
     data = {}
 
-    users = []
+    users = []  #DONE
+    modules = []  #DONE
+    modauxs = []  #DONE
+    testbatteries = []  #DONE
+    testsessions = []  #DONE
+    clients = []  #DONE
+    clientlogs = []  #DONE
+    results = []  #DONE
+
+
 
     cu = {}
-
     cu['id'] = current_user.id
     cu['username'] = current_user.username
     cu['description'] = current_user.get_description()
@@ -60,9 +81,9 @@ def get_sudata():
     cu['is_superuser'] = current_user.is_superuser
     cu['settings'] = current_user.settings
     #cu['added'] = current_user.added
-    cu['added'] = current_user.added.strftime("%Y.%m.%d")
+    cu['added'] = current_user.added.strftime("%Y-%m-%dT%H:%M:%S")
     #cu['last_modified'] = current_user.last_modified
-    cu['last_modified'] = current_user.last_modified.strftime("%Y.%m.%d, %H:%M:%S")
+    cu['last_modified'] = current_user.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
 
     data['current_user'] = cu
 
@@ -76,14 +97,102 @@ def get_sudata():
         u['is_superuser'] = user.is_superuser
         u['settings'] = user.settings
         #u['added'] = user.added
-        u['added'] = user.added.strftime("%Y.%m.%d")
+        u['added'] = user.added.strftime("%Y-%m-%dT%H:%M:%S")
         #u['last_modified'] = user.last_modified
-        u['last_modified'] = user.last_modified.strftime("%Y.%m.%d, %H:%M:%S")
+        u['last_modified'] = user.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
         users.append(u)
 
     data['users'] = users
 
-    return data
+    for module in Module.query.all():
+        m = {}
+        m['id'] = module.id
+        m['uuid'] = module.uuid
+        m['short_name'] = module.short_name
+        m['verbose_name'] = module.verbose_name
+        m['description'] = module.description
+        m['attributes'] = module.attributes
+        m['added'] = module.added.strftime("%Y-%m-%dT%H:%M:%S")
+        m['last_modified'] = module.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        modules.append(module)
+
+    data['modules'] = modules
+
+    for modaux in Modaux.query.all():
+        ma = {}
+        ma[id] = modaux.id
+        ma['user_id'] = module.user_id
+        ma['module_id'] = module.module_id
+        modauxs.append(ma)
+    data['modaux'] = modauxs
+
+    for testbattery in Testbattery.query.all():
+        tb = {}
+        tb['id'] = testbattery.id
+        tb['user_id'] = testbattery.user_id
+        tb['name'] = testbattery.name
+        tb['description'] = testbattery.description
+        tb['created'] = testbattery.created.strftime("%Y-%m-%dT%H:%M:%S")
+        tb['last_modified'] = testbattery.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        tb['modules'] = testbattery.modules
+        testbatteries.append(tb)
+    data['testbatteries'] = testbatteries
+
+    for testsession in Testsession.query.all():
+        ts = {}
+        ts['id'] = testsession.id
+        ts['uuid'] = testsession.uuid
+        ts['user_id'] = testsession.user_id
+        ts['testbattery_id'] = testsession.testbattery_id
+        ts['created'] = testsession.created.strftime("%Y-%m-%dT%H:%M:%S")
+        ts['due'] = testsession.due.strftime("%Y-%m-%dT%H:%M:%S")
+        ts['state'] = testsession.state
+        ts['invitation_text'] = testsession.get_invitation()
+        ts['added'] = testsession.added.strftime("%Y-%m-%dT%H:%M:%S")
+        ts['last_modified'] = testsession.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        testsessions.append(ts)
+    data['testsessions'] = testsessions
+
+    for client in Client.query.all():
+        c = {}
+        c['id'] = client.id
+        c['uuid'] = client.uuid
+        c['name'] = client.get_name()
+        c['email'] = client.get_email()
+        c['state'] = client.state
+        c['session_id'] = client.session_id
+        c['invitation_status'] = client.invitation_status
+        c['added'] = client.added.strftime("%Y-%m-%dT%H:%M:%S")
+        c['last_modified'] = client.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        clients.append(c)
+    data['clients'] = clients
+
+    for clientlog in Clientlog.query.all():
+        cl = {}
+        cl['id'] = clientlog.id
+        cl['client_id'] = clientlog.client_id
+        cl['message'] = clientlog.message
+        cl['source'] = clientlog.source
+        cl['timestamp'] = clientlog.timestamp.strftime("%Y-%m-%dT%H:%M:%S")
+        clientlogs.append(cl)
+    data['clientlogs'] = clientlogs
+
+    for result in Result.query.all():
+        r = {}
+        r['id'] = result.id
+        r['client_id'] = result.client_id
+        r['session_id'] = result.session_id
+        r['module_id'] = result.module_id
+        r['timestamp'] = result.timestamp.strftime("%Y-%m-%dT%H:%M:%S")
+        r['result_raw'] = result.get_result()
+        r['added'] = result.added.strftime("%Y-%m-%dT%H:%M:%S")
+        r['last_modified'] = result.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        results.append(r)
+    data['results'] = results
+
+
+
+    return json.dumps(data)
 
 
 def check_adduser(data):

@@ -1,0 +1,205 @@
+/* Roboto font betöltése (csak regular) */
+@font-face {
+	font-family: Roboto;
+	src: url(Roboto-Regular.ttf);
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+:root {
+	--fontColor: #444444;
+	--lightBackground: #eeeeee;
+	--darkBackground: #54668e;
+	--inactive: #b3b3b3;
+	--active: #444444;
+}
+
+
+* {
+	box-sizing: border-box;
+	font-family: Roboto;
+}
+
+html { height: 100%; }
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 10px 0 0 0;
+	background-color: var(--darkBackground);
+	font-size: 13pt;
+	color: var(--fontColor);
+}
+
+
+
+/* ************************* */
+/* A felhasználói felület alapvető szerkezete */
+/* 
+APP-CONTAINER 
+ |- APP-MAIN-MENU (1)
+ |   |- OPT-LOGO (1)
+ |   |- INFO-BOX (1)
+ |   |   |- USERNAME (1)
+ |   |   |- SMALL-MENU (1)
+ |   |       |- MENUITEM (n)
+ |   |
+ |   |- BIG-MENU (1)
+ |       |- MENUITEM (n)
+ |
+ |- APP-CONTENT
+     |- APP-TAB (n)
+         |- APP-TAB-CONTENT (1)
+
+*/
+
+.app-container {
+	display: grid;
+	grid-template-rows: auto 100fr;
+	grid-row-gap: 5px;
+	min-height: 100%;
+}
+.app-main-menu {
+	height: 70px;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	background-color: var(--lightBackground);
+}
+.app-main-menu .opt-logo {
+	background-image: url("/static/img/logo.png");
+	min-width: 74px;
+	min-height: 60px;
+	margin-left: 30px;
+}
+.app-main-menu .info-box {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: flex-start;
+	justify-content: flex-start;
+	margin-left: 10px;
+}
+.app-main-menu .info-box .username { 
+	font-size: 1.3em;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.app-main-menu .info-box .small-menu {
+	font-size: 1em;
+	color: var(--darkBackground);
+}
+.app-main-menu .big-menu {
+	margin-left: 30px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: flex-end;
+	align-self: flex-end;
+	position: relative;
+	bottom: -5px;
+}
+.app-main-menu .big-menu a {
+	display: flex;
+	flex-flow: column nowrap;
+	padding: 5px 10px 5px 10px;
+	justify-content: flex-start;
+	align-items: center;
+	margin: 0 5px 0 5px;
+
+	color: var(--inactive);
+}
+.app-main-menu .big-menu a .fa { font-size: 2em; }
+.app-main-menu a {
+	cursor: pointer;
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	transition: color 0.5s ease;
+	font-weight: bold;
+}
+.app-main-menu a:hover .fa,span { filter: brightness(0.85); }
+.app-main-menu a.active { 
+	color: var(--fontColor); 
+	background-color: var(--lightBackground);
+}
+
+/* A program ablaka */
+.app-content {
+	margin-left: auto;
+	margin-right: auto;
+	width: 99%;
+	min-height: 100%;
+}
+
+/* A tabok */
+.app-tab {
+	background-color: var(--lightBackground);
+	min-height: 100%;
+	width: 100%;
+	padding: 5px;
+	display: none;
+	transition: all 0.5s ease;
+
+	position: relative;
+}
+.app-tab.visible {
+	display: block;
+}
+.app-tab .preloader {
+	top: 5px;
+	right: 5px;
+	background-image: url(../img/loader.gif);
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: 5px;
+	right: 200px;
+}
+.app-tab h1 {
+	font-size: 1.1em;
+	font-weight: bold;
+	font-style: italic;
+	margin: 10px 0 20px 0;
+	text-align: center;
+	border-bottom: 1px solid var(--darkBackground);
+	padding: 0 20px 0 20px;
+}
+
+
+
+
+
+/* PAGE NAVIGATOR */
+/*
+PAGE-NAVIGATOR
+ |- NAVIGATOR-ADDRESS-BAR
+ |- NAVIGATOR-PAGES
+     |- PAGE
+*/
+
+.page-navigator {
+	width: 100%;
+}
+.page-navigator .navigator-address-bar {
+	color: var(--darkBackground);
+	font-weight: bold;
+	font-style: italic;
+	padding: 5px 0 5px 10px;
+	font-size: 0.8em;
+}
+.page-navigator .navigator-address-bar a {
+	color: var(--fontColor);
+}
+.page-navigator .navigator-address-bar a.nav-active {
+	cursor: pointer;
+	text-decoration: underline;
+	color: var(--darkBackground);
+}
+.page {
+	padding: 5px;
+	display: none;
+}
+.page.visible {
+	display: block;
+}
