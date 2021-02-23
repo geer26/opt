@@ -3,8 +3,6 @@
 {% block headercontent %}
 <link href="/static/css/admin/admin_temp.css" type="text/css" rel="stylesheet">
 <link href="/static/css/modals.css" type="text/css" rel="stylesheet">
-
-<script src="/static/js/vue.js"></script>
 {% endblock %}
 
 {% block bodycontent %}
@@ -78,7 +76,6 @@
 </div>
 
 <script>
-    $('.collapsible').collapsible();
     userdata = {{data|tojson}};
     current_user = {{data['current_user']|tojson}}
 </script>
