@@ -13,6 +13,7 @@ const appUsers = Vue.createApp({
 			var e = this.users;
 			e.forEach(record => {
 				record.role = record.is_superuser ? 'admin' : 'user'
+				record.username = record.username
 			});
 			return e;
 		}
