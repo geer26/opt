@@ -136,7 +136,7 @@ const TableComponent = {
 	computed: {
 		selectedRecords() {
 			// SORBARENDEZÉS
-			var recs = this.records;
+			var recs = Array.from(this.records);
 			if (this.sort.by != null) {
 				// Itt először sorba kell rendeznünk, ha egyáltalán van megadva erre szabály
 				if (this.sort.direction == 0)				
