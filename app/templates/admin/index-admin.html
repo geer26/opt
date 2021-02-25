@@ -59,6 +59,7 @@
 					</div>
 					-->
 
+					<!--
 					<table-component
 						:fields="[
 							{name: 'id', title: 'ID', alignment: 'right', sortable: true},
@@ -67,6 +68,23 @@
 							{name: 'genre', title: 'műfaj', alignment: 'center', sortable: true}
 			 			]"
 						:records="konyvek"
+						:page="0"
+						:count="10"
+						@selection-changed="handleSelectionChanged"
+					>
+					</table-component>
+					-->
+
+					USERS
+
+					<table-component
+						:fields="[
+							{name: 'id', title: 'ID', alignment: 'right', sortable: false},
+							{name: 'username', title: 'felhasználónév', alignment: 'left', sortable: true},
+							{name: 'contact', title: 'kontakt', alignment: 'left', stretch: true, sortable: false},
+							{name: 'added', title: 'regisztráció', alignment: 'left', stretch: true, sortable: true}
+			 			]"
+						:records="users"
 						:page="0"
 						:count="10"
 						@selection-changed="handleSelectionChanged"

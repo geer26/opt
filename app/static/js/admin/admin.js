@@ -30,7 +30,7 @@ const app = Vue.createApp({
 	data() {
 		return {
 			konyvek: testdata,
-			admindata: admin_data
+			users: admin_data['users']
 		}
 	},
 
@@ -39,7 +39,7 @@ const app = Vue.createApp({
 			if ( payload == null ) {
 				console.log("Nincs kijelölve semmi");
 			} else {
-				console.log("Kiválasztott könyv: " + payload.title);
+				console.log("Kiválasztott felhasználó: " + payload.title);
 			}
 	    }
 	}
