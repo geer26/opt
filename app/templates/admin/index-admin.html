@@ -17,6 +17,8 @@
 
 {% block bodycontent %}
 
+{% include 'admin/adduser_modal.html' %}
+
 	<div class="app-container">
 		<div class="app-main-menu">
 			<div class="opt-logo"></div>
@@ -76,7 +78,7 @@
 					-->
 
 					USERS
-					<a @click="showAddUser()">ADDUSER</a>
+					<a @click="showAddUser">ADDUSER</a>
 
 					<table-component
 						:fields="[

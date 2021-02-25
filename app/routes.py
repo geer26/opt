@@ -17,8 +17,8 @@ def index():
         return render_template('/noauth/index.html')
     #else if user is superuser display admin index.html
     elif current_user.is_authenticated and current_user.is_superuser:
-        #adduserform = AddUserForm()
-        return render_template('/admin/index-admin.html', data = get_sudata())
+        adduserform = AddUserForm()
+        return render_template('/admin/index-admin.html', data = get_sudata(), adduserform = adduserform)
     # else if user is not superuser display user index.html
     elif current_user.is_authenticated and not current_user.is_superuser:
         return render_template('/user/index.html')
