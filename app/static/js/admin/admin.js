@@ -41,6 +41,10 @@ const app = Vue.createApp({
 			} else {
 				console.log("Kiválasztott felhasználó: " + payload.title);
 			}
+	    },
+
+	    showAddUser() {
+	        $('#adduser_modal').show();
 	    }
 	}
 
