@@ -6,10 +6,16 @@
 
 <script src="static/js/admin/opt-adminuser-generic.js" defer></script>
 <script src="static/js/admin/opt-ui-admin.js" defer></script>
+
+<script>admin_data = {{data|safe}};</script>
+
+<!-- komponensek -->
+<link rel="stylesheet" href="static/css/components/TableComponent.css"/>
+<script src="static/js/components/TableComponent.js"></script>
+
 {% endblock %}
 
 {% block bodycontent %}
-
 
 	<div class="app-container">
 		<div class="app-main-menu">
@@ -35,11 +41,14 @@
 			<!-- USERS -->
 			<div id="tab-users" class="app-tab">
 				<div id="users-pages" class="page-navigator">
+
 					<div class="navigator-address-bar">
 						<a><i class="fa fa-home"></i></a>
 						<a>új felhasználó</a>
 						<a>aktuális oldal</a>
 					</div>
+
+					<!--
 					<div class="navigator-pages">
 						<div id="page-userlist" class="page visible">
 							Itt van az adminok listája
@@ -48,6 +57,22 @@
 							Itt van az adminok listája
 						</div>
 					</div>
+					-->
+
+					<table-component
+						:fields="[
+							{name: 'id', title: 'ID', alignment: 'right', sortable: true},
+							{name: 'author', title: 'szerző', alignment: 'left', sortable: false},
+							{name: 'title', title: 'cím', alignment: 'left', stretch: true, sortable: true},
+							{name: 'genre', title: 'műfaj', alignment: 'center', sortable: true}
+			 			]"
+						:records="konyvek"
+						:page="0"
+						:count="10"
+						@selection-changed="handleSelectionChanged"
+					>
+					</table-component>
+
 				</div>
 			</div>
 
@@ -61,10 +86,6 @@
 		</div>
 	</div>
 
-
-<script>
-    admin_data = {{data|safe}};
-</script>
 
 <script src="/static/js/admin/admin.js"></script>
 

@@ -149,12 +149,13 @@ APP-CONTAINER
 .app-tab .preloader {
 	top: 5px;
 	right: 5px;
-	background-image: url(../img/loader.gif);
+	background-image: url("/static/img/loader.gif");
 	width: 30px;
 	height: 30px;
 	position: absolute;
+	border: 1px solid red;
 	top: 5px;
-	right: 200px;
+	right: 5px;
 }
 .app-tab h1 {
 	font-size: 1.1em;
