@@ -105,6 +105,6 @@ def new_admin_message(data):
         mess = {}
         mess['event'] = 1251
         mess['status'] = del_user(data)
-        mess['userdata'] = get_sudata()
+        mess['new_users'] = json.dumps(json.loads(get_sudata())['users'])
         socket.emit('admin', mess, room=sid)
         return True

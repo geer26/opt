@@ -219,7 +219,7 @@ def check_adduser(data):
 
 
 def del_user(data):
-    user = User.query.get(int(data['userid']))
+    user = User.query.get(int(data['id']))
     if not user: return 1
     else:
         db.session.delete(user)

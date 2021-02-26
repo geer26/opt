@@ -20,10 +20,11 @@ const TableComponent = {
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="record in selectedRecords" 
+				<tr v-for="record in records"
 					v-bind:class="selected != null ? (selected.id == record.id ? 'selected' : '') : ''"
 					v-on:click="selectRecord(record.id)">
 					<td v-for="field in fields" v-bind:style="{textAlign: field.alignment}">{@ record[field.name] @}</td>
+					<td><a @click="deleteRecord(record.id)"><i class="material-icons" style="margin-right: 2px;">logout</i></a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -128,10 +129,14 @@ const TableComponent = {
 				this.sort.by = name;
 				this.sort.direction = 0;
 			}
+		},
+
+		deleteRecord(id) {
+		    this.$emit("deleteRecord", this.records.find(record => { return record.id === id} ));
 		}
 	},
 
-	emits: ["selectionChanged"],
+	emits: ["selectionChanged", "deleteRecord"],
 
 	computed: {
 		selectedRecords() {

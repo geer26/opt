@@ -7,7 +7,7 @@
 <script src="static/js/admin/opt-adminuser-generic.js" defer></script>
 <script src="static/js/admin/opt-ui-admin.js" defer></script>
 
-<script>admin_data = {{data|safe}};</script>
+<script>var admin_data = {{data|safe}};</script>
 
 <!-- komponensek -->
 <link rel="stylesheet" href="static/css/components/TableComponent.css"/>
@@ -89,8 +89,9 @@
 			 			]"
 						:records="users"
 						:page="0"
-						:count="10"
+						:count="20"
 						@selection-changed="handleSelectionChanged"
+						@delete-record="handleDeleteRecord"
 					>
 					</table-component>
 
