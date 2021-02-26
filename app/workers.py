@@ -201,12 +201,13 @@ def check_adduser(data):
 
     if len(u) != 0:
         return 1 #User exists
-    if not validate_password(str(data['pw1'])):
+
+    if not validate_password(str(data['password'])):
         return 2 #invalid password
 
     user = User()
     user.username = str(data['username'])
-    user.set_password(str(data['pw1']))
+    user.set_password(str(data['password']))
     user.set_description(str(data['description']))
     user.set_contact(str(data['contact']))
     user.is_superuser = data['is_superuser']

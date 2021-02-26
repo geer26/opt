@@ -3,7 +3,7 @@
 <div id="adduser_modal" class="modalback valign-wrapper" style="display: none;">
     <div id="adduser_frame" class="frame">
 
-        <div class="closeicon" onclick="$('#adduser_modal').hide();">
+        <div class="closeicon" onclick="hide_adduser_modal()">
             <i class="material-icons" style="color: red;">disabled_by_default</i>
         </div>
 
@@ -28,7 +28,7 @@
             <div class="inp">
                 <i class="material-icons tiny warningicon tooltipped" data-position="left"
                    data-delay="50" data-tooltip="Kötelező mező!" style="color: red;">priority_high</i>
-                {{ adduserform.username( id="username", placeholder="felhasználónév", style="text-align: center; width: 80%;", onkeypress="inputkeypress()" ) }}
+                {{adduserform.username( id="username", placeholder="felhasználónév", style="text-align: center; width: 80%;", onkeypress="inputkeypress()" )}}
             </div>
 
             <div class="inp">
@@ -65,7 +65,7 @@
 
         <button class="btn_gen" onclick="adm_post_adduser()">
             <span class="valign-wrapper">
-                <i class="material-icons" style="margin-right: 2px;" id="button_icon">edit</i>
+                <i class="material-icons" style="margin-right: 2px;" id="button_icon">add</i>
                 <a id="adduser_submitbutton">hozzáadás</a>
             </span>
         </button>
@@ -73,4 +73,13 @@
     </span>
 
     </div>
+
+    <script>
+
+        $('.tooltipped').tooltip({delay: 50});
+        $('#username').characterCounter();
+        $('#username').attr('data-length','32');
+
+    </script>
+
 </div>
