@@ -133,6 +133,7 @@ socket.on('admin', function(data){
 
             if (data['status'] == 0){
                 var new_users = JSON.parse(data['new_users']);
+                vm.users = new_users;
                 while (admin_data.users.length > 0) {
                     admin_data.users.pop();
                 }
@@ -164,6 +165,7 @@ socket.on('admin', function(data){
         case 1251:{
             loadend();
             var new_users = JSON.parse(data['new_users']);
+            vm.users = new_users;
             while (admin_data.users.length > 0) {
                 admin_data.users.pop();
             }
