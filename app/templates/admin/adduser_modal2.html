@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="static/css/modals2.css"/>
+
+<div id="adduser_modal" class="modalback" style="display: none;">
+    <div id="adduser_frame" class="frame">
+
+        <div class="closeicon" onclick="hide_adduser_modal()">
+            <i class="material-icons" style="color: red;">disabled_by_default</i>
+        </div>
+
+        <div class="logoimg">
+            <img src="/static/img/logo.png">
+        </div>
+
+        <div class="tbar">
+            <a id="adduser_titlebar">felhasználó hozzáadása</a>
+        </div>
+
+        <br>
+    <div class="credits" id="credits">
+
+        <a id="error">
+            Hibás adatok!
+        </a>
+
+        <form id="adduser" method="POST" onsubmit=loadstart()">
+            {{ adduserform.hidden_tag() }}
+
+            <div class="inp">
+                <i class="fa fa-exclamation warningicon"></i>
+                {{adduserform.username( id="username", placeholder="felhasználónév",
+                style="text-align: center; width: 80%;", onkeypress="inputkeypress()" )}}
+            </div>
+
+            <div class="inp">
+                {{ adduserform.description( id="description", placeholder="leírás",
+                style="text-align: center; width: 80%;") }}
+            </div>
+
+            <div class="inp">
+                {{ adduserform.contact( id="contact", placeholder="elérhetőség",
+                style="text-align: center; width: 80%;") }}
+            </div>
+
+            <div class="inp">
+                <i class="fa fa-exclamation warningicon"></i>
+                {{ adduserform.password1( id="password1", placeholder="jelszó",
+                style="text-align: center; width: 80%;", onkeypress="inputkeypress()" ) }}
+            </div>
+
+            <div class="inp">
+                <i class="fa fa-exclamation warningicon"></i>
+                {{ adduserform.password2( id="password2", placeholder="jelszó mégegyszer",
+                style="text-align: center; width: 80%;", onkeypress="inputkeypress()" ) }}
+            </div>
+
+            <label class="inp">
+                <span style="color: #333333; font-size: .8em;">
+                {{ adduserform.is_superuser(id="is_superuser", type="checkbox") }}
+
+                    Adminisztrátor
+                </span>
+            </label>
+
+        </form>
+
+    </div>
+
+    <br>
+    <span class="submit_btn">
+
+        <button id="adduser_submitbutton" class="btn_gen" onclick="adm_post_adduser()">
+            <i class="fa fa-user-plus"></i>
+            hozzáadás
+        </button>
+
+    </span>
+
+    </div>
+
+    <script>
+    </script>
+
+</div>

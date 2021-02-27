@@ -1,26 +1,27 @@
-
 .modalback{
-    width: 100vw;
-    height:100vh;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 900;
     backdrop-filter: blur(2px);
-    background-color: rgba(230,230,230,.3);
-    z-index: 999;
+    text-align: center;
 }
 
 
 .frame{
     position: relative;
+    top: 25%;
+    display: inline-block;
     margin: auto;
+    background-color: white;
     padding: 10px;
-    padding-top: 20px;
+    padding-top: 30px;
+    border: 2px solid black;
+    border-radius: 2px;
     max-width: 50vw;
     max-height: 90vh;
-    background-color: white;
-    border-radius: 2px;
-    border: 2px solid #333333;
     text-align: center;
     overflow: auto;
 
@@ -36,6 +37,13 @@
 }
 
 
+.closeicon{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
+
 .logoimg{
     position: relative;
     grid-area: logo;
@@ -46,12 +54,12 @@
 
 
 .tbar{
-    position: relative;
     grid-area: titlebar;
     display: inline-block;
     position: relative;
     float: left;
     padding-left:5px;
+    height: 100%;
 }
 
 
@@ -63,9 +71,8 @@
 
 
 .credits{
-    position: relative;
     grid-area: creditentials;
-    display: block;
+    display: inline-block;
     position: relative;
     width: 100%;
 }
@@ -92,10 +99,11 @@
 
 
 .credits input{
-    position: relative;
     max-width: 90%;
     text-align: center;
     margin-top: 10px;
+    border: none;
+    border-bottom: 2px solid #333333;
 }
 
 
@@ -115,28 +123,11 @@
     vertical-align: middle;
 }
 
-.submit_btn button{
-    vertical-align: middle;
-}
-
-
 .inp{
     position: relative;
 }
 
-
 .warningicon{
-    position: absolute;
-    top: 50%;
-    right: 10px;
-}
-
-
-.closeicon{
-    position: absolute;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-    border-radius: 2px;
-    overflow: hidden;
+    left: 0;
+    color: red;
 }
