@@ -11,7 +11,7 @@ const AdvancedTable = {
 		<table style="width: 100%; border-collapse: collapse">
 			<thead>
 				<tr>
-					<th v-for="field in fields" v-bind:style="{width: field.stretch ? '100%' : field.width ? field.width : ''}" style="white-space: nowrap; textAlign: center; vertical-align: top">
+					<th v-for="field in fields" v-bind:style="{width: field.stretch ? '100%' : field.width ? field.width : ''}" style="white-space: nowrap; textAlign: left; vertical-align: top; padding: 0 0.3em 0 0.3em; white-space: nowrap; overflow: hidden">
 						{@ field.title @}
 						<span class="sort-icon" 
 							  v-if="field.sortable" 
@@ -26,11 +26,14 @@ const AdvancedTable = {
 				</tr>
 			</thead>
 			<tbody>
+				<tr v-if="records.length == 0">
+					<td :colspan="fields.length"><div class="empty-content" v-html="emptyText"></div></td>
+				</tr>
 				<template v-for="record in selectedRecords">
 				<tr 
 					v-bind:class="selected != null ? (selected.id == record.id ? 'selected' : '') : ''"
 					v-on:click="selectRecord(record.id)">
-					<td v-for="field in fields" v-bind:style="{textAlign: field.alignment}" v-html="record[field.name]" style="vertical-align: top"></td>
+					<td v-for="field in fields" v-bind:style="{textAlign: field.alignment}" v-html="record[field.name]" style="vertical-align: top; padding: 0 0.3em 0 0.3em; white-space: nowrap; overflow:hidden"></td>
 				</tr>
 				<tr v-if="recordMenu != null && selected != null && selected.id == record.id" class="record-menu-container">
 					<td :colspan="fields.length">
@@ -102,6 +105,10 @@ const AdvancedTable = {
 		actionRouter: {
 			type: Object,
 			default: null
+		},
+		emptyText: {
+			type: String,
+			default: null
 		}
 	},
 
@@ -111,6 +118,7 @@ const AdvancedTable = {
 	created() {
 		this.currentPage = this.page;
 		this.currentCount = this.recordsPerPage;
+		console.log(this.emptyText);
 	},
 
 	beforeUpdate() {
@@ -163,7 +171,7 @@ const AdvancedTable = {
 			if (this.selected != null && id == this.selected.id) {
 				this.selected = null;
 			} else {
-				this.selected = this.records.find(record => { return record.id === id} );
+				this.selected = this.records.find(record => { return record.id == id} );
 			}
 
 			// Tüzelünk egy eseményt, amely arról szól, hogy megváltozott a kijelölés
@@ -214,9 +222,9 @@ const AdvancedTable = {
 			if (this.sort.by != null) {
 				// Itt először sorba kell rendeznünk, ha egyáltalán van megadva erre szabály
 				if (this.sort.direction == 0)				
-					recs.sort((a,b) => (a[this.sort.by] > b[this.sort.by]) ? 1 : -1)
+					recs.sort((a,b) => (a[this.sort.by] > b[this.sort.by]) ? 1 : -1);
 				if (this.sort.direction == 1)
-					recs.sort((a,b) => (a[this.sort.by] < b[this.sort.by]) ? 1 : -1)
+					recs.sort((a,b) => (a[this.sort.by] < b[this.sort.by]) ? 1 : -1);
 			}
 
 			// KIVÁLASZTOTT REKORDOK

@@ -19,9 +19,11 @@
 			:fields="[
 				{name: 'id', title: 'ID', alignment: 'right', sortable: true, width: '3ch'},
 				{name: 'author', title: 'szerző', alignment: 'left', sortable: true, width: '16ch'},
+				{name: 'genreIcon', alignment: 'center', width: '0	em'},
 				{name: 'title', title: 'cím', alignment: 'left', sortable: true},
 				{name: 'genre', title: 'műfaj', alignment: 'center', sortable: true, width: '6ch'}
 			 ]"
+			empty-text="..."
 			:records="konyvekEnhanced"
 			:page="0"
 			:records-per-page="15"

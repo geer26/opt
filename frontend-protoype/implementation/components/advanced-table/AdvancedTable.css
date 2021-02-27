@@ -8,6 +8,9 @@ DIV.advanced-table
  |   |           |--SPAN.sort-icon
  |   |               |-- I.fa (3x)
  |   |--TBODY
+ |       |--TR (empty)
+ |           |--TD
+ |               |--DIV.empty-content
  |       |--TEMPLATE (n-times)
  |           |--TR.(-/selected)
  |           |   |--TD (n-times)
@@ -37,3 +40,7 @@ DIV.advanced-table
 }
 .advanced-table table thead { font-size: 0.9em; }
 .advanced-table .page-selector { font-size: 0.9em; }
+.advanced-table .empty-content {
+	text-align: center;
+	font-style: italic;
+}
