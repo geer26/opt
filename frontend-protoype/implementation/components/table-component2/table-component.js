@@ -24,7 +24,7 @@ const TableComponent = {
 				<tr 
 					v-bind:class="selected != null ? (selected.id == record.id ? 'selected' : '') : ''"
 					v-on:click="selectRecord(record.id)">
-					<td v-for="field in fields" v-bind:style="{textAlign: field.alignment}">{@ record[field.name] @}</td>
+					<td v-for="field in fields" v-bind:style="{textAlign: field.alignment}" v-html="record[field.name]"></td>
 				</tr>
 				<tr v-if="menu != null && selected != null && selected.id == record.id" class="selected record-menu">
 					<td :colspan="fields.length">

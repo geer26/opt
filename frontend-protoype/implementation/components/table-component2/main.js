@@ -45,6 +45,23 @@ const app = Vue.createApp({
 
 	components: {
 		tableComponent: TableComponent
+	},
+
+	computed: {
+		konyvekEnhanced() {
+			var konyvek2 = Array.from(this.konyvek);
+			konyvek2.forEach(item => {
+				var icon = "";
+				switch( item.genre) {
+					case "drama": icon = "<i class='fa fa-trash-alt'></i> "; break;
+					case "sci-fi": icon = "<i class='fa fa-ambulance'></i> "; break;
+					case "crimi": icon = "<i class='fa fa-check'></i> "; break;
+					case "history": icon = "<i class='fa fa-book'></i> "; break;
+				}
+				item.title = icon + item.title;
+			});
+			return konyvek2
+		}
 	}
 
 });
