@@ -1,17 +1,23 @@
-const TableComponent = {
+const AdvancedTable = {
+// CONFIG
 	delimiters: ["{@", "@}"],
 
+
+
+// TEMPLATE
 	template:
 	`
-	<div class="table-component">
-		<table>
+	<div class="advanced-table" style="box-sizing: border-box">
+		<table style="width: 100%; border-collapse: collapse">
 			<thead>
 				<tr>
-					<th v-for="field in fields" v-bind:style="{width: field.stretch ? '100%' : field.width ? field.width : ''}">
+					<th v-for="field in fields" v-bind:style="{width: field.stretch ? '100%' : field.width ? field.width : ''}" style="white-space: nowrap; textAlign: center; vertical-align: top">
 						{@ field.title @}
-						<span class="sorter" 
+						<span class="sort-icon" 
 							  v-if="field.sortable" 
-							  v-on:click="applySort(field.name)">
+							  v-on:click="applySort(field.name)"
+							  style="margin-left: 0.1em; cursor: pointer"
+							  title="Rekordok rendezése">
 							<i v-if="field.name == sort.by && sort.direction == 0" class="fa fa-sort-down"></i>
 							<i v-else-if="field.name == sort.by && sort.direction == 1" class="fa fa-sort-up"></i>
 							<i v-else class="fa fa-sort"></i>
@@ -24,32 +30,38 @@ const TableComponent = {
 				<tr 
 					v-bind:class="selected != null ? (selected.id == record.id ? 'selected' : '') : ''"
 					v-on:click="selectRecord(record.id)">
-					<td v-for="field in fields" v-bind:style="{textAlign: field.alignment}" v-html="record[field.name]"></td>
+					<td v-for="field in fields" v-bind:style="{textAlign: field.alignment}" v-html="record[field.name]" style="vertical-align: top"></td>
 				</tr>
-				<tr v-if="menu != null && selected != null && selected.id == record.id" class="selected record-menu">
+				<tr v-if="recordMenu != null && selected != null && selected.id == record.id" class="record-menu-container">
 					<td :colspan="fields.length">
-						<span>
-							<a  v-for="item in menu"
+						<div style="width: 100%; text-align: center; padding: 0.5em 0 0.5em 0" class="record-menu">
+							<a  v-for="item in recordMenu"
 								v-on:click="callMenuAction(item.action, record)"
-								:title="item.title">
-								<i class="fa" :class="item.icon != null ? item.icon : ''"></i>
+								:title="item.title"
+								style="cursor: pointer; margin: 0 0.4em 0 0.4em">
+								<i class="fa" 
+								   :class="item.icon != null ? item.icon : ''"
+								   :style="{color: item.color != null ? item.color : ''}"></i>
 							</a>
-						</span>
+						</div>
 					</td>
 				</tr>
 				</template>
 			</tbody>
 		</table>
-		<div v-if="numPages >= 2" class="table-component-pager">
-			<a @click="changePage('first')"><i class="fa fa-angle-double-left"></i></a> 		
-			<a @click="changePage('dec')"><i class="fa fa-angle-left"></i></a> 
-			<span>{@ (currentPage + 1) + "/" + numPages @}</span>
-			<a @click="changePage('inc')"><i class="fa fa-angle-right"></i></a> 
-			<a @click="changePage('last')"><i class="fa fa-angle-double-right"></i></a>
+		<div v-if="numPages >= 2" class="page-selector" style="display: flex; flex-flow: row nowrap; justify-content: center">
+			<a @click="changePage('first')" style="margin-right: 0.5em; cursor: pointer" title="Első oldal"><i class="fa fa-angle-double-left"></i></a> 		
+			<a @click="changePage('dec')" style="margin-right: 0.5em; cursor: pointer" title="Előző oldal"><i class="fa fa-angle-left"></i></a> 
+			<span class="page-display">{@ (currentPage + 1) + "/" + numPages @}</span>
+			<a @click="changePage('inc')" style="margin-left: 0.5em; cursor: pointer" title="Következő oldal"><i class="fa fa-angle-right"></i></a> 
+			<a @click="changePage('last')" style="margin-left: 0.5em; cursor: pointer" title="Utolsó oldal"><i class="fa fa-angle-double-right"></i></a>
 		</div>
 	</div>
 	`,
 
+
+
+// DATA
 	data() {
 		return {
 			currentPage: 0,
@@ -63,6 +75,9 @@ const TableComponent = {
 		}
 	},
 
+
+
+// PROPERTIES
 	props: {
 		fields: {
 			type: Array,
@@ -76,11 +91,11 @@ const TableComponent = {
 			type: Number,
 			default: 0
 		},
-		count: {
+		recordsPerPage: {
 			type: Number,
 			default: 25
 		},
-		menu: {
+		recordMenu: {
 			type: Array,
 			default: null
 		},
@@ -90,26 +105,33 @@ const TableComponent = {
 		}
 	},
 
-	// Itt átadjuk a propertyk értékét a megfelelő belső változónak,
-	// ha elkészült a komponens
+
+
+// HOOKS
 	created() {
 		this.currentPage = this.page;
-		this.currentCount = this.count;
+		this.currentCount = this.recordsPerPage;
 	},
 
 	beforeUpdate() {
 		// Itt lecsekkoljuk, hogy az aktuális lap nem több-e, 
-		// mint a maximum
+		// mint a maximum lehetséges
 		if (this.currentPage > this.numPages-1)
 			this.currentPage = Math.max(0, this.numPages-1);
 	},
 
+
+
+// WATCHES
 	watch: {
 		records() {
 			this.resetSelection();
 		}
 	},
 
+
+
+// COMPONENT METHODS
 	methods: {
 		// A lapozást megvalósító függvény
 		changePage: function(command) {
@@ -129,12 +151,14 @@ const TableComponent = {
 			}
 		},
 
+		// A rekordhoz tartozó menü alapján egy függvény meghívása
 		callMenuAction(action, rec) {
 			if (this.actionRouter) {
 				this.actionRouter.call(action, rec);
 			}
 		},
 
+		// Rekord megjelölése
 		selectRecord(id) {
 			if (this.selected != null && id == this.selected.id) {
 				this.selected = null;
@@ -148,11 +172,13 @@ const TableComponent = {
 			this.$emit("selectionChanged", this.selected);
 		},
 
+		// A kiválasztás megszüntetése
 		resetSelection() {
 			this.selected = null;
 			this.$emit("selectionChanged", this.selected);
 		},
 
+		// Sorbarendezés a kiválasztott szempont és irány alapján
 		applySort(name) {
 			if (this.sort.by == null) {
 				this.sort.by = name;
@@ -172,9 +198,16 @@ const TableComponent = {
 		}
 	},
 
+
+
+// EVENTS
 	emits: ["selectionChanged"],
 
+
+
+// COMPUTED FIELDS
 	computed: {
+		// Egy oldalnyi rekord leszűrése
 		selectedRecords() {
 			// SORBARENDEZÉS
 			var recs = Array.from(this.records);
@@ -191,6 +224,7 @@ const TableComponent = {
 			return recs.slice(start, start + this.currentCount);
 		},
 
+		// A szükséges oldalak száma
 		numPages() {
 			return Math.ceil(this.records.length / this.currentCount);
 		}

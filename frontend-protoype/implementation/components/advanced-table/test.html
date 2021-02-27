@@ -5,9 +5,9 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
 	<script src="../vue3.js"></script>
 
-	<link rel="stylesheet" href="TableComponent.css"/>
+	<link rel="stylesheet" href="AdvancedTable.css"/>
 	<script src="../action-router/ActionRouter.js"></script>
-	<script src="table-component.js"></script>
+	<script src="AdvancedTable.js"></script>
 	<script src="main.js" defer></script>
 </head>
 <body>
@@ -15,7 +15,7 @@
 	<div id="app">
 
 
-		<table-component
+		<advanced-table
 			:fields="[
 				{name: 'id', title: 'ID', alignment: 'right', sortable: true, width: '3ch'},
 				{name: 'author', title: 'szerző', alignment: 'left', sortable: true, width: '16ch'},
@@ -24,14 +24,15 @@
 			 ]"
 			:records="konyvekEnhanced"
 			:page="0"
-			:count="15"
-			@selection-changed="handleSelectionChanged"
-			:menu="[
+			:records-per-page="15"
+			:record-menu="[
+				{title: 'Könyv törlése', icon: 'fa-trash-alt', action: 'torles'},
 				{title: 'Könyv törlése', icon: 'fa-trash-alt', action: 'torles'}
 			]"
 			:action-router="actionRouter"
+			@selection-changed="handleSelectionChanged"
 			>
-		</table-component>
+		</advanced-table>
 
 	</div>
 

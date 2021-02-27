@@ -51,7 +51,7 @@ const app = Vue.createApp({
 	},
 
 	components: {
-		tableComponent: TableComponent
+		advancedTable: AdvancedTable
 	},
 
 	computed: {

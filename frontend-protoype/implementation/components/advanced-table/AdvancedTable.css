@@ -1,0 +1,39 @@
+/* ADVANCED-TABLE komponens felépítése */
+/*
+DIV.advanced-table
+ |--TABLE
+ |   |--THEAD
+ |   |   |--TR
+ |   |       |--TH (n-times)
+ |   |           |--SPAN.sort-icon
+ |   |               |-- I.fa (3x)
+ |   |--TBODY
+ |       |--TEMPLATE (n-times)
+ |           |--TR.(-/selected)
+ |           |   |--TD (n-times)
+ |           |--TR.record-menu-container
+ |               |--TD
+ |                   |--DIV.record-menu
+ |                       |--A (n-times)
+ |                           |--I.fa
+ |--DIV.page-selector
+     |--A (--> I.fa)
+     |--A (--> I.fa)
+     |--SPAN.page-display
+     |--A (--> I.fa)
+     |--A (--> I.fa)
+
+*/
+
+.advanced-table table tbody {
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+}
+.advanced-table table tbody tr:nth-child(odd) { background-color: lightgray; }
+.advanced-table table tbody tr.selected { background-color: steelblue; }
+.advanced-table table tbody tr.record-menu-container {
+	background-color: steelblue;
+	color: white;
+}
+.advanced-table table thead { font-size: 0.9em; }
+.advanced-table .page-selector { font-size: 0.9em; }

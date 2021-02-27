@@ -5,10 +5,15 @@
 .table-component table {
 	border-bottom: 1px solid black;
 	border-collapse: collapse;
+	width: 100%;
 }
-.table-component thead tr { border-bottom: 1px solid black; }
+.table-component tbody { 
+	border-bottom: 1px solid black; 
+	border-top: 1px solid black;
+}
 .table-component td,th { 
 	white-space: nowrap;
+	overflow: hidden;
 	padding: 5px 10px 5px 10px; 
 }
 .table-component th { font-size: 0.9em; }
