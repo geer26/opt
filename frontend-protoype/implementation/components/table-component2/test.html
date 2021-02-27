@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+	<script src="../vue3.js"></script>
+
+	<link rel="stylesheet" href="TableComponent.css"/>
+	<script src="table-component.js"></script>
+	<script src="main.js" defer></script>
+</head>
+<body>
+
+	<div id="app" @selection-changed="">
+
+
+		<table-component
+			:fields="[
+				{name: 'id', title: 'ID', alignment: 'right', sortable: true},
+				{name: 'author', title: 'szerző', alignment: 'left', sortable: false},
+				{name: 'title', title: 'cím', alignment: 'left', stretch: true, sortable: true},
+				{name: 'genre', title: 'műfaj', alignment: 'center', sortable: true}
+			 ]"
+			:records="konyvek"
+			:page="0"
+			:count="9"
+			@selection-changed="handleSelectionChanged"
+			:menu="[
+				{title: 'Könyv törlése', icon: 'fa-trash-alt', action: 'torles'}
+			]"
+			>
+		</table-component>
+
+	</div>
+
+</body>
+</html>
