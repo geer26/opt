@@ -225,3 +225,43 @@ def del_user(data):
         db.session.delete(user)
         db.session.commit()
     return 0
+
+
+def restore_db():
+    return 0
+
+
+def backup_db():
+    entire_db = {}
+    #all tables
+    #user
+    entire_db['users'] = backup_user()
+    #module
+
+    #modaux
+    #testbattery
+    #testsession
+    #client
+    #clientlog
+    #result
+    #userlog
+    #message
+    return 0
+
+
+def backup_user():
+    users = []
+    for us in User.query.all():
+        u = {}
+        u['id'] = us.id
+        u['username'] = us.username
+        u['description'] = us.get_description()
+        u['contact'] = us.get_contact()
+        u['is_superuser'] = us.is_superuser
+        u['settings'] = us.settings
+        u['added'] = us.added
+        # u['added'] = us.added.strftime("%Y-%m-%dT%H:%M:%S")
+        u['last_modified'] = us.last_modified
+        # u['last_modified'] = us.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+        users.append(u)
+    return users

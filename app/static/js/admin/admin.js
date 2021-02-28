@@ -54,9 +54,6 @@ const app = Vue.createApp({
 	});
 
 
-
-
-
 const vm = app.mount("#tab-users")
 
 
@@ -137,6 +134,20 @@ function hide_adduser_modal(){
 }
 
 
+function backup_db_all(){
+    console.log('BACKUP ENTIRE DB!');
+    loadstart();
+    send_message({event: 2851}, namespace='admin');
+};
+
+
+function restore_db_all(){
+    console.log('RESTORE ENTIRE DB!')
+    loadstart();
+    send_message({event: 2871}, namespace='admin');
+};
+
+
 /*
 function showAddUser(){
     $('#adduser_modal').show();
@@ -192,6 +203,7 @@ socket.on('admin', function(data){
         }
         break;
 
+        //accept deluser status
         case 1251:{
             loadend();
             var new_users = JSON.parse(data['new_users']);
@@ -203,6 +215,25 @@ socket.on('admin', function(data){
             new_users.forEach(item => admin_data.users.push(item));
         }
         break;
+
+        //accept backup entire db status
+        case 1851:{
+            loadend();
+            if (data['status'] == 0){
+                console.log('ENTIRE DB SAVED!');
+            }
+        }
+        break;
+
+        //accept restore entire db status
+        case 1871:{
+            loadend();
+            if (data['status'] == 0){
+                console.log('ENTIRE DB RESTORED!');
+            }
+        }
+        break;
+
     }
 
 });

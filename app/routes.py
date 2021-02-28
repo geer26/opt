@@ -5,7 +5,7 @@ from flask import render_template, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, AddUserForm
 from app import app, socket, db
-from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user
+from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, backup_db
 from app.models import User
 
 
@@ -106,5 +106,23 @@ def new_admin_message(data):
         mess['event'] = 1251
         mess['status'] = del_user(data)
         mess['new_users'] = json.dumps(json.loads(get_sudata())['users'])
+        socket.emit('admin', mess, room=sid)
+        return True
+
+
+    #backup entire db
+    if data['event'] == 2851:
+        mess = {}
+        mess['event'] = 1851
+        mess['status'] = backup_db()
+        socket.emit('admin', mess, room=sid)
+        return True
+
+
+    #restore entire db
+    if data['event'] == 2871:
+        mess = {}
+        mess['event'] = 1871
+        mess['status'] = backup_db()
         socket.emit('admin', mess, room=sid)
         return True
