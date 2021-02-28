@@ -1,6 +1,7 @@
 // Itt adjuk meg az elérhető menüpontok, és a hozzájuk
 // tartozó függvények listáját
 var menuRoutes = {
+
 	menuitem_messages: {
 		fun: function() {
 			console.log("Showing messages");
@@ -17,6 +18,7 @@ var menuRoutes = {
 			console.log("Hiding messages");
 		}
 	},
+
 	menuitem_users: {
 		fun: function() {
 			console.log("Showing users");
@@ -27,6 +29,7 @@ var menuRoutes = {
 			console.log("Hiding users");
 		}
 	},
+
 	menuitem_modules: {
 		fun: function() {
 			console.log("Showing modules");
@@ -37,6 +40,7 @@ var menuRoutes = {
 			console.log("Hiding modules");
 		}
 	},
+
 	menuitem_reports: {
 		fun: function() {
 			console.log("Showing reports");
@@ -47,10 +51,22 @@ var menuRoutes = {
 			console.log("Hiding reports");
 		}
 	},
+
+	menuitem_db: {
+	    fun: function() {
+			console.log("Showing database operations");
+		},
+		activate: true,
+		tab_id: "tab-db",
+		on_hide: function() {
+			console.log("Hiding database operations");
+		}
+	},
+
 	menuitem_logout: {
 		fun: function() {
-			console.log("Logging out");
 			location.href='/logout';
 		}
 	}
+
 };
