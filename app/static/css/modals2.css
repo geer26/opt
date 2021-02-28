@@ -7,12 +7,14 @@
     z-index: 900;
     backdrop-filter: blur(2px);
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
 .frame{
     position: relative;
-    top: 25%;
     display: inline-block;
     margin: auto;
     background-color: white;

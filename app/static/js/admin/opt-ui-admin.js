@@ -54,21 +54,3 @@ var menuRoutes = {
 		}
 	}
 };
-
-
-
-if (socket) {
-	socket.on("admin", function(data) {
-
-		switch(data["event"]) {
-
-			case 2124: {
-				menuRoutes.menuitem_messages.on_data_ready(data);
-			}
-			break;
-		}
-
-	});
-} else {
-
-}

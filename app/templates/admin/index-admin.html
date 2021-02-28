@@ -11,7 +11,10 @@
 
 <!-- komponensek -->
 <link rel="stylesheet" href="static/css/components/TableComponent.css"/>
-<script src="static/js/components/TableComponent.js"></script>
+
+
+<script src="static/js/components/ActionRouter.js"></script>
+<script src="static/js/components/AdvancedTable.js"></script>
 
 {% endblock %}
 
@@ -80,7 +83,7 @@
 					USERS
 					<a @click="showAddUser">ADDUSER</a>
 
-					<table-component
+					<advanced-table
 						:fields="[
 							{name: 'id', title: 'ID', alignment: 'right', sortable: false},
 							{name: 'username', title: 'felhasználónév', alignment: 'left', sortable: true},
@@ -89,11 +92,14 @@
 			 			]"
 						:records="users"
 						:page="0"
-						:count="20"
+						:records-per-page="10"
 						@selection-changed="handleSelectionChanged"
-						@delete-record="handleDeleteRecord"
+						:record-menu="[
+							{title: 'Felhasználó törlése', icon: 'fa-trash-alt', action: 'del_user'}
+						]"
+						:action-router="actionRouter"
 					>
-					</table-component>
+					</advanced-table>
 
 				</div>
 			</div>

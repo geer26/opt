@@ -1,10 +1,28 @@
 
+
+const adminActions = ActionRouter.create({
+	debug: false,
+	actions: {
+		del_user(record) {
+		    /*
+			let index = vm.konyvek.findIndex(konyv => record.id == konyv.id)
+			vm.konyvek.splice(index, 1);
+			*/
+			send_message({event:2251, id: record.id}, namespace='admin');
+            loadstart();
+			console.log('DEL USER!');
+		}
+	}
+})
+
+
 const app = Vue.createApp({
     delimiters: ["{@", "@}"],
 
 	data() {
 		return {
-			users: admin_data['users']
+			users: admin_data['users'],
+			actionRouter: adminActions
 		}
 	},
 
@@ -17,13 +35,6 @@ const app = Vue.createApp({
 			}
 	    },
 
-	    handleDeleteRecord(payload) {
-            //if ok send via ws
-            data = {event: 2251, id: payload.id};
-            send_message(data, namespace='admin');
-            loadstart();
-	    },
-
 	    showAddUser() {
 	        $('#adduser_modal').show();
 	        $('#username').val('');
@@ -34,12 +45,16 @@ const app = Vue.createApp({
 	        $('#is_superuser').prop( "checked", false );
 	        inputkeypress();
 	    }
+	},
+
+	components: {
+		advancedTable: AdvancedTable
 	}
 
 	});
 
 
-app.component("table-component", TableComponent);
+
 
 
 const vm = app.mount("#tab-users")
@@ -120,6 +135,20 @@ function hide_adduser_modal(){
 	$('#is_superuser').prop( "checked", false );
 	$('#adduser_modal').hide();
 }
+
+
+/*
+function showAddUser(){
+    $('#adduser_modal').show();
+	$('#username').val('');
+	$('#description').val('');
+	$('#contact').val('');
+	$('#password1').val('');
+	$('#password2').val('');
+	$('#is_superuser').prop( "checked", false );
+	inputkeypress();
+}
+*/
 
 
 //Websockets admin event dispatcher
