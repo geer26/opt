@@ -148,6 +148,13 @@ function restore_db_all(){
 };
 
 
+function reset_db(){
+    console.log('RESET DB!')
+    loadstart();
+    send_message({event: 2899}, namespace='admin');
+};
+
+
 /*
 function showAddUser(){
     $('#adduser_modal').show();
@@ -230,6 +237,15 @@ socket.on('admin', function(data){
             loadend();
             if (data['status'] == 0){
                 console.log('ENTIRE DB RESTORED!');
+            }
+        }
+        break;
+
+        //accept reset_db status
+        case 1899:{
+            loadend();
+            if (data['status'] == 0){
+                console.log('ENTIRE DB RESET!');
             }
         }
         break;

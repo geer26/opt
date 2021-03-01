@@ -230,6 +230,27 @@ def del_user(data):
     return 0
 
 
+def reset_db():
+
+    for user in User.query.all():
+        if not user.is_superuser:
+            db.session.delete(user)
+            db.session.commit()
+
+    Module.query.delete()
+    Modaux.query.delete()
+    Testbattery.query.delete()
+    Testsession.query.delete()
+    Client.query.delete()
+    Clientlog.query.delete()
+    Result.query.delete()
+    Userlog.query.delete()
+    Message.query.delete()
+    db.session.commit()
+
+    return 0
+
+
 def backup_db():
     #all tables as one JSON string ->
     entire_db = {}
@@ -270,12 +291,15 @@ def backup_db():
 def restore_db():
     print('IN RESTORE!')
 
-    #delete tables
+    #reset tables
     User.query.delete()
     Module.query.delete()
     Modaux.query.delete()
     Testbattery.query.delete()
     Testsession.query.delete()
+    Client.query.delete()
+    Clientlog.query.delete()
+    db.session.commit()
 
     #load backup files and restore tables
     with open( os.path.join(app.config['BACKUP_FOLDER'], 'user.pic'), 'rb' ) as file:
@@ -297,6 +321,28 @@ def restore_db():
     with open( os.path.join(app.config['BACKUP_FOLDER'], 'testsession.pic'), 'rb' ) as file:
         old_testsessions=file.read()
     restore_testsession(old_testsessions)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'client.pic'), 'rb' ) as file:
+        old_clients=file.read()
+    restore_client(old_clients)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic'), 'rb' ) as file:
+        old_clientlogs=file.read()
+    restore_clientlog(old_clientlogs)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'result.pic'), 'rb' ) as file:
+        old_results=file.read()
+    restore_result(old_results)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic'), 'rb' ) as file:
+        old_userlogs=file.read()
+    restore_userlog(old_userlogs)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'message.pic'), 'rb' ) as file:
+        old_messages=file.read()
+    restore_message(old_messages)
+
+    #message
 
     return 0
 
@@ -412,7 +458,118 @@ def restore_testsession(old):
         s.added = datetime.fromtimestamp(ses['added'])
         s.last_modified = datetime.fromtimestamp(ses['last_modified'])
 
-        db.session.add(tb)
+        db.session.add(s)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_client(old):
+    client_table = fernet.decrypt(old).decode('utf-8')
+
+    client = json.loads(client_table)
+
+    for cli in client['clients']:
+        c = Client()
+        c.id = cli['id']
+        c.uuid = cli['uuid']
+        c.set_name(cli['name'])
+        c.set_email(cli['email'])
+        c.state = cli['state']
+        c.session_id = cli['session_id']
+        c.invitation_status = cli['invitation_status']
+        c.added = datetime.fromtimestamp(cli['added'])
+        c.last_modified = datetime.fromtimestamp(cli['last_modified'])
+
+        db.session.add(c)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_clientlog(old):
+    clientlog_table = fernet.decrypt(old).decode('utf-8')
+
+    clientlog = json.loads(clientlog_table)
+
+    for cl in clientlog['clientlogs']:
+        c = Clientlog()
+        c.id = cl['id']
+        c.client_id = cl['client_id']
+        c.message = cl['message']
+        c.source = cl['source']
+        c.timestamp = datetime.fromtimestamp(cl['timestamp'])
+        db.session.add(c)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_result(old):
+    result_table = fernet.decrypt(old).decode('utf-8')
+    result = json.loads(result_table)
+
+    for re in result['results']:
+        r = Result()
+        r.id = re['id']
+        r.client_id = re['']
+        r.session_id = re['']
+        r.module_id = re['']
+        r.set_result(re['result_raw'])
+        r.timestamp = datetime.fromtimestamp(re['timestamp'])
+        r.added = datetime.fromtimestamp(re['added'])
+        r.last_modified = datetime.fromtimestamp(re['last_modified'])
+
+        db.session.add(r)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_userlog(old):
+    userlog_table = fernet.decrypt(old).decode('utf-8')
+    userlog = json.loads(userlog_table)
+
+    for ul in userlog['userlogs']:
+        u = Userlog()
+        u.id = ul['id']
+        u.user_id = ul['user_id']
+        u.type = ul['type']
+        u.message = ul['message']
+        u.timestamp = datetime.fromtimestamp(ul['timestamp'])
+        u.added = datetime.fromtimestamp(ul['added'])
+        u.last_modified = datetime.fromtimestamp(ul['last_modified'])
+
+        db.session.add(u)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_message(old):
+    message_table = fernet.decrypt(old).decode('utf-8')
+    messages = json.loads(message_table)
+
+    for me in messages['messages']:
+        m = Message()
+
+        m.id = me['id']
+        m.set_subject(me['subject'])
+        m.set_message(me['message'])
+        m.rec_id = me['rec_id']
+        m.sen_id = me['sen_id']
+        m.ant = me['ant']
+        m.status = me['status']
+        m.timestamp = datetime.fromtimestamp(me['timestamp'])
+        m.added = datetime.fromtimestamp(me['added'])
+        m.last_modified = datetime.fromtimestamp(me['last_modified'])
+
+        db.session.add(m)
         db.session.commit()
 
     return 0
@@ -549,26 +706,125 @@ def backup_testsession():
     return 0
 
 
+#DONE
 def backup_client():
-    #pickle.dump(Client.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'client.pic'), 'wb'))
+    client_table = {}
+    clients = []
+
+    for client in Client.query.all():
+        c = {}
+        c['id'] = client.id
+        c['uuid'] = client.uuid
+        c['name'] = client.get_name()
+        c['email'] = client.get_email()
+        c['state'] = client.state
+        c['session_id'] = client.session_id
+        c['invitation_status'] = client.invitation_status
+        c['added'] = client.added.timestamp()
+        c['last_modified'] = client.last_modified.timestamp()
+        clients.append(c)
+
+    client_table['timestamp'] = datetime.now().timestamp()
+    client_table['clients'] = clients
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'client.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(client_table).encode('utf-8')))
     return 0
 
 
+#DONE
 def backup_clientlog():
-    #pickle.dump(Clientlog.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic'), 'wb'))
+    clientlog_table = {}
+    clientlogs = []
+
+    for clientlog in Clientlog.query.all():
+        c = {}
+        c['id'] = clientlog.id
+        c['client_id'] = clientlog.client_id
+        c['message'] = clientlog.message
+        c['source'] = clientlog.source
+        c['timestamp'] = clientlog.timestamp.timestamp()
+        clientlogs.append(c)
+
+    clientlog_table['timestamp'] = datetime.now().timestamp()
+    clientlog_table['clientlogs'] = clientlogs
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(clientlog_table).encode('utf-8')))
     return 0
 
 
+#DONE
 def backup_result():
-    #pickle.dump(Result.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'result.pic'), 'wb'))
+    result_table = {}
+    results = []
+
+    for res in Result.query.all():
+        r = {}
+        r['id'] = res.id
+        r['client_id'] = res.client_id
+        r['session_id'] = res.session_id
+        r['module_id'] = res.module_id
+        r['timestamp'] = res.timestamp.timestamp()
+        r['result_raw'] =res.get_result()
+        r['added'] = res.added.timestamp()
+        r['last_modified'] = res.last_modified.timestamp()
+        results.append(r)
+
+    result_table['timestamp'] = datetime.now().timestamp()
+    result_table['results'] = results
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'result.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(result_table).encode('utf-8')))
     return 0
 
 
+#DONE
 def backup_userlog():
-    #pickle.dump(Userlog.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic'), 'wb'))
+    userlog_table = {}
+    userlogs = []
+
+    for ul in Userlog.query.all():
+        u = {}
+        u['id'] = ul.id
+        u['user_id'] = ul.user_id
+        u['timestamp'] = ul.timestamp.timestamp()
+        u['type'] = ul.type
+        u['message'] = ul.message
+        u['added'] = ul.added.timestamp()
+        u['last_modified'] = ul.last_modified.timestamp()
+        userlogs.append(u)
+
+    userlog_table['timestamp'] = datetime.now().timestamp()
+    userlog_table['userlogs'] = userlogs
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(userlog_table).encode('utf-8')))
     return 0
 
 
+#DONE
 def backup_message():
-    #pickle.dump(Message.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'message.pic'), 'wb'))
+    message_table = {}
+    messages = []
+
+    for me in Message.query.all():
+        m = {}
+        m['id'] = me.id
+        m['subject'] = me.get_subject()
+        m['message'] = me.get_message()
+        m['rec_id'] = me.rec_id
+        m['sen_id'] = me.sen_id
+        m['ant'] = me.ant
+        m['status'] = me.status
+        m['timestamp'] = me.timestamp.timestamp()
+        m['added'] = me.added.timestamp()
+        m['last_modified'] = me.last_modified.timestamp()
+        messages.append(m)
+
+    message_table['timestamp'] = datetime.now().timestamp()
+    message_table['messages'] = messages
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'message.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(message_table).encode('utf-8')))
     return 0
