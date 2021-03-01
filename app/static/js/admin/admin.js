@@ -238,6 +238,7 @@ socket.on('admin', function(data){
             loadend();
             if (data['status'] == 0){
                 console.log('ENTIRE DB RESTORED!');
+                //TODO refresh all vm data!
             }
         }
         break;
@@ -247,6 +248,7 @@ socket.on('admin', function(data){
             loadend();
             if (data['status'] == 0){
                 console.log('ENTIRE DB RESET!');
+                //TODO refresh all vm data!
             }
         }
         break;
