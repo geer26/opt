@@ -289,7 +289,6 @@ def backup_db():
 
 
 def restore_db():
-    print('IN RESTORE!')
 
     #reset tables
     User.query.delete()
@@ -302,45 +301,25 @@ def restore_db():
     db.session.commit()
 
     #load backup files and restore tables
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'user.pic'), 'rb' ) as file:
-        old_users=file.read()
-    restore_user(old_users)
+    restore_user()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'module.pic'), 'rb' ) as file:
-        old_modules=file.read()
-    restore_modules(old_modules)
+    restore_modules()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'modaux.pic'), 'rb' ) as file:
-        old_modaux=file.read()
-    restore_modaux(old_modaux)
+    restore_modaux()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'testbattery.pic'), 'rb' ) as file:
-        old_testbatteries=file.read()
-    restore_testbattery(old_testbatteries)
+    restore_testbattery()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'testsession.pic'), 'rb' ) as file:
-        old_testsessions=file.read()
-    restore_testsession(old_testsessions)
+    restore_testsession()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'client.pic'), 'rb' ) as file:
-        old_clients=file.read()
-    restore_client(old_clients)
+    restore_client()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic'), 'rb' ) as file:
-        old_clientlogs=file.read()
-    restore_clientlog(old_clientlogs)
+    restore_clientlog()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'result.pic'), 'rb' ) as file:
-        old_results=file.read()
-    restore_result(old_results)
+    restore_result()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic'), 'rb' ) as file:
-        old_userlogs=file.read()
-    restore_userlog(old_userlogs)
+    restore_userlog()
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'message.pic'), 'rb' ) as file:
-        old_messages=file.read()
-    restore_message(old_messages)
+    restore_message()
 
     #message
 
@@ -348,7 +327,10 @@ def restore_db():
 
 
 #DONE
-def restore_user(old):
+def restore_user():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'user.pic'), 'rb' ) as file:
+        old = file.read()
 
     usertable = fernet.decrypt(old).decode('utf-8')
 
@@ -374,7 +356,10 @@ def restore_user(old):
 
 
 #DONE
-def restore_modules(old):
+def restore_modules():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'module.pic'), 'rb' ) as file:
+        old = file.read()
 
     moduletable = fernet.decrypt(old).decode('utf-8')
 
@@ -400,6 +385,9 @@ def restore_modules(old):
 
 #DONE
 def restore_modaux(old):
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'modaux.pic'), 'rb' ) as file:
+        old = file.read()
+
     auxtable = fernet.decrypt(old).decode('utf-8')
 
     modaux = json.loads(auxtable)
@@ -417,7 +405,11 @@ def restore_modaux(old):
 
 
 #DONE
-def restore_testbattery(old):
+def restore_testbattery():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'testbattery.pic'), 'rb' ) as file:
+        old = file.read()
+
     testbattery_table = fernet.decrypt(old).decode('utf-8')
 
     batteries = json.loads(testbattery_table)
@@ -440,7 +432,11 @@ def restore_testbattery(old):
 
 
 #DONE
-def restore_testsession(old):
+def restore_testsession():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'testsession.pic'), 'rb' ) as file:
+        old = file.read()
+
     testsession_table = fernet.decrypt(old).decode('utf-8')
 
     sessions = json.loads(testsession_table)
@@ -465,7 +461,11 @@ def restore_testsession(old):
 
 
 #DONE
-def restore_client(old):
+def restore_client():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'client.pic'), 'rb' ) as file:
+        old = file.read()
+
     client_table = fernet.decrypt(old).decode('utf-8')
 
     client = json.loads(client_table)
@@ -489,7 +489,11 @@ def restore_client(old):
 
 
 #DONE
-def restore_clientlog(old):
+def restore_clientlog():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic'), 'rb' ) as file:
+        old=file.read()
+
     clientlog_table = fernet.decrypt(old).decode('utf-8')
 
     clientlog = json.loads(clientlog_table)
@@ -508,7 +512,11 @@ def restore_clientlog(old):
 
 
 #DONE
-def restore_result(old):
+def restore_result():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'result.pic'), 'rb' ) as file:
+        old = file.read()
+
     result_table = fernet.decrypt(old).decode('utf-8')
     result = json.loads(result_table)
 
@@ -530,7 +538,11 @@ def restore_result(old):
 
 
 #DONE
-def restore_userlog(old):
+def restore_userlog():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic'), 'rb' ) as file:
+        old = file.read()
+
     userlog_table = fernet.decrypt(old).decode('utf-8')
     userlog = json.loads(userlog_table)
 
@@ -551,7 +563,11 @@ def restore_userlog(old):
 
 
 #DONE
-def restore_message(old):
+def restore_message():
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'message.pic'), 'rb' ) as file:
+        old = file.read()
+
     message_table = fernet.decrypt(old).decode('utf-8')
     messages = json.loads(message_table)
 
