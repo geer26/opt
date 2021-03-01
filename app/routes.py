@@ -123,10 +123,8 @@ def new_admin_message(data):
     if data['event'] == 2871:
         mess = {}
         mess['event'] = 1871
-        print('BEFORE CALL!')
         mess['status'] = restore_db()
         socket.emit('admin', mess, room=sid)
-        print('AFTER EMISSION!')
         return True
 
 

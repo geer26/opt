@@ -22,6 +22,7 @@ const app = Vue.createApp({
 	data() {
 		return {
 			users: admin_data['users'],
+			//TODO add all table!
 			actionRouter: adminActions
 		}
 	},
