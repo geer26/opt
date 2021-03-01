@@ -17,6 +17,7 @@ class Config:
     TEMPLATES_AUTO_RELOAD = True
 
     UPLOAD_FOLDER = path.join('app/uploads/')
+    BACKUP_FOLDER = path.join(basedir, 'app/backup/')
     #CLIENT_LISTS = path.join('app/temp/')
     ALLOWED_EXTENSIONS = {'zip'}
     #SENDGRID_API_KEY = environ.get('SENDGRID_API_KEY') or 'APIKEY'

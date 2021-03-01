@@ -1,10 +1,13 @@
+import copy
 import json
+import os
 import re
 from random import SystemRandom
-from app import db
+from app import db, app, fernet
+import pickle
 from flask_login import current_user
-
-from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result
+from datetime import datetime
+from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result, Userlog, Message
 
 
 def validate_password(password):
@@ -227,41 +230,345 @@ def del_user(data):
     return 0
 
 
-def restore_db():
-    return 0
-
-
 def backup_db():
+    #all tables as one JSON string ->
     entire_db = {}
-    #all tables
+
     #user
-    entire_db['users'] = backup_user()
+    backup_user()
+
     #module
+    backup_modules()
 
     #modaux
+    backup_modaux()
+
     #testbattery
+    backup_testbattery()
+
     #testsession
+    backup_testsession()
+
     #client
+    backup_client()
+
     #clientlog
+    backup_clientlog()
+
     #result
+    backup_result()
+
     #userlog
+    backup_userlog()
+
     #message
+    backup_message()
+
     return 0
 
 
+def restore_db():
+    print('IN RESTORE!')
+
+    #delete tables
+    User.query.delete()
+    Module.query.delete()
+    Modaux.query.delete()
+    Testbattery.query.delete()
+    Testsession.query.delete()
+
+    #load backup files and restore tables
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'user.pic'), 'rb' ) as file:
+        old_users=file.read()
+    restore_user(old_users)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'module.pic'), 'rb' ) as file:
+        old_modules=file.read()
+    restore_modules(old_modules)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'modaux.pic'), 'rb' ) as file:
+        old_modaux=file.read()
+    restore_modaux(old_modaux)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'testbattery.pic'), 'rb' ) as file:
+        old_testbatteries=file.read()
+    restore_testbattery(old_testbatteries)
+
+    with open( os.path.join(app.config['BACKUP_FOLDER'], 'testsession.pic'), 'rb' ) as file:
+        old_testsessions=file.read()
+    restore_testsession(old_testsessions)
+
+    return 0
+
+
+#DONE
+def restore_user(old):
+
+    usertable = fernet.decrypt(old).decode('utf-8')
+
+    users = json.loads(usertable)
+
+    for user in users['users']:
+        u = User()
+        u.id = user['id']
+        u.username = user['username']
+        u.set_description(user['description'])
+        u.set_contact(user['contact'])
+        u.is_superuser = user['is_superuser']
+        u.password_hash = user['password_hash']
+        u.salt = user['salt']
+        u.settings = user['settings']
+        u.added = datetime.fromtimestamp(user['added'])
+        u.last_modified = datetime.fromtimestamp(user['last_modified'])
+
+        db.session.add(u)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_modules(old):
+
+    moduletable = fernet.decrypt(old).decode('utf-8')
+
+    modules = json.loads(moduletable)
+
+    for module in modules['modules']:
+        m = Module()
+        m.id = module['id']
+        m.uuid = module['uuid']
+        m.short_name = module['short_name']
+        m.verbose_name = module['verbose_name']
+        m.description = module['description']
+        m.attributes = module['attributes']
+        m.id = module['id']
+        m.added = datetime.fromtimestamp(module['added'])
+        m.last_modified = datetime.fromtimestamp(module['last_modified'])
+
+        db.session.add(m)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_modaux(old):
+    auxtable = fernet.decrypt(old).decode('utf-8')
+
+    modaux = json.loads(auxtable)
+
+    for aux in modaux['auxs']:
+        a = Modaux()
+        a.id = aux['id']
+        a.user_id = aux['user_id']
+        a.module_id = aux['module_id']
+
+        db.session.add(a)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_testbattery(old):
+    testbattery_table = fernet.decrypt(old).decode('utf-8')
+
+    batteries = json.loads(testbattery_table)
+
+    for bat in batteries['testbatteries']:
+        tb = Testbattery()
+        tb.id = bat['id']
+        tb.user_id = bat['user_id']
+        tb.name = bat['name']
+        tb.description = bat['description']
+        tb.modules = bat['modules']
+        tb.created = datetime.fromtimestamp(bat['created'])
+        tb.added = datetime.fromtimestamp(bat['added'])
+        tb.last_modified = datetime.fromtimestamp(bat['last_modified'])
+
+        db.session.add(tb)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
+def restore_testsession(old):
+    testsession_table = fernet.decrypt(old).decode('utf-8')
+
+    sessions = json.loads(testsession_table)
+
+    for ses in sessions['sessions']:
+        s = Testsession()
+        s.id = ses['id']
+        s.uuid = ses['uuid']
+        s.user_id = ses['user_id']
+        s.testbattery_id = ses['testbattery_id']
+        s.state = ses['state']
+        s.created = datetime.fromtimestamp(ses['created'])
+        s.due = datetime.fromtimestamp(ses['due'])
+        s.set_invitation(ses['invitation_text'])
+        s.added = datetime.fromtimestamp(ses['added'])
+        s.last_modified = datetime.fromtimestamp(ses['last_modified'])
+
+        db.session.add(tb)
+        db.session.commit()
+
+    return 0
+
+
+#DONE
 def backup_user():
+    usertable = {}
     users = []
-    for us in User.query.all():
-        u = {}
-        u['id'] = us.id
-        u['username'] = us.username
-        u['description'] = us.get_description()
-        u['contact'] = us.get_contact()
-        u['is_superuser'] = us.is_superuser
-        u['settings'] = us.settings
-        u['added'] = us.added
-        # u['added'] = us.added.strftime("%Y-%m-%dT%H:%M:%S")
-        u['last_modified'] = us.last_modified
-        # u['last_modified'] = us.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
-        users.append(u)
-    return users
+
+    for user in User.query.all():
+        us = {}
+        us['id'] = user.id
+        us['username'] = user.username
+        us['description'] = user.get_description()
+        us['contact'] = user.get_contact()
+        us['is_superuser'] = user.is_superuser
+        us['password_hash'] = user.password_hash
+        us['salt'] = user.salt
+        us['settings'] = user.settings
+        us['added'] = user.added.timestamp()
+        us['last_modified'] = user.last_modified.timestamp()
+        users.append(us)
+
+    usertable['timestamp'] = datetime.now().timestamp()
+    usertable['users'] = users
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'user.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(usertable).encode('utf-8')))
+
+    return 0
+
+
+#DONE
+def backup_modules():
+    moduletable = {}
+    modules = []
+
+    for mod in Module.query.all():
+        m = {}
+        m['id'] = mod.id
+        m['uuid'] = mod.uuid
+        m['short_name'] = mod.short_name
+        m['verbose_name'] = mod.verbose_name
+        m['description'] = mod.description
+        m['attributes'] = mod.attributes
+        m['added'] = mod.added.timestamp()
+        m['last_modified'] = mod.last_modified.timestamp()
+
+        modules.append(m)
+
+    moduletable['timestamp'] = datetime.now().timestamp()
+    moduletable['modules'] = modules
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'module.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(moduletable).encode('utf-8')))
+
+    return 0
+
+
+#DONE
+def backup_modaux():
+    auxtable = {}
+    auxs = []
+
+    for aux in Modaux.query.all():
+        a = {}
+        a['id'] = aux.id
+        a['user_id'] = aux.user_id
+        a['module_id'] = aux.module_id
+        auxs.append(a)
+
+    auxtable['timestamp'] = datetime.now().timestamp()
+    auxtable['auxs'] = auxs
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'modaux.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(auxtable).encode('utf-8')))
+
+    return 0
+
+
+#DONE
+def backup_testbattery():
+    testbattery_table = {}
+    testbatteries = []
+
+    for testbattery in Testbattery.query.all():
+        t = {}
+        t['id'] = testbattery.id
+        t['user_id'] = testbattery.user_id
+        t['name'] = testbattery.name
+        t['description'] = testbattery.description
+        t['modules'] = testbattery.modules
+        t['created'] = testbattery.created.timestamp()
+        t['added'] = testbattery.added.timestamp()
+        t['last_modified'] = testbattery.last_modified.timestamp()
+
+        testbatteries.append(t)
+
+    testbattery_table['timestamp'] = datetime.now().timestamp()
+    testbattery_table['testbatteries'] = testbatteries
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'testbattery.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(testbattery_table).encode('utf-8')))
+
+    return 0
+
+
+#DONE
+def backup_testsession():
+    testsession_table = {}
+    sessions = []
+
+    for session in Testsession.query.all():
+        s = {}
+        s['id'] = session.id
+        s['uuid'] = session.uuid
+        s['user_id'] = session.user_id
+        s['testbattery_id'] = session.testbattery_id
+        s['created'] = session.created.timestamp()
+        s['due'] = session.due.timestamp()
+        s['state'] = session.state
+        s['invitation_text'] = session.get_invitation()
+        s['added'] = session.added.timestamp()
+        s['last_modified'] = session.last_modified.timestamp()
+        sessions.append(s)
+
+    testsession_table['timestamp'] = datetime.now().timestamp()
+    testsession_table['sessions'] = sessions
+
+    with open(os.path.join(app.config['BACKUP_FOLDER'], 'testsession.pic'), 'wb') as enrcypted:
+        enrcypted.write(fernet.encrypt(json.dumps(testsession_table).encode('utf-8')))
+
+    return 0
+
+
+def backup_client():
+    #pickle.dump(Client.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'client.pic'), 'wb'))
+    return 0
+
+
+def backup_clientlog():
+    #pickle.dump(Clientlog.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic'), 'wb'))
+    return 0
+
+
+def backup_result():
+    #pickle.dump(Result.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'result.pic'), 'wb'))
+    return 0
+
+
+def backup_userlog():
+    #pickle.dump(Userlog.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic'), 'wb'))
+    return 0
+
+
+def backup_message():
+    #pickle.dump(Message.query.all(), open(os.path.join(app.config['BACKUP_FOLDER'], 'message.pic'), 'wb'))
+    return 0

@@ -13,6 +13,7 @@ import os
 
 from cryptography.fernet import Fernet
 
+
 app = Flask(__name__)
 app.config.from_object(SQLite)
 
@@ -34,5 +35,6 @@ socket.init_app(app,  cors_allowed_origins="*")
 
 
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERMET_SECRET').encode('utf-8')))
+
 
 from app import routes, models
