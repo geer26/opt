@@ -1,10 +1,11 @@
 import copy
 import json
 import os
+from os.path import basename
 import re
 from random import SystemRandom
 from app import db, app, fernet
-import pickle
+from zipfile import ZipFile
 from flask_login import current_user
 from datetime import datetime
 from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result, Userlog, Message
@@ -284,6 +285,13 @@ def backup_db():
 
     #message
     backup_message()
+
+    #TODO revision! Zip is invalid!
+    with ZipFile( os.path.join(app.config['BACKUP_FOLDER'], f'backup_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.zip') , 'w') as zipObj:
+        # Add multiple files to the zip
+        for f in os.listdir(app.config['BACKUP_FOLDER']):
+            if f.endswith('.pic'):
+                zipObj.write(os.path.join(app.config['BACKUP_FOLDER'], basename(f)))
 
     return 0
 

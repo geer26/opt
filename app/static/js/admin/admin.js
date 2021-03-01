@@ -156,20 +156,6 @@ function reset_db(){
 };
 
 
-/*
-function showAddUser(){
-    $('#adduser_modal').show();
-	$('#username').val('');
-	$('#description').val('');
-	$('#contact').val('');
-	$('#password1').val('');
-	$('#password2').val('');
-	$('#is_superuser').prop( "checked", false );
-	inputkeypress();
-}
-*/
-
-
 //Websockets admin event dispatcher
 socket.on('admin', function(data){
 
