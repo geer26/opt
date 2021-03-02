@@ -142,6 +142,11 @@ def add_to_zip(fileobject_path):
 
 def upd_log(log_text):
 
+    if current_user.is_authenticated:
+        username = current_user.username
+    else:
+        username = 'ANONYMUS'
+
     zippath = os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip')
     filepath = app.config['BACKUP_FOLDER']
     logpath = os.path.join(app.config['BACKUP_FOLDER'], 'log.file')
@@ -150,7 +155,7 @@ def upd_log(log_text):
     message = {
         'timestamp' : f'{datetime.now().timestamp()}',
         'datetime' : f'{datetime.now().strftime("%Y.%m.%d-%H:%M:%S")}',
-        'executor' : f'{current_user.username}',
+        'executor' : f'{username}',
         'event' : f'{log_text}'
     }
 
