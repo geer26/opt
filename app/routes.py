@@ -5,7 +5,8 @@ from flask import render_template, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, AddUserForm
 from app import app, socket, db
-from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, backup_db, restore_db, reset_db
+from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, reset_db
+from app.backup import backup_db, restore_db
 from app.models import User
 
 
