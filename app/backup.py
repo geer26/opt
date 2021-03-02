@@ -105,15 +105,32 @@ def check_backup():
     return 0
 
 
+#DONE
 def add_to_zip(fileobject_path):
 
-    #TODO prevent multiplicate files!
-    #1. extract all to a temp folder
-    #2. remove file to update from temps
-    #3.
+    fname = fileobject_path.split('/')[-1]
 
     zippath = os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip')
+    newpath = os.path.join(app.config['BACKUP_FOLDER'], 'backup_temp.zip')
 
+
+    #Create nem temp zipfile w/o the new fil to write
+    with ZipFile(zippath, 'r') as oldzip, ZipFile(newpath, 'a') as newzip:
+        for file in oldzip.infolist():
+            buffer = oldzip.read(file.filename)
+            if file.filename != fname:
+                newzip.writestr(file,buffer)
+
+
+    # remove orig zipfile
+    os.remove(zippath)
+
+
+    # rename new zipfile
+    os.rename(newpath, zippath)
+
+
+    # add file to the ne zipfile(renamed!)
     zipObj = ZipFile(zippath, 'a')
     zipObj.write(fileobject_path, basename(fileobject_path))
     zipObj.close()
@@ -140,9 +157,19 @@ def upd_log(log_text):
         zipObj.extract(filename, filepath)
 
     #2. add new entry at the end
+    with open(logpath, 'r') as logfile:
+        print('OLDLINES:')
+        for line in logfile.readlines():
+            print(line)
+
     with open(logpath, 'a') as logfile:
-        logfile.write(json.dumps(message))
-        logfile.write('\n')
+        logfile.writelines(json.dumps(message))
+
+    with open(logpath, 'r') as logfile:
+        print('NEWLINES:')
+        for line in logfile.readlines():
+            print(line)
+
 
     #3. add_to_zip(fileobject_path)
     add_to_zip(logpath)
@@ -153,6 +180,7 @@ def upd_log(log_text):
     return 0
 
 
+#DONE
 def restore_from_zip(filename):
 
     zippath = os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip')
