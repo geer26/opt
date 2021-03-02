@@ -1,6 +1,7 @@
 import copy
 import json
 import os
+import shutil
 from os.path import basename
 import re
 from random import SystemRandom
@@ -253,8 +254,8 @@ def reset_db():
 
 
 def backup_db():
-    #all tables as one JSON string ->
-    entire_db = {}
+
+    check_backup()
 
     #user
     backup_user()
@@ -287,11 +288,11 @@ def backup_db():
     backup_message()
 
     #TODO revision! Zip is invalid!
-    with ZipFile( os.path.join(app.config['BACKUP_FOLDER'], f'backup_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.zip') , 'w') as zipObj:
+    '''with ZipFile( os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip') , 'w') as zipObj:
         # Add multiple files to the zip
         for f in os.listdir(app.config['BACKUP_FOLDER']):
             if f.endswith('.pic'):
-                zipObj.write(os.path.join(app.config['BACKUP_FOLDER'], basename(f)))
+                zipObj.write(os.path.join(app.config['BACKUP_FOLDER'], basename(f)))'''
 
     return 0
 
@@ -329,16 +330,66 @@ def restore_db():
 
     restore_message()
 
+    #restore_from_zip('user.pic')
+
     #message
 
     return 0
 
 
+def check_backup():
+    if not 'backup.zip' in os.listdir(app.config['BACKUP_FOLDER']):
+        with ZipFile(os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip'), 'w') as zipObj:
+            pass
+    return 0
+
+
+def add_to_zip(fileobject_path):
+
+    #TODO overwrite (build new zip) timestamp file in archive
+
+    human_timestamp = datetime.now().strftime("%Y.%m.%d.%H.%M.%S")
+    epoch_timestamp = datetime.now().timestamp()
+    ts_path = os.path.join(app.config['BACKUP_FOLDER'], 'ts')
+
+    with open(ts_path, 'w') as timestamp:
+        timestamp.write(f'EPOCH:{str(epoch_timestamp)}\n')
+        timestamp.write(f'HUMAN:{human_timestamp}')
+
+    zippath = os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip')
+
+    zipObj = ZipFile(zippath, 'a')
+    zipObj.write(fileobject_path, basename(fileobject_path))
+    zipObj.close()
+
+    return 0
+
+
+def restore_from_zip(filename):
+
+    zippath = os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip')
+    filepath = app.config['BACKUP_FOLDER']
+    fp = os.path.join(app.config['BACKUP_FOLDER'], filename)
+
+
+    #1. unzip single file!
+    with ZipFile(zippath,'r') as zipObj:
+        zipObj.extract(filename, filepath)
+
+    #2. create file object
+    with open(fp, 'rb') as file:
+        old = file.read()
+
+    #3. delete temp extracted
+    os.remove(fp)
+
+    return old
+
+
 #DONE
 def restore_user():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'user.pic'), 'rb' ) as file:
-        old = file.read()
+    old = restore_from_zip('user.pic')
 
     usertable = fernet.decrypt(old).decode('utf-8')
 
@@ -366,8 +417,7 @@ def restore_user():
 #DONE
 def restore_modules():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'module.pic'), 'rb' ) as file:
-        old = file.read()
+    old = restore_from_zip('module.pic')
 
     moduletable = fernet.decrypt(old).decode('utf-8')
 
@@ -392,9 +442,9 @@ def restore_modules():
 
 
 #DONE
-def restore_modaux(old):
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'modaux.pic'), 'rb' ) as file:
-        old = file.read()
+def restore_modaux():
+
+    old = restore_from_zip('modaux.pic')
 
     auxtable = fernet.decrypt(old).decode('utf-8')
 
@@ -415,8 +465,7 @@ def restore_modaux(old):
 #DONE
 def restore_testbattery():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'testbattery.pic'), 'rb' ) as file:
-        old = file.read()
+    old = restore_from_zip('testbattery.pic')
 
     testbattery_table = fernet.decrypt(old).decode('utf-8')
 
@@ -442,8 +491,7 @@ def restore_testbattery():
 #DONE
 def restore_testsession():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'testsession.pic'), 'rb' ) as file:
-        old = file.read()
+    old = restore_from_zip('testsession.pic')
 
     testsession_table = fernet.decrypt(old).decode('utf-8')
 
@@ -471,8 +519,7 @@ def restore_testsession():
 #DONE
 def restore_client():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'client.pic'), 'rb' ) as file:
-        old = file.read()
+    old = restore_from_zip('client.pic')
 
     client_table = fernet.decrypt(old).decode('utf-8')
 
@@ -499,8 +546,7 @@ def restore_client():
 #DONE
 def restore_clientlog():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic'), 'rb' ) as file:
-        old=file.read()
+    old = restore_from_zip('clientlog.pic')
 
     clientlog_table = fernet.decrypt(old).decode('utf-8')
 
@@ -522,8 +568,7 @@ def restore_clientlog():
 #DONE
 def restore_result():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'result.pic'), 'rb' ) as file:
-        old = file.read()
+    old = restore_from_zip('result.pic')
 
     result_table = fernet.decrypt(old).decode('utf-8')
     result = json.loads(result_table)
@@ -548,8 +593,7 @@ def restore_result():
 #DONE
 def restore_userlog():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic'), 'rb' ) as file:
-        old = file.read()
+    old = restore_from_zip('userlog.pic')
 
     userlog_table = fernet.decrypt(old).decode('utf-8')
     userlog = json.loads(userlog_table)
@@ -573,8 +617,7 @@ def restore_userlog():
 #DONE
 def restore_message():
 
-    with open( os.path.join(app.config['BACKUP_FOLDER'], 'message.pic'), 'rb' ) as file:
-        old = file.read()
+    old = restore_from_zip('message.pic')
 
     message_table = fernet.decrypt(old).decode('utf-8')
     messages = json.loads(message_table)
@@ -621,8 +664,13 @@ def backup_user():
     usertable['timestamp'] = datetime.now().timestamp()
     usertable['users'] = users
 
-    with open(os.path.join(app.config['BACKUP_FOLDER'], 'user.pic'), 'wb') as enrcypted:
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'user.pic')
+
+    with open( savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(usertable).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
 
     return 0
 
@@ -648,8 +696,13 @@ def backup_modules():
     moduletable['timestamp'] = datetime.now().timestamp()
     moduletable['modules'] = modules
 
-    with open(os.path.join(app.config['BACKUP_FOLDER'], 'module.pic'), 'wb') as enrcypted:
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'module.pic')
+
+    with open(savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(moduletable).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
 
     return 0
 
@@ -669,8 +722,13 @@ def backup_modaux():
     auxtable['timestamp'] = datetime.now().timestamp()
     auxtable['auxs'] = auxs
 
-    with open(os.path.join(app.config['BACKUP_FOLDER'], 'modaux.pic'), 'wb') as enrcypted:
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'modaux.pic')
+
+    with open(savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(auxtable).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
 
     return 0
 
@@ -696,8 +754,13 @@ def backup_testbattery():
     testbattery_table['timestamp'] = datetime.now().timestamp()
     testbattery_table['testbatteries'] = testbatteries
 
-    with open(os.path.join(app.config['BACKUP_FOLDER'], 'testbattery.pic'), 'wb') as enrcypted:
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'testbattery.pic')
+
+    with open(savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(testbattery_table).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
 
     return 0
 
@@ -724,8 +787,13 @@ def backup_testsession():
     testsession_table['timestamp'] = datetime.now().timestamp()
     testsession_table['sessions'] = sessions
 
-    with open(os.path.join(app.config['BACKUP_FOLDER'], 'testsession.pic'), 'wb') as enrcypted:
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'testsession.pic')
+
+    with open(savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(testsession_table).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
 
     return 0
 
@@ -751,8 +819,14 @@ def backup_client():
     client_table['timestamp'] = datetime.now().timestamp()
     client_table['clients'] = clients
 
-    with open(os.path.join(app.config['BACKUP_FOLDER'], 'client.pic'), 'wb') as enrcypted:
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'client.pic')
+
+    with open(savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(client_table).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
+
     return 0
 
 
@@ -773,8 +847,14 @@ def backup_clientlog():
     clientlog_table['timestamp'] = datetime.now().timestamp()
     clientlog_table['clientlogs'] = clientlogs
 
-    with open(os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic'), 'wb') as enrcypted:
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic')
+
+    with open(savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(clientlog_table).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
+
     return 0
 
 
@@ -798,8 +878,14 @@ def backup_result():
     result_table['timestamp'] = datetime.now().timestamp()
     result_table['results'] = results
 
-    with open(os.path.join(app.config['BACKUP_FOLDER'], 'result.pic'), 'wb') as enrcypted:
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'result.pic')
+
+    with open(savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(result_table).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
+
     return 0
 
 
@@ -822,8 +908,14 @@ def backup_userlog():
     userlog_table['timestamp'] = datetime.now().timestamp()
     userlog_table['userlogs'] = userlogs
 
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic')
+
     with open(os.path.join(app.config['BACKUP_FOLDER'], 'userlog.pic'), 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(userlog_table).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
+
     return 0
 
 
@@ -849,6 +941,12 @@ def backup_message():
     message_table['timestamp'] = datetime.now().timestamp()
     message_table['messages'] = messages
 
+    savepath = os.path.join(app.config['BACKUP_FOLDER'], 'message.pic')
+
     with open(os.path.join(app.config['BACKUP_FOLDER'], 'message.pic'), 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(message_table).encode('utf-8')))
+
+    add_to_zip(savepath)
+    os.remove(savepath)
+
     return 0
