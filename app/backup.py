@@ -59,7 +59,7 @@ def restore_db():
     Clientlog.query.delete()
     db.session.commit()
 
-    upd_log('Database wiped')
+    upd_log('Database wiped', 1)
 
     #load backup files and restore tables
     restore_user()
@@ -102,7 +102,7 @@ def check_backup():
         os.remove(logfile_path)
 
         #update logfile
-        upd_log('Archive created')
+        upd_log('Archive created', 0)
 
     return 0
 
@@ -140,7 +140,9 @@ def add_to_zip(fileobject_path):
     return 0
 
 
-def upd_log(log_text):
+def upd_log(log_text, type=0):
+
+    log_type = {0 : 'INFO', 1 : 'WARNING', 2 : 'ERROR', 3 : 'FATAL ERROR'}
 
     if current_user.is_authenticated:
         username = current_user.username
@@ -153,6 +155,7 @@ def upd_log(log_text):
     filename = 'log.file'
 
     message = {
+        'type' : log_type[type],
         'timestamp' : f'{datetime.now().timestamp()}',
         'datetime' : f'{datetime.now().strftime("%Y.%m.%d-%H:%M:%S")}',
         'executor' : f'{username}',
@@ -225,7 +228,7 @@ def restore_user():
         db.session.add(u)
         db.session.commit()
 
-    upd_log('User table restored')
+    upd_log('User table restored', 0)
 
     return 0
 
@@ -254,7 +257,7 @@ def restore_modules():
         db.session.add(m)
         db.session.commit()
 
-    upd_log('Module table restored')
+    upd_log('Module table restored', 0)
 
     return 0
 
@@ -277,7 +280,7 @@ def restore_modaux():
         db.session.add(a)
         db.session.commit()
 
-    upd_log('Modaux table restored')
+    upd_log('Modaux table restored', 0)
     return 0
 
 
@@ -304,7 +307,7 @@ def restore_testbattery():
         db.session.add(tb)
         db.session.commit()
 
-    upd_log('Testbattery table restored')
+    upd_log('Testbattery table restored', 0)
     return 0
 
 
@@ -333,7 +336,7 @@ def restore_testsession():
         db.session.add(s)
         db.session.commit()
 
-    upd_log('Testsession table restored')
+    upd_log('Testsession table restored', 0)
     return 0
 
 
@@ -361,7 +364,7 @@ def restore_client():
         db.session.add(c)
         db.session.commit()
 
-    upd_log('Client table restored')
+    upd_log('Client table restored', 0)
     return 0
 
 
@@ -384,7 +387,7 @@ def restore_clientlog():
         db.session.add(c)
         db.session.commit()
 
-    upd_log('Clientlog table restored')
+    upd_log('Clientlog table restored', 0)
     return 0
 
 
@@ -410,7 +413,7 @@ def restore_result():
         db.session.add(r)
         db.session.commit()
 
-    upd_log('Result table restored')
+    upd_log('Result table restored', 0)
     return 0
 
 
@@ -435,7 +438,7 @@ def restore_userlog():
         db.session.add(u)
         db.session.commit()
 
-    upd_log('Userlog table restored')
+    upd_log('Userlog table restored', 0)
     return 0
 
 
@@ -464,7 +467,7 @@ def restore_message():
         db.session.add(m)
         db.session.commit()
 
-    upd_log('Message table restored')
+    upd_log('Message table restored', 0)
     return 0
 
 
@@ -498,7 +501,7 @@ def backup_user():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('User table archived')
+    upd_log('User table archived', 0)
 
     return 0
 
@@ -532,7 +535,7 @@ def backup_modules():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Module table archived')
+    upd_log('Module table archived', 0)
 
     return 0
 
@@ -560,7 +563,7 @@ def backup_modaux():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Modaux table archived')
+    upd_log('Modaux table archived', 0)
 
     return 0
 
@@ -594,7 +597,7 @@ def backup_testbattery():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Testbattery table archived')
+    upd_log('Testbattery table archived', 0)
 
     return 0
 
@@ -629,7 +632,7 @@ def backup_testsession():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Testsession table archived')
+    upd_log('Testsession table archived', 0)
 
     return 0
 
@@ -663,7 +666,7 @@ def backup_client():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Client table archived')
+    upd_log('Client table archived', 0)
 
     return 0
 
@@ -693,7 +696,7 @@ def backup_clientlog():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Clientlog table archived')
+    upd_log('Clientlog table archived', 0)
 
     return 0
 
@@ -726,7 +729,7 @@ def backup_result():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Result table archived')
+    upd_log('Result table archived', 0)
 
     return 0
 
@@ -758,7 +761,7 @@ def backup_userlog():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Userlog table archived')
+    upd_log('Userlog table archived', 0)
 
     return 0
 
@@ -793,6 +796,6 @@ def backup_message():
     add_to_zip(savepath)
     os.remove(savepath)
 
-    upd_log('Message table archived')
+    upd_log('Message table archived', 0)
 
     return 0

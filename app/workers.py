@@ -204,9 +204,11 @@ def check_adduser(data):
     num_of_su = len(User.query.filter(User.is_superuser).all())
 
     if len(u) != 0:
+        upd_log(f'Unsuccess user add', 2)
         return 1 #User exists
 
     if not validate_password(str(data['password'])):
+        upd_log(f'Unsuccess user add', 2)
         return 2 #invalid password
 
     user = User()
@@ -219,24 +221,27 @@ def check_adduser(data):
         user.is_superuser = data['is_superuser']
 
     elif user.is_superuser and num_of_su >= 5:
+        upd_log(f'Unsuccess user add', 2)
         return 3  # su munber exceeded
 
     db.session.add(user)
     db.session.commit()
 
-    upd_log(f'User \"{user.username}\" added')
+    upd_log(f'User \"{user.username}\" added', 0)
 
     return 0
 
 
 def del_user(data):
     user = User.query.get(int(data['id']))
-    if not user: return 1
+    if not user:
+        upd_log(f'Unsuccess User delete!', 2)
+        return 1
     else:
         db.session.delete(user)
         db.session.commit()
 
-    upd_log(f'User \"{user.username}\" deleted')
+    upd_log(f'User \"{user.username}\" deleted', 0)
     return 0
 
 
@@ -257,6 +262,6 @@ def reset_db():
     Userlog.query.delete()
     Message.query.delete()
     db.session.commit()
-    upd_log('Database wiped except superusers')
+    upd_log('Database wiped except superusers', 1)
 
     return 0
