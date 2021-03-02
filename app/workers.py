@@ -5,6 +5,8 @@ from random import SystemRandom
 from app import db, app, fernet
 from flask_login import current_user
 from datetime import datetime
+
+from app.backup import upd_log
 from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result, Userlog, Message
 
 
@@ -216,6 +218,8 @@ def check_adduser(data):
     db.session.add(user)
     db.session.commit()
 
+    upd_log(f'User \"{user.username}\" added')
+
     return 0
 
 
@@ -225,6 +229,8 @@ def del_user(data):
     else:
         db.session.delete(user)
         db.session.commit()
+
+    upd_log(f'User \"{user.username}\" deleted')
     return 0
 
 
@@ -245,5 +251,6 @@ def reset_db():
     Userlog.query.delete()
     Message.query.delete()
     db.session.commit()
+    upd_log('Database wiped except superusers')
 
     return 0

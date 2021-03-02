@@ -59,6 +59,8 @@ def restore_db():
     Clientlog.query.delete()
     db.session.commit()
 
+    upd_log('Database wiped')
+
     #load backup files and restore tables
     restore_user()
 
@@ -80,27 +82,27 @@ def restore_db():
 
     restore_message()
 
-    #restore_from_zip('user.pic')
-
-    #message
-
     return 0
 
 
+#DONE
 def check_backup():
+
     if not 'backup.zip' in os.listdir(app.config['BACKUP_FOLDER']):
+
         with ZipFile(os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip'), 'w') as zipObj:
             pass
 
-    #create logfile
-    ts_path = os.path.join(app.config['BACKUP_FOLDER'], 'log.file')
-    with open(ts_path, 'w') as logfile:
-        pass
-    add_to_zip(ts_path)
-    os.remove(ts_path)
+        #create logfile
+        logfile_path = os.path.join(app.config['BACKUP_FOLDER'], 'log.file')
+        with open(logfile_path, 'w') as logfile:
+            pass
 
-    #update logfile
-    upd_log('Archive created')
+        add_to_zip(logfile_path)
+        os.remove(logfile_path)
+
+        #update logfile
+        upd_log('Archive created')
 
     return 0
 
@@ -157,19 +159,10 @@ def upd_log(log_text):
         zipObj.extract(filename, filepath)
 
     #2. add new entry at the end
-    with open(logpath, 'r') as logfile:
-        print('OLDLINES:')
-        for line in logfile.readlines():
-            print(line)
 
     with open(logpath, 'a') as logfile:
-        logfile.writelines(json.dumps(message))
-
-    with open(logpath, 'r') as logfile:
-        print('NEWLINES:')
-        for line in logfile.readlines():
-            print(line)
-
+        logfile.write(json.dumps(message))
+        logfile.write('\n')
 
     #3. add_to_zip(fileobject_path)
     add_to_zip(logpath)
@@ -227,6 +220,8 @@ def restore_user():
         db.session.add(u)
         db.session.commit()
 
+    upd_log('User table restored')
+
     return 0
 
 
@@ -254,6 +249,8 @@ def restore_modules():
         db.session.add(m)
         db.session.commit()
 
+    upd_log('Module table restored')
+
     return 0
 
 
@@ -275,6 +272,7 @@ def restore_modaux():
         db.session.add(a)
         db.session.commit()
 
+    upd_log('Modaux table restored')
     return 0
 
 
@@ -301,6 +299,7 @@ def restore_testbattery():
         db.session.add(tb)
         db.session.commit()
 
+    upd_log('Testbattery table restored')
     return 0
 
 
@@ -329,6 +328,7 @@ def restore_testsession():
         db.session.add(s)
         db.session.commit()
 
+    upd_log('Testsession table restored')
     return 0
 
 
@@ -356,6 +356,7 @@ def restore_client():
         db.session.add(c)
         db.session.commit()
 
+    upd_log('Client table restored')
     return 0
 
 
@@ -378,6 +379,7 @@ def restore_clientlog():
         db.session.add(c)
         db.session.commit()
 
+    upd_log('Clientlog table restored')
     return 0
 
 
@@ -403,6 +405,7 @@ def restore_result():
         db.session.add(r)
         db.session.commit()
 
+    upd_log('Result table restored')
     return 0
 
 
@@ -427,6 +430,7 @@ def restore_userlog():
         db.session.add(u)
         db.session.commit()
 
+    upd_log('Userlog table restored')
     return 0
 
 
@@ -455,6 +459,7 @@ def restore_message():
         db.session.add(m)
         db.session.commit()
 
+    upd_log('Message table restored')
     return 0
 
 
