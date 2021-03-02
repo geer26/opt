@@ -201,6 +201,7 @@ def get_sudata():
 def check_adduser(data):
 
     u = User.query.filter(User.username == str(data['username'])).all()
+    num_of_su = len(User.query.filter(User.is_superuser).all())
 
     if len(u) != 0:
         return 1 #User exists
@@ -213,7 +214,12 @@ def check_adduser(data):
     user.set_password(str(data['password']))
     user.set_description(str(data['description']))
     user.set_contact(str(data['contact']))
-    user.is_superuser = data['is_superuser']
+
+    if user.is_superuser and num_of_su < 5:
+        user.is_superuser = data['is_superuser']
+
+    elif user.is_superuser and num_of_su >= 5:
+        return 3  # su munber exceeded
 
     db.session.add(user)
     db.session.commit()

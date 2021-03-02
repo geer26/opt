@@ -194,6 +194,15 @@ socket.on('admin', function(data){
 	            $('#password2').val('');
             }
 
+            else if (data['status'] == 3){
+                //to much su
+                $('#error').text('Nem lehet több admint regisztrálni!');
+                $('#error').show();
+                $('#adduser').addClass('credits_error');
+                $('#password1').val('');
+	            $('#password2').val('');
+            }
+
         }
         break;
 

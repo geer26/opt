@@ -6,22 +6,26 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, AddUserForm
 from app import app, socket, db
 from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, reset_db
-from app.backup import backup_db, restore_db
+from app.backup import backup_db, restore_db, upd_log, check_backup
 from app.models import User
 
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
+    check_backup()
     #if user is not autheticated, display noauth index.html
     if not current_user.is_authenticated:
+        upd_log(f'Non-auth visit from ip: \"{request.remote_addr}\"')
         return render_template('/noauth/index.html')
     #else if user is superuser display admin index.html
     elif current_user.is_authenticated and current_user.is_superuser:
         adduserform = AddUserForm()
+        upd_log(f'Admin visit from ip: \"{request.remote_addr}\", admin: \"{current_user.username}\"')
         return render_template('/admin/index-admin.html', data = get_sudata(), adduserform = adduserform)
     # else if user is not superuser display user index.html
     elif current_user.is_authenticated and not current_user.is_superuser:
+        upd_log(f'User visit from ip: \"{request.remote_addr}\", user: \"{current_user.username}\"')
         return render_template('/user/index.html')
 
 
@@ -40,16 +44,19 @@ def login():
                 mess = {}
                 mess['event'] = 1109
                 socket.emit('generic', mess)
+                upd_log(f'Login attempt with invalid username: \"{form.username.data}\"')
                 return '',204
 
             if user.check_password(form.password.data):
                 login_user(user, remember=form.remember_me.data)
+                upd_log(f'Successful login: \"{form.username.data}\"')
                 return redirect('/')
 
             else:
                 mess = {}
                 mess['event'] = 1109
                 socket.emit('generic', mess)
+                upd_log(f'Login attempt with invalid password: \"{form.username.data}\"')
                 return '', 204
 
     return render_template('/noauth/login.html', title = 'Belépés', form = form)
@@ -58,6 +65,7 @@ def login():
 @login_required
 @app.route('/logout')
 def logout():
+    upd_log(f'User logged out from ip: \"{request.remote_addr}\", user: \"{current_user.username}\"')
     logout_user()
     return redirect('/')
 
@@ -75,6 +83,8 @@ def addsu(suname, password):
         user.settings = ''
         db.session.add(user)
         db.session.commit()
+
+        logout_user()
 
     return redirect('/')
 
