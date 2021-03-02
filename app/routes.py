@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, AddUserForm
 from app import app, socket, db
@@ -68,6 +68,15 @@ def logout():
     upd_log(f'User logged out from ip: \"{request.remote_addr}\", user: \"{current_user.username}\"')
     logout_user()
     return redirect('/')
+
+
+@login_required
+@app.route('/getbackup', methods=['GET', 'POST'])
+def get_backup():
+    if not current_user.is_superuser:
+        return '', 204
+    upd_log(f'ackup downloaded by: \"{current_user.username}\"')
+    return send_from_directory(directory=app.config['BACKUP_FOLDER'], filename='backup.zip')
 
 
 @app.route('/addsu/<suname>/<password>')
