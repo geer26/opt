@@ -17,11 +17,9 @@ class Config:
     TEMPLATES_AUTO_RELOAD = True
 
     UPLOAD_FOLDER = path.join('app/uploads/')
-    BACKUP_FOLDER = environ.get('BACKUP_FOLDER') or path.join(basedir, 'app/backup/')
-    if environ.get('LOG_FOLDER'):
-        LOG_FOLDER = path.join(basedir,environ.get('LOG_FOLDER'))
-    else:
-        LOG_FOLDER = path.join(basedir, 'app/log/')
+    BACKUP_FOLDER = path.join(basedir, 'app/backup/')
+
+    LOG_FOLDER = path.join(basedir, 'app/log/')
 
     #CLIENT_LISTS = path.join('app/temp/')
     ALLOWED_EXTENSIONS = {'zip'}
