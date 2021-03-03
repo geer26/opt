@@ -63,6 +63,17 @@ var menuRoutes = {
 		}
 	},
 
+	menuitem_log: {
+	    fun: function() {
+			console.log("Showing log operations");
+		},
+		activate: true,
+		tab_id: "tab-log",
+		on_hide: function() {
+			console.log("Hiding log operations");
+		}
+	},
+
 	menuitem_logout: {
 		fun: function() {
 			location.href='/logout';

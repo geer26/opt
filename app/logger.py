@@ -12,9 +12,9 @@ class Logger():
 
     def __init__(self,
                  folder,
-                 maxsize = 5120,
-                 maxlength = 5000,
-                 maxdue = 7,
+                 maxsize = 5120,  #5Mb
+                 maxlength = 5000,  #5000 lines
+                 maxdue = 7,  #7 days
                  name = 'log.file',
                  archive_name = 'log_archive.zip'
                  ):
@@ -71,6 +71,7 @@ class Logger():
 
         # check if logfile reached linelimit, if so archive it and recall check
         # TODO implement later!
+        # on server exits wit error at readlines()
         '''with open(logfile_path,'r') as logfile:
             lines = len(logfile.readlines())
         if lines >= self.maxlength:
