@@ -1,6 +1,9 @@
 import base64
 
 from flask import Flask
+
+from app.logger import Logger
+
 from config import SQLite
 
 from flask_sqlalchemy import SQLAlchemy
@@ -35,6 +38,9 @@ socket.init_app(app,  cors_allowed_origins="*")
 
 
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERMET_SECRET').encode('utf-8')))
+
+
+logger = Logger( folder = app.config['LOG_FOLDER'] )
 
 
 from app import routes, models

@@ -6,7 +6,7 @@ from zipfile import ZipFile
 
 from flask_login import current_user
 
-from app import fernet, db, app
+from app import fernet, db, app, logger
 from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result, Userlog, Message
 
 
@@ -44,6 +44,8 @@ def backup_db():
     #message
     backup_message()
 
+    logger.upd_log(f'Entire database backed up', 0)
+
     return 0
 
 
@@ -59,7 +61,7 @@ def restore_db():
     Clientlog.query.delete()
     db.session.commit()
 
-    upd_log('Database wiped', 1)
+    logger.upd_log('Database wiped', 1)
 
     #load backup files and restore tables
     restore_user()
@@ -229,6 +231,7 @@ def restore_user():
         db.session.commit()
 
     upd_log('User table restored', 0)
+    logger.upd_log('User table restored', 0)
 
     return 0
 
@@ -258,6 +261,7 @@ def restore_modules():
         db.session.commit()
 
     upd_log('Module table restored', 0)
+    logger.upd_log('Module table restored', 0)
 
     return 0
 
@@ -281,6 +285,7 @@ def restore_modaux():
         db.session.commit()
 
     upd_log('Modaux table restored', 0)
+    logger.upd_log('Modaux table restored', 0)
     return 0
 
 
@@ -308,6 +313,7 @@ def restore_testbattery():
         db.session.commit()
 
     upd_log('Testbattery table restored', 0)
+    logger.upd_log('Testbattery table restored', 0)
     return 0
 
 
@@ -337,6 +343,7 @@ def restore_testsession():
         db.session.commit()
 
     upd_log('Testsession table restored', 0)
+    logger.upd_log('Testsession table restored', 0)
     return 0
 
 
@@ -365,6 +372,7 @@ def restore_client():
         db.session.commit()
 
     upd_log('Client table restored', 0)
+    logger.upd_log('Client table restored', 0)
     return 0
 
 
@@ -388,6 +396,7 @@ def restore_clientlog():
         db.session.commit()
 
     upd_log('Clientlog table restored', 0)
+    logger.upd_log('Clientlog table restored', 0)
     return 0
 
 
@@ -414,6 +423,7 @@ def restore_result():
         db.session.commit()
 
     upd_log('Result table restored', 0)
+    logger.upd_log('Result table restored', 0)
     return 0
 
 
@@ -439,6 +449,7 @@ def restore_userlog():
         db.session.commit()
 
     upd_log('Userlog table restored', 0)
+    logger.upd_log('Userlog table restored', 0)
     return 0
 
 
@@ -468,6 +479,7 @@ def restore_message():
         db.session.commit()
 
     upd_log('Message table restored', 0)
+    logger.upd_log('Message table restored', 0)
     return 0
 
 
@@ -502,7 +514,7 @@ def backup_user():
     os.remove(savepath)
 
     upd_log('User table archived', 0)
-
+    logger.upd_log('User table archived', 0)
     return 0
 
 
@@ -536,7 +548,7 @@ def backup_modules():
     os.remove(savepath)
 
     upd_log('Module table archived', 0)
-
+    logger.upd_log('Module table archived', 0)
     return 0
 
 
@@ -564,7 +576,7 @@ def backup_modaux():
     os.remove(savepath)
 
     upd_log('Modaux table archived', 0)
-
+    logger.upd_log('Modaux table archived', 0)
     return 0
 
 
@@ -598,7 +610,7 @@ def backup_testbattery():
     os.remove(savepath)
 
     upd_log('Testbattery table archived', 0)
-
+    logger.upd_log('Testbattery table archived', 0)
     return 0
 
 
@@ -633,7 +645,7 @@ def backup_testsession():
     os.remove(savepath)
 
     upd_log('Testsession table archived', 0)
-
+    logger.upd_log('Testsession table archived', 0)
     return 0
 
 
@@ -667,7 +679,7 @@ def backup_client():
     os.remove(savepath)
 
     upd_log('Client table archived', 0)
-
+    logger.upd_log('Client table archived', 0)
     return 0
 
 
@@ -697,7 +709,7 @@ def backup_clientlog():
     os.remove(savepath)
 
     upd_log('Clientlog table archived', 0)
-
+    logger.upd_log('Clientlog table archived', 0)
     return 0
 
 
@@ -730,7 +742,7 @@ def backup_result():
     os.remove(savepath)
 
     upd_log('Result table archived', 0)
-
+    logger.upd_log('Result table archived', 0)
     return 0
 
 
@@ -762,7 +774,7 @@ def backup_userlog():
     os.remove(savepath)
 
     upd_log('Userlog table archived', 0)
-
+    logger.upd_log('Userlog table archived', 0)
     return 0
 
 
@@ -797,5 +809,5 @@ def backup_message():
     os.remove(savepath)
 
     upd_log('Message table archived', 0)
-
+    logger.upd_log('Message table archived', 0)
     return 0
