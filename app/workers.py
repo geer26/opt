@@ -2,6 +2,9 @@
 import json
 import re
 from random import SystemRandom
+
+from flask import request
+
 from app import db, app, fernet, logger
 from flask_login import current_user
 from datetime import datetime
@@ -192,7 +195,7 @@ def get_sudata():
         results.append(r)
     data['results'] = results
 
-    logger.upd_log(f'All data provided', 1)
+    logger.upd_log(f'All data provided to IP: {request.access_route}', 1)
 
     return json.dumps(data)
 
@@ -203,11 +206,11 @@ def check_adduser(data):
     num_of_su = len(User.query.filter(User.is_superuser).all())
 
     if len(u) != 0:
-        logger.upd_log(f'Unsuccess user add', 2)
+        logger.upd_log(f'Unsuccess user add from IP: {request.access_route}', 2)
         return 1 #User exists
 
     if not validate_password(str(data['password'])):
-        logger.upd_log(f'Unsuccess user add', 2)
+        logger.upd_log(f'Unsuccess user add from IP: {request.access_route}', 2)
         return 2 #invalid password
 
     user = User()
@@ -220,13 +223,13 @@ def check_adduser(data):
         user.is_superuser = data['is_superuser']
 
     elif user.is_superuser and num_of_su >= 5:
-        logger.upd_log(f'Unsuccess user add', 2)
+        logger.upd_log(f'Unsuccess user add from IP: {request.access_route}', 2)
         return 3  # su munber exceeded
 
     db.session.add(user)
     db.session.commit()
 
-    logger.upd_log(f'User \"{user.username}\" added', 0)
+    logger.upd_log(f'User \"{user.username}\" added from IP: {request.access_route}', 0)
 
     return 0
 
@@ -234,12 +237,12 @@ def check_adduser(data):
 def del_user(data):
     user = User.query.get(int(data['id']))
     if not user:
-        logger.upd_log(f'Unsuccess User delete!', 2)
+        logger.upd_log(f'Unsuccess user delete from IP: {request.access_route}', 2)
         return 1
     else:
         db.session.delete(user)
         db.session.commit()
-        logger.upd_log(f'User \"{user.username}\" deleted', 0)
+        logger.upd_log(f'User \"{user.username}\" deleted from IP: {request.access_route}', 0)
     return 0
 
 
