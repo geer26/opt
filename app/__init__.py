@@ -40,6 +40,7 @@ socket.init_app(app,  cors_allowed_origins="*")
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERMET_SECRET').encode('utf-8')))
 
 
+print(app.config['LOG_FOLDER'])
 logger = Logger( folder = app.config['LOG_FOLDER'] )
 
 
