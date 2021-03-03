@@ -59,8 +59,8 @@ class Logger():
         # check if logfile reached sizelimit, linelimit or timedelta limit, if so archive it and recall __init__
 
         size = stat(logfile_path).st_size
-        #lines = sum(1 for line in open(logfile_path, 'r'))
-        #print(lines)
+        lines = sum(1 for line in open(logfile_path))
+        print(lines)
 
 
         if size >= self.maxsize:
