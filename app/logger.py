@@ -70,7 +70,8 @@ class Logger():
             self.check()
 
         # check if logfile reached linelimit, if so archive it and recall check
-        with open(logfile_path,'r') as logfile:
+        # TODO implement later!
+        '''with open(logfile_path,'r') as logfile:
             lines = len(logfile.readlines())
         if lines >= self.maxlength:
             with ZipFile(archive_path, 'r') as archive:
@@ -82,7 +83,7 @@ class Logger():
             with ZipFile(logfile_path, 'a') as archive:
                 archive.write(new_path, basename(new_path))
             remove(new_path)
-            self.check()
+            self.check()'''
 
         # check if logfile reached timelimit, if so archive it and recall check
         #TODO implement later!
