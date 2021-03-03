@@ -230,7 +230,6 @@ def restore_user():
         db.session.add(u)
         db.session.commit()
 
-    upd_log('User table restored', 0)
     logger.upd_log('User table restored', 0)
 
     return 0
@@ -260,7 +259,6 @@ def restore_modules():
         db.session.add(m)
         db.session.commit()
 
-    upd_log('Module table restored', 0)
     logger.upd_log('Module table restored', 0)
 
     return 0
@@ -284,7 +282,6 @@ def restore_modaux():
         db.session.add(a)
         db.session.commit()
 
-    upd_log('Modaux table restored', 0)
     logger.upd_log('Modaux table restored', 0)
     return 0
 
@@ -312,7 +309,6 @@ def restore_testbattery():
         db.session.add(tb)
         db.session.commit()
 
-    upd_log('Testbattery table restored', 0)
     logger.upd_log('Testbattery table restored', 0)
     return 0
 
@@ -342,7 +338,6 @@ def restore_testsession():
         db.session.add(s)
         db.session.commit()
 
-    upd_log('Testsession table restored', 0)
     logger.upd_log('Testsession table restored', 0)
     return 0
 
@@ -371,7 +366,6 @@ def restore_client():
         db.session.add(c)
         db.session.commit()
 
-    upd_log('Client table restored', 0)
     logger.upd_log('Client table restored', 0)
     return 0
 
@@ -395,7 +389,6 @@ def restore_clientlog():
         db.session.add(c)
         db.session.commit()
 
-    upd_log('Clientlog table restored', 0)
     logger.upd_log('Clientlog table restored', 0)
     return 0
 
@@ -422,7 +415,6 @@ def restore_result():
         db.session.add(r)
         db.session.commit()
 
-    upd_log('Result table restored', 0)
     logger.upd_log('Result table restored', 0)
     return 0
 
@@ -448,7 +440,6 @@ def restore_userlog():
         db.session.add(u)
         db.session.commit()
 
-    upd_log('Userlog table restored', 0)
     logger.upd_log('Userlog table restored', 0)
     return 0
 
@@ -478,7 +469,6 @@ def restore_message():
         db.session.add(m)
         db.session.commit()
 
-    upd_log('Message table restored', 0)
     logger.upd_log('Message table restored', 0)
     return 0
 
