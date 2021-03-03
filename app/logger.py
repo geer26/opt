@@ -46,7 +46,7 @@ class Logger():
 
         # check if logfile exists, if not, create it
         if self.name not in files:
-            with open(logfile_path, "w") as logfile:
+            with open(logfile_path, "w", encoding='utf8') as logfile:
                 pass
 
             self.upd_log('Logfile created', 0)
@@ -60,21 +60,10 @@ class Logger():
 
         size = stat(logfile_path).st_size
         lines = sum(1 for line in open(logfile_path, encoding='utf8'))
-        print(lines)
 
-
-        if size >= self.maxsize:
+        if size >= self.maxsize or lines >= self.maxlength:
             self.archive()
             self.check()
-
-        # check if logfile reached linelimit, if so archive it and recall check
-        # TODO implement later!
-        # on server exits wit error at readlines()
-        '''with open(logfile_path,'r') as logfile:
-            lines = len(logfile.readlines())
-        if lines >= self.maxlength:
-            self.archive()
-            self.check()'''
 
         # check if logfile reached timelimit, if so archive it and recall check
         #TODO implement later!

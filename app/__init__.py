@@ -43,5 +43,6 @@ fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERMET_SECRET').encode('utf-
 print(app.config['LOG_FOLDER'])
 logger = Logger( folder = app.config['LOG_FOLDER'] )
 
+logger.upd_log('App started', 1)
 
 from app import routes, models
