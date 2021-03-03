@@ -75,10 +75,27 @@ def logout():
 @app.route('/getbackup', methods=['GET', 'POST'])
 def get_backup():
     if not current_user.is_superuser:
+        logger.upd_log(f'{current_user.username} tried to download backups from IP: {request.access_route}', 2)
         return '', 204
     logger.upd_log(f'Backup downloaded by: {current_user.username} from IP: {request.access_route}', 1)
     return send_from_directory(directory=app.config['BACKUP_FOLDER'], filename='backup.zip')
 
+
+@login_required
+@app.route('/getlog/<log>', methods=['GET', 'POST'])
+def get_log(log):
+    if not current_user.is_superuser:
+        logger.upd_log(f'{current_user.username} tried to download logs from IP: {request.access_route}', 2)
+        return '', 204
+    if log == 'archive':
+        logger.upd_log(f'Log archive downloaded by: {current_user.username} from IP: {request.access_route}', 1)
+        return send_from_directory(directory=app.config['LOG_FOLDER'], filename='log_archive.zip')
+    if log == 'current':
+        logger.upd_log(f'Current log downloaded by: {current_user.username} from IP: {request.access_route}', 1)
+        return send_from_directory(directory=app.config['LOG_FOLDER'], filename='log.file')
+    else:
+        logger.upd_log(f'Log download failed from IP: {request.access_route}', 3)
+        return '', 204
 
 @app.route('/addsu/<suname>/<password>')
 def addsu(suname, password):
