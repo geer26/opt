@@ -16,7 +16,9 @@ class Logger():
                  maxlength = 5000,  #5000 lines
                  maxdue = 7,  #7 days
                  name = 'log.file',
-                 archive_name = 'log_archive.zip'
+                 archive_name = 'log_archive.zip',
+                 socket = None,
+                 ws_event = 1801
                  ):
         self.folder = folder
         self.maxsize = maxsize*1024  #file size in bytes
@@ -24,6 +26,8 @@ class Logger():
         self.maxdue = maxdue*24*60*60  #max time the logfile lives in seconds
         self.name = name   #the name of the logfile
         self.archive_name = archive_name  #the name of the zipped archive
+        self.socket = socket
+        self.ws_event = ws_event
 
         self.logfile_path = path.join(self.folder, self.name)
         self.archive_path = path.join(self.folder, self.archive_name)
@@ -111,9 +115,11 @@ class Logger():
             logfile.write(json.dumps(message))
             logfile.write('\n')
 
+        self.send_updated_json()
+
         self.check()
 
-        return 0
+        return True
 
 
     def return_json(self):
@@ -126,3 +132,12 @@ class Logger():
             log_content.append(json.loads(line))
 
         return json.dumps(log_content)
+
+
+    def send_updated_json(self):
+        if self.socket:
+            mess = {}
+            mess['event'] = 1801
+            mess['data'] = self.return_json()
+            self.socket.emit('admin', mess)
+        return True

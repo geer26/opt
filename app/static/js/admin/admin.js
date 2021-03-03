@@ -278,6 +278,7 @@ socket.on('admin', function(data){
         //accept refreshed log content as json
         case 1801:{
             loadend();
+            console.log('INCOMING LOG UPDATE!');
             refreshlogtable(JSON.parse(data['data']));
         }
         break;

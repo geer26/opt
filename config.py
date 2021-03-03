@@ -17,6 +17,7 @@ class Config:
     TEMPLATES_AUTO_RELOAD = True
 
     UPLOAD_FOLDER = path.join(basedir, 'app/uploads/')
+
     BACKUP_FOLDER = path.join(basedir, 'app/backup/')
 
     LOG_FOLDER = path.join(basedir, 'app/log/')
