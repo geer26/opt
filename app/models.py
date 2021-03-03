@@ -1,5 +1,5 @@
 
-from app import db, login, fernet
+from app import db, login, fernet, logger
 
 import bcrypt
 
@@ -51,6 +51,7 @@ class User(UserMixin, db.Model):
         pw_hash = bcrypt.hashpw(p_bytes,salt)
         self.password_hash = pw_hash.decode()
         self.salt = salt.decode()
+        logger.upd_log(f'{self.username} changed password', 0)
         return True
 
     def check_password(self, password):
@@ -62,10 +63,12 @@ class User(UserMixin, db.Model):
 
     def set_description(self, desc):
         self.description = fernet.encrypt(desc.encode('utf-8'))
+        logger.upd_log(f'{self.username} changed description', 0)
         return True
 
     def set_contact(self,contact):
         self.contact = fernet.encrypt(contact.encode('utf-8'))
+        logger.upd_log(f'{self.username} changed contact', 0)
         return True
 
     def get_description(self):

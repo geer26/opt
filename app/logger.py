@@ -28,7 +28,7 @@ class Logger():
         self.logfile_path = path.join(self.folder, self.name)
         self.archive_path = path.join(self.folder, self.archive_name)
 
-        self.log_type = {0: 'INFO', 1: 'WARNING', 2: 'ERROR', 3: 'FATAL ERROR'}
+        self.log_type = {0: 'INFO', 1: 'WARNING', 2: 'ERROR', 3: 'FATAL ERROR', 9: 'SYSTEM EVENT'}
 
         self.check()  #init logfile
         return
