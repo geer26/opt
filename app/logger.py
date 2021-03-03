@@ -6,6 +6,8 @@ from datetime import datetime
 
 from flask_login import current_user
 
+from app import socket
+
 
 class Logger():
 
@@ -16,7 +18,8 @@ class Logger():
                  maxlength = 5000,  #5000 lines
                  maxdue = 7,  #7 days
                  name = 'log.file',
-                 archive_name = 'log_archive.zip'
+                 archive_name = 'log_archive.zip',
+                 ws_response_event = 1801 #if zero, no ws responses, else send log to this eventcode
                  ):
         self.folder = folder
         self.maxsize = maxsize*1024  #file size in bytes
@@ -24,6 +27,7 @@ class Logger():
         self.maxdue = maxdue*24*60*60  #max time the logfile lives in seconds
         self.name = name   #the name of the logfile
         self.archive_name = archive_name  #the name of the zipped archive
+        self.ws_response_event = ws_response_event
 
         self.logfile_path = path.join(self.folder, self.name)
         self.archive_path = path.join(self.folder, self.archive_name)
@@ -110,6 +114,13 @@ class Logger():
         with open(self.logfile_path, 'a+') as logfile:
             logfile.write(json.dumps(message))
             logfile.write('\n')
+
+        # send update to all admin
+        if self.ws_response_event > 0:
+            mess = {}
+            mess['event'] = self.ws_response_event
+            mess['data'] = self.return_json()
+            socket.emit('admin', mess)
 
         self.check()
 
