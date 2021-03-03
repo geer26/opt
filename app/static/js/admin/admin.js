@@ -184,6 +184,7 @@ function refreshlog(){
 
 
 function refreshlogtable(json){
+    $("#tablebody").empty();
     json.forEach(entry => {
 
         var row = "<tr> <td>"+
