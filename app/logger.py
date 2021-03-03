@@ -46,13 +46,13 @@ class Logger():
 
         # check if logfile exists, if not, create it
         if self.name not in files:
-            with open(logfile_path, "a+") as logfile:
+            with open(logfile_path, "w") as logfile:
                 logfile.write(f'LOGFILE LÉTREHOZVA: {datetime.now().strftime("%Y.%m.%d-%H:%M:%S")}')
                 logfile.write('\n')
 
         # check if archive exists, if not, create it
         if self.archive_name not in files:
-            with ZipFile(archive_path, 'a') as archive:
+            with ZipFile(archive_path, 'w') as archive:
                 pass
 
         # check if logfile reached sizelimit, if so archive it and recall __init__
@@ -70,7 +70,7 @@ class Logger():
             self.check()
 
         # check if logfile reached linelimit, if so archive it and recall check
-        with open(logfile_path,'r+') as logfile:
+        with open(logfile_path,'r') as logfile:
             lines = len(logfile.readlines())
         if lines >= self.maxlength:
             with ZipFile(archive_path, 'r') as archive:
