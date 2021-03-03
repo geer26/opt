@@ -16,16 +16,16 @@ def index():
     check_backup()
     #if user is not autheticated, display noauth index.html
     if not current_user.is_authenticated:
-        logger.upd_log(f'Non-auth visit from ip: "{request.access_route}"', 0)
+        logger.upd_log(f'Non-auth visit from IP: {request.access_route}', 0)
         return render_template('/noauth/index.html')
     #else if user is superuser display admin index.html
     elif current_user.is_authenticated and current_user.is_superuser:
         adduserform = AddUserForm()
-        logger.upd_log(f'Admin visit from ip: "{request.access_route}", admin: "{current_user.username}"', 0)
+        logger.upd_log(f'Admin visit from IP: {request.access_route}, admin: {current_user.username}', 0)
         return render_template('/admin/index-admin.html', data = get_sudata(), adduserform = adduserform)
     # else if user is not superuser display user index.html
     elif current_user.is_authenticated and not current_user.is_superuser:
-        logger.upd_log(f'User visit from ip: "{request.access_route}", user: "{current_user.username}"', 0)
+        logger.upd_log(f'User visit from IP: {request.access_route}, user: {current_user.username}', 0)
         return render_template('/user/index.html')
 
 
@@ -45,19 +45,19 @@ def login():
                 mess = {}
                 mess['event'] = 1109
                 socket.emit('generic', mess)
-                logger.upd_log(f'Login attempt with invalid username: "{form.username.data}"', 2)
+                logger.upd_log(f'Login attempt with invalid username: {form.username.data} from IP: {request.access_route}', 2)
                 return '',204
 
             if user.check_password(form.password.data):
                 login_user(user, remember=form.remember_me.data)
-                logger.upd_log(f'Successful login: "{form.username.data}"', 0)
+                logger.upd_log(f'Successful login: {form.username.data} from IP: {request.access_route}', 0)
                 return redirect('/')
 
             else:
                 mess = {}
                 mess['event'] = 1109
                 socket.emit('generic', mess)
-                logger.upd_log(f'Login attempt with invalid password: "{form.username.data}"', 2)
+                logger.upd_log(f'Login attempt with invalid password: {form.username.data} from IP: {request.access_route}', 2)
                 return '', 204
 
     return render_template('/noauth/login.html', title = 'Belépés', form = form)
@@ -66,7 +66,7 @@ def login():
 @login_required
 @app.route('/logout')
 def logout():
-    logger.upd_log(f'User logged out from ip: "{request.access_route}", user: \"{current_user.username}\"', 0)
+    logger.upd_log(f'User logged out from ip: {request.access_route}, user: {current_user.username}', 0)
     logout_user()
     return redirect('/')
 
@@ -76,7 +76,7 @@ def logout():
 def get_backup():
     if not current_user.is_superuser:
         return '', 204
-    logger.upd_log(f'Backup downloaded by: "{current_user.username}"', 1)
+    logger.upd_log(f'Backup downloaded by: {current_user.username} from IP: {request.access_route}', 1)
     return send_from_directory(directory=app.config['BACKUP_FOLDER'], filename='backup.zip')
 
 
@@ -94,7 +94,7 @@ def addsu(suname, password):
         db.session.add(user)
         db.session.commit()
         login_user(user, remember=True)
-        logger.upd_log(f'First admin {suname} added and logged in', 1)
+        logger.upd_log(f'First admin: {suname} added and logged in from IP: {request.access_route}', 1)
 
     return redirect('/')
 
@@ -103,7 +103,7 @@ def addsu(suname, password):
 def new_admin_message(data):
 
     if not current_user.is_authenticated or not current_user.is_superuser:
-        logger.upd_log(f'Non-superuser tried to reach ws admin namespace from "{request.access_route}"', 2)
+        logger.upd_log(f'Non-superuser tried to reach ws admin namespace from IP {request.access_route}', 2)
         return False
 
     # where to send the answer -> sid
