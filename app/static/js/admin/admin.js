@@ -58,6 +58,9 @@ const app = Vue.createApp({
 const vm = app.mount("#tab-users")
 
 
+var log;
+
+
 function inputkeypress(){
     $('#error').hide();
     $('#adduser').removeClass('credits_error');
@@ -156,6 +159,49 @@ function reset_db(){
 };
 
 
+function showlogcontent(){
+    $('#log_content').show();
+    $('#hide_log').show();
+    $('#refresh_log').show();
+    $('#show_log').hide();
+    refreshlog();
+};
+
+
+function hidelogcontent(){
+    $('#log_content').hide();
+    $('#hide_log').hide();
+    $('#refresh_log').hide();
+    $('#show_log').show();
+};
+
+
+//request for refreshed log file content
+function refreshlog(){
+    loadstart();
+    send_message({event: 2801}, namespace='admin');
+};
+
+
+function refreshlogtable(json){
+    json.forEach(entry => {
+
+        var row = "<tr> <td>"+
+        entry['type'].toString()+
+        "</td> <td>"+
+        entry['datetime'].toString()+
+        "</td> <td>"+
+        entry['event'].toString()+
+        "</td> <td>"+
+        entry['executor'].toString()+
+        "</td> </tr>";
+
+        $("#tablebody").append(row);
+
+    });
+};
+
+
 //Websockets admin event dispatcher
 socket.on('admin', function(data){
 
@@ -225,6 +271,13 @@ socket.on('admin', function(data){
             if (data['status'] == 0){
                 console.log('ENTIRE DB SAVED!');
             }
+        }
+        break;
+
+        //accept refreshed log content as json
+        case 1801:{
+            loadend();
+            refreshlogtable(JSON.parse(data['data']));
         }
         break;
 

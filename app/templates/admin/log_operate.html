@@ -4,8 +4,42 @@
     width: 100%;
     height: 100%;
     padding: 5px;
-    border: 1px solid blue;
+
+    display: grid
+    grid-template-rows: 1fr 1fr 8fr;
+    grid-gap: 3px;
+    justify-content: space-evenly;
+    grid-template-areas:
+        "actions"
+        "titlebar"
+        "log_content";
 }
+
+
+.titlebar{
+    position: relative;
+    grid-area: titlebar;
+    width: 100%;
+    height: 5vh;
+}
+
+
+.actions{
+    position: relative;
+    grid-area: actions;
+    width: 100%;
+    height: 5vh;
+}
+
+
+.log_content{
+    position: relative;
+    grid-area: log_content;
+    width: 100%;
+    height: 70vh;
+    overflow: auto;
+}
+
 
 .backupicon{
     cursor: pointer;
@@ -16,12 +50,73 @@
     color: #aaaaaa;
 }
 
+.table_log{
+    position: relative;
+    width: 100%;
+    height: 100;
+}
+
+.table_log td{
+    font-size: .7em;
+    border-top: 1px solid #333333;
+}
+
+.actionicon{
+    display: inline-block;
+    position: relative;
+}
+
 </style>
 
 <div class="db_main_holder">
-    Hello World!
 
-    <p>-> aktuális log letöltése </p>
-    <p>-> archív logok letöltése</p>
+    <div class="actions">
+        aktuális log letöltése <i class="fa fa-file-download backupicon" onclick=""></i>
+        archív logok letöltése <i class="fa fa-file-download backupicon" onclick=""></i>
+    </div>
+
+    <div class="titlebar">
+
+        <div class="actionicon" id="refresh_log" style="display:none;">
+            Log frissítése
+            <i class="fa fa-sync-alt backupicon" onclick="refreshlog()"></i>
+        </div>
+
+        <div class="actionicon" id="show_log">
+            Log megtekintése
+            <i class="fa fa-angle-down backupicon" onclick="showlogcontent()"></i>
+        </div>
+
+        <div class="actionicon" id="hide_log" style="display:none;">
+            Log elrejtése
+            <i class="fa fa-angle-left backupicon" onclick="hidelogcontent()"></i>
+        </div>
+
+    </div>
+
+    <div class="log_content" id="log_content" style="display:none;">
+        <table class="table_log">
+            <thead>
+                <tr>
+                    <th>Típus</th>
+                    <th>Időpont</th>
+                    <th>Esemény</th>
+                    <th>Végrehajtó</th>
+                </tr>
+            </thead>
+            <tbody id="tablebody">
+
+            </tbody>
+            <!--
+            <tr id="">
+                <td>DUMMY DATA</td>
+                <td>DUMMY DATA</td>
+                <td>DUMMY DATA</td>
+                <td>DUMMY DATA</td>
+            </tr>
+            -->
+
+        </table>
+    </div>
 
 </div>

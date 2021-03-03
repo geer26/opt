@@ -114,3 +114,15 @@ class Logger():
         self.check()
 
         return 0
+
+
+    def return_json(self):
+        log_content = []
+        with open(self.logfile_path) as logfile:
+            content = logfile.readlines()
+        content = [x.strip() for x in content]
+
+        for line in content:
+            log_content.append(json.loads(line))
+
+        return json.dumps(log_content)

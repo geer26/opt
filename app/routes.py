@@ -133,10 +133,19 @@ def new_admin_message(data):
         return True
 
 
+    #ask for refreshed logfile as json
+    if data['event'] == 2801:
+        mess = {}
+        mess['event'] = 1801
+        mess['data'] = logger.return_json()
+        socket.emit('admin', mess, room=sid)
+        return True
+
+
     #backup entire db
     if data['event'] == 2851:
         mess = {}
-        mess['event'] = 1851
+        mess['event'] = 1850
         mess['status'] = backup_db()
         socket.emit('admin', mess, room=sid)
         return True
