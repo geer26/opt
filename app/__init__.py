@@ -52,20 +52,18 @@ fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERMET_SECRET').encode('utf-
 logger = Logger( folder = app.config['LOG_FOLDER'], socket = socket )
 
 
-backupper = Backupper( folder = app.config['BACKUP_FOLDER'] )
-
 
 logger.upd_log('App started', 9)
 
 
-from app import routes, models
+from app import routes, models, backupper
 
-backupper = Backupper( folder = app.config['BACKUP_FOLDER'] )
-logger.upd_log('Backupper init', 9)
-
-
-fieldlist = list( filter( lambda key: not key.startswith('_'), models.User.__dict__.keys() ) )
-#reallist = list( filter( lambda field: type(field)['class'] == 'sqlalchemy.orm.attributes.InstrumentedAttribute' ,fieldlist ) )
-for field in fieldlist:
-    exec(f'print( "{field} : ", type( models.User.{field} ) )')
-    #exec( f'print( "{field} : ", type( models.User.{field} ) ==  sqlalchemy.orm.attributes.InstrumentedAttribute )' )
+'''bu = Backupper(\
+    folder = app.config['BACKUP_FOLDER'],\
+    tables = [\
+        models.User, models.Client, models.Result, models.Message, \
+        models.Userlog, models.Clientlog, models.Testsession,\
+        models.Testbattery, models.Modaux, models.Module\
+        ]\
+    )'''
+#logger.upd_log('Backupper init', 9)

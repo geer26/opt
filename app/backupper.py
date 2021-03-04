@@ -6,28 +6,42 @@ from zipfile import ZipFile
 
 from flask_login import current_user
 
+
 class Backupper():
 
     def __init__(self,
                  folder,  #backup folder - mandatory
-                 #db,  #db from app - mandatory
-                 acrhive_name = 'backup.zip',  #name of the backup file - optional
+                 acrhive_name = 'backup2.zip',  #name of the backup file - optional
                  log_name = 'log.file',  #log name - optional
                  socket = None,  #inherited socket object to communicate on - optional
-                 event_code = None  #ws event code to send messages thorough - optional
+                 event_code = None,  #ws event code to send messages thorough - optional
+                 tables = None  #tables to save and reload - optional
                  ):
+        from app import db
+
         self.folder = folder
         self.archive_name = acrhive_name
         self.log_name = log_name
         self.socket = socket
         self.event_code = event_code
 
+        if tables:
+            self.tables = tables
+        else:
+            #TODO implement all tables if optional parameter is None
+            pass
+
         self.backup_path = path.join(self.folder, self.archive_name)
         self.log_path = path.join(self.folder, self.log_name)
         self.temp_log_path = path.join(self.folder, f'temp_{self.log_name}')
 
         self.log_type = {0: 'INFO', 1: 'WRITE', 2: 'READ', 3: 'ERROR'}
-        #self.check()
+
+        self.check()
+
+        self.backup_all()
+
+        return
 
 
     def check(self):
@@ -101,4 +115,18 @@ class Backupper():
         upd_log('Clientlog table archived', 0)
         logger.upd_log('Clientlog table archived', 0)'''
 
+        return 0
+
+
+    def backup_all(self):
+        for table in self.tables:
+
+            fieldlist = list( filter( lambda key: not key.startswith('_'), table.__dict__.keys() ) )
+            print(table, ' : ', table.id)
+            for field in fieldlist:
+                print(field, type(field))
+
+        return 0
+
+    def restore_all(self):
         return 0
