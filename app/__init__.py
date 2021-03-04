@@ -20,12 +20,11 @@ from cryptography.fernet import Fernet
 app = Flask(__name__)
 dbtype = os.environ.get('DB_TYPE')
 
+
 if not dbtype or dbtype=='SQLite':
     app.config.from_object(SQLite)
 elif dbtype and dbtype == 'PostgreSQL':
     app.config.from_object(PostgreSQL)
-
-print(app.config)
 
 
 login = LoginManager(app)
