@@ -25,7 +25,7 @@ if not dbtype or dbtype=='SQLite':
 elif dbtype and dbtype == 'PostgreSQL':
     app.config.from_object(PostgreSQL)
 
-print(os.environ.get('SQLALCHEMY_DATABASE_URI'))
+print(app.config)
 
 
 login = LoginManager(app)
