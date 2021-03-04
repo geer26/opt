@@ -19,8 +19,8 @@ from cryptography.fernet import Fernet
 
 
 app = Flask(__name__)
-dbtype = os.environ.get('DB_TYPE')
 
+dbtype = os.environ.get('DB_TYPE')
 
 if not dbtype or dbtype=='SQLite':
     app.config.from_object(SQLite)
@@ -49,13 +49,23 @@ socket.init_app(app,  cors_allowed_origins="*")
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERMET_SECRET').encode('utf-8')))
 
 
-#backupper = Backupper( folder = app.config['BACKUP_FOLDER'], db=db )
-
-
 logger = Logger( folder = app.config['LOG_FOLDER'], socket = socket )
+
+
+backupper = Backupper( folder = app.config['BACKUP_FOLDER'] )
 
 
 logger.upd_log('App started', 9)
 
 
 from app import routes, models
+
+backupper = Backupper( folder = app.config['BACKUP_FOLDER'] )
+logger.upd_log('Backupper init', 9)
+
+
+fieldlist = list( filter( lambda key: not key.startswith('_'), models.User.__dict__.keys() ) )
+#reallist = list( filter( lambda field: type(field)['class'] == 'sqlalchemy.orm.attributes.InstrumentedAttribute' ,fieldlist ) )
+for field in fieldlist:
+    exec(f'print( "{field} : ", type( models.User.{field} ) )')
+    #exec( f'print( "{field} : ", type( models.User.{field} ) ==  sqlalchemy.orm.attributes.InstrumentedAttribute )' )
