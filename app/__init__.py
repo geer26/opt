@@ -2,6 +2,7 @@ import base64
 
 from flask import Flask
 
+from app.backupper import Backupper
 from app.logger import Logger
 
 from config import SQLite, PostgreSQL
@@ -46,6 +47,9 @@ socket.init_app(app,  cors_allowed_origins="*")
 
 
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERMET_SECRET').encode('utf-8')))
+
+
+#backupper = Backupper( folder = app.config['BACKUP_FOLDER'], db=db )
 
 
 logger = Logger( folder = app.config['LOG_FOLDER'], socket = socket )
