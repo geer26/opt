@@ -30,11 +30,11 @@ class Config:
 
 class PostgreSQL(Config):
     """Production config."""
-    #FLASK_ENV = 'production'
-    #DEBUG = False
-    #TESTING = False
-    #SQLALCHEMY_TRACK_MODIFICATIONS = False
-    #SQLALCHEMY_DATABASE_URI = environ.get('POSTGRES_URI')
+    FLASK_ENV = 'production'
+    DEBUG = False
+    TESTING = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = environ.get('POSTGRES_URI')
 
 
 class SQLite(Config):

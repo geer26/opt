@@ -4,7 +4,7 @@ from flask import Flask
 
 from app.logger import Logger
 
-from config import SQLite
+from config import SQLite, PostgreSQL
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -18,7 +18,14 @@ from cryptography.fernet import Fernet
 
 
 app = Flask(__name__)
-app.config.from_object(SQLite)
+dbtype = os.environ.get('DB_TYPE')
+
+if not dbtype or dbtype=='SQLite':
+    app.config.from_object(SQLite)
+elif dbtype and dbtype == 'PostgreSQL':
+    app.config.from_object(PostgreSQL)
+
+print(os.environ.get('SQLALCHEMY_DATABASE_URI'))
 
 
 login = LoginManager(app)
@@ -26,6 +33,8 @@ login = LoginManager(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+
 with app.app_context():
     if db.engine.url.drivername == 'sqlite':
         migrate.init_app(app, db, render_as_batch=True)
