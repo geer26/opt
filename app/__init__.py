@@ -53,7 +53,6 @@ db_fernet = Fernet(base64.urlsafe_b64encode(os.getenv('DB_SECRET').encode('utf-8
 logger = Logger( folder = app.config['LOG_FOLDER'], socket = socket )
 
 
-
 logger.upd_log('App started', 9)
 
 
