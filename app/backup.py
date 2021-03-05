@@ -6,11 +6,14 @@ from zipfile import ZipFile
 
 from flask_login import current_user
 
-from app import fernet, db, app, logger
+from app import fernet, db, app, logger, bu
 from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result, Userlog, Message
 
 
 def backup_db():
+
+    bu.backup_all()
+
     check_backup()
 
     # user
@@ -49,6 +52,8 @@ def backup_db():
 
 
 def restore_db():
+    bu.restore_all()
+
     # reset tables
     User.query.delete()
     Module.query.delete()

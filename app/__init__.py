@@ -42,16 +42,16 @@ socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERNET_SECRET').encode('utf-8')))
-db_fernet = Fernet(base64.urlsafe_b64encode(os.getenv('DB_SECRET').encode('utf-8')))
+#db_fernet = Fernet(base64.urlsafe_b64encode(os.getenv('DB_SECRET').encode('utf-8')))
 
 logger = Logger(folder=app.config['LOG_FOLDER'], socket=socket)
 
 logger.upd_log('App started', 9)
 
 bu = Backupper()
+logger.upd_log('Backupper init', 9)
 
 from app import routes, models
-#print(models.User.__name__)
 
 bu.init_app(app, tables=[
         models.User, models.Client, models.Result, models.Message,
@@ -59,17 +59,6 @@ bu.init_app(app, tables=[
         models.Testbattery, models.Modaux, models.Module
     ]
             )
-
-'''bu = Backupper(
-    folder=app.config['BACKUP_FOLDER'],
-    db=None,
-    tables=[
-        models.User, models.Client, models.Result, models.Message,
-        models.Userlog, models.Clientlog, models.Testsession,
-        models.Testbattery, models.Modaux, models.Module
-    ]
-)
-logger.upd_log('Backupper init', 9)'''
 
 
 

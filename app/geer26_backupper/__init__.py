@@ -1,5 +1,8 @@
-from os import listdir, remove, path
+import base64
+from os import listdir, remove, path, getenv
 from zipfile import ZipFile
+
+from cryptography.fernet import Fernet
 from flask_login import current_user
 from os.path import basename
 from datetime import datetime
@@ -23,12 +26,15 @@ class Backupper():
         self.backup_path = None
         self.log_path = None
         self.temp_log_path = None
+        self.fernet = None
         self.log_type = {0: 'INFO', 1: 'WRITE', 2: 'READ', 3: 'ERROR'}
 
         return
 
 
     def init_app(self, app, tables,  **kwargs):
+        self.fernet = Fernet(base64.urlsafe_b64encode(getenv('DB_SECRET').encode('utf-8')))
+
         if app is not None:
             if not hasattr(app, 'extensions'):
                 app.extensions = {}
@@ -60,9 +66,10 @@ class Backupper():
             self.db = kwargs.get('db')
         else:
             self.db = app.extensions.get('sqlalchemy')
+            from app import db
+            self.db = db
 
         self.check()
-        self.backup_all()
 
 
     def check(self):
@@ -78,13 +85,14 @@ class Backupper():
                 #create first log entry
                 with open(self.log_path, 'a') as logfile:
                     logfile.write(self.create_log_entry('Archive created'))
+                    logfile.write('\n')
                 archive.write(self.log_path, basename(self.log_path))
             remove(self.log_path)
 
         return
 
 
-    def create_log_entry(self, message, type = 0):
+    def create_log_entry(self, message, type=0):
         if current_user and current_user.is_authenticated:
             username = current_user.username
         else:
@@ -101,6 +109,10 @@ class Backupper():
         return json.dumps(message)
 
 
+    def update_log(self,message, type=0):
+        pass
+
+
     def flush_table(self, table):
         return 0
 
@@ -111,35 +123,97 @@ class Backupper():
 
     def backup_all(self):
 
-        #TODO solve this!
-        #1. extract archive to folder
-        '''with open(self.backup_path,'r') as z:
-            oldzip = ZipFile.open(z, 'r')
-        print(oldzip)
-        oldzip.close()'''
+        #1. extract archive to folder and delete old zipfile
+        self.extract_all()
 
-        #2. delete old zip
-        '''os.remove(self.backup_path)'''
+        #2. create encrypted table saves
+        for table in self.tables:
+            tablename = table.__name__
+            temp = ''
+            for rekord in table.query.all():
+                temp+= rekord.dump()
+                temp+='\n'
 
-        #3. create table saves with overwrite
-        '''for table in self.tables:
-                    tablename = table.__name__
-                    with open(path.join(self.folder, f'{tablename}.pic'), 'w') as tempfile:
-                        for rekord in table.query.all():
-                            tempfile.write(rekord.dump())
-                            tempfile.write('\n')'''
+            with open(path.join(self.folder, f'{tablename}.pic'), 'wb') as enrcypted:
+                enrcypted.write(self.fernet.encrypt(temp.encode('utf-8')))
 
-        #4. write all.pic and .file files into a new archive
 
-        '''with ZipFile.open(path.join(self.folder, self.archive_name), 'r') as oldzip:
-            oldzip.extractall()'''
+            #3. write pic file to zip
+            self.to_zip(path.join(self.folder, f'{tablename}.pic'))
+
+            #4. delete temporary files
+            remove(path.join(self.folder, f'{tablename}.pic'))
+
+            #5. update log
+            with open(self.log_path, 'a') as logfile:
+                logfile.write(self.create_log_entry(f'{tablename} table flushed', type=2))
+                logfile.write('\n')
+
+        #6. add log to zip
+        self.to_zip(path.join(self.folder, 'log.file'))
+
+        #7. remove unzipped logfile
+        remove(path.join(self.folder, 'log.file'))
 
         return 0
 
 
     def restore_all(self):
+        print('RESTORE HERE!')
+        #1. unzip all
+        self.extract_all(nodelete=True)
+
+        #2. Clear all tables entirerly(log it per table!)
+        for table in self.tables:
+            self.wipe_table(table)
+            pass
+
+        #3. iter over saves, decode and save it again with 'temp_' prefix
+        for file in listdir(self.folder):
+            if file.endswith('.pic'):
+                temp = self.fernet.decrypt( open(path.join(self.folder, f'{file}'), 'rb').read() ).decode('utf-8')
+
+                for table in self.tables:
+                    if table.__name__ == file.split('.')[0]:
+                        self.fill_table( table, list(temp.split('\n')) )
         return 0
 
 
-    def zip_all(self):
+    def wipe_table(self, table):
+        table.query.delete()
+        #self.db.session.commit()
+        with open(self.log_path, 'a') as logfile:
+            logfile.write(self.create_log_entry(f'{table.__name__} table wiped into oblivion!', type=1))
+            logfile.write('\n')
+        return 0
+
+
+    def fill_table(self, table, content):
+        for rek in content:
+            if rek == '':
+                continue
+            else:
+                rekord = table()
+                rekord.load(rek)
+                self.db.session.add(rekord)
+                #self.db.session.commit()
+                with open(self.log_path, 'a') as logfile:
+                    logfile.write(self.create_log_entry(f'{table.__name__} table restored from save', type=1))
+                    logfile.write('\n')
+        return 0
+
+
+    def extract_all(self, **kwargs):
+        print( path.join(self.backup_path) )
+        with ZipFile(path.join(self.backup_path), 'r') as oldzip:
+            oldzip.extractall(path.join(self.folder))
+        if 'nodelete' not in kwargs or not kwargs.get('nodelete'):
+            remove(self.backup_path)
+        return 0
+
+
+    def to_zip(self, fileobject_path):
+        zipObj = ZipFile(self.backup_path, 'a')
+        zipObj.write(fileobject_path, basename(fileobject_path))
+        zipObj.close()
         return 0
