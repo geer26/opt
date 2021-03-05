@@ -82,50 +82,12 @@ class Backupper():
 
     def flush_table(self, table):
 
-        temp_table = {}
-        records = []
-
-        for record in table.query.all():
-            r = {}
-            #records here
-
-        '''clientlog_table = {}
-        clientlogs = []
-
-        for clientlog in Clientlog.query.all():
-            c = {}
-            c['id'] = clientlog.id
-            c['client_id'] = clientlog.client_id
-            c['message'] = clientlog.message
-            c['source'] = clientlog.source
-            c['timestamp'] = clientlog.timestamp.timestamp()
-            clientlogs.append(c)
-
-        clientlog_table['timestamp'] = datetime.now().timestamp()
-        clientlog_table['clientlogs'] = clientlogs
-
-        savepath = os.path.join(app.config['BACKUP_FOLDER'], 'clientlog.pic')
-
-        with open(savepath, 'wb') as enrcypted:
-            enrcypted.write(fernet.encrypt(json.dumps(clientlog_table).encode('utf-8')))
-
-        add_to_zip(savepath)
-        os.remove(savepath)
-
-        upd_log('Clientlog table archived', 0)
-        logger.upd_log('Clientlog table archived', 0)'''
-
         return 0
 
 
     def backup_all(self):
         for table in self.tables:
-
-            fieldlist = list( filter( lambda key: not key.startswith('_'), table.__dict__.keys() ) )
-            print(table, ' : ', table.id)
-            for field in fieldlist:
-                print(field, type(field))
-
+            pass
         return 0
 
     def restore_all(self):

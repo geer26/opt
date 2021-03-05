@@ -1,3 +1,4 @@
+import json
 
 from app import db, login, fernet, logger
 
@@ -63,12 +64,10 @@ class User(UserMixin, db.Model):
 
     def set_description(self, desc):
         self.description = fernet.encrypt(desc.encode('utf-8'))
-        logger.upd_log(f'{self.username} changed description', 0)
         return True
 
     def set_contact(self,contact):
         self.contact = fernet.encrypt(contact.encode('utf-8'))
-        logger.upd_log(f'{self.username} changed contact', 0)
         return True
 
     def get_description(self):
@@ -76,6 +75,34 @@ class User(UserMixin, db.Model):
 
     def get_contact(self):
         return fernet.decrypt(self.contact).decode('utf-8')
+
+    def dump(self):
+        data = {}
+        data['id'] = self.id
+        data['username'] = self.username
+        data['description'] = self.get_description()
+        data['contact'] = self.get_contact()
+        data['is_superuser'] =self.is_superuser
+        data['password_hash'] = self.password_hash
+        data['salt'] = self.salt
+        data['settings'] = self.settings
+        data['added'] = self.added.timestamp()
+        data['last_modified'] = self.last_modified.timestamp()
+        return json.dumps(data)
+
+    def load(self, data):
+        data = json.loads(data)
+        self.id = data['id']
+        self.username = data['username']
+        self.description = self.set_description(str(data['description']))
+        self.contact = self.set_contact(str(data['contact']))
+        self.is_superuser = data['is_superuser']
+        self.password_hash = data['password_hash']
+        self.salt = data['salt']
+        self.settings = data['settings']
+        self.added = datetime.fromtimestamp(data['added']) #self.added.timestamp()
+        self.last_modified = datetime.now()
+        return 0
 
 
 #DONE
@@ -105,6 +132,29 @@ class Module(db.Model):
     def __repr__(self):
         return f'Modulnév: {self.short_name}'
 
+    def dump(self):
+        data = {}
+        data['id'] = self.id
+        data['uuid'] = self.uuid
+        data['short_name'] = self.short_name
+        data['verbose_name'] = self.verbose_name
+        data['description'] = self.description
+        data['attributes'] = self.attributes
+        data['added'] = self.added.timestamp()
+        data['last_modified'] = self.last_modified.timestamp()
+        return json.dumps(data)
+
+    def load(self, data):
+        data = json.loads(data)
+        self.id = data['id']
+        self.uuid = data['uuid']
+        self.verbose_name = data['verbose_name']
+        self.description = data['description']
+        self.attributes = data['attributes']
+        self.added = datetime.fromtimestamp(data['added'])  # self.added.timestamp()
+        self.last_modified = datetime.now()
+        return 0
+
 
 #DONE
 '''
@@ -120,6 +170,20 @@ class Modaux(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     module_id = db.Column(db.Integer, db.ForeignKey('module.id'))
+
+    def dump(self):
+        data = {}
+        data['id'] = self.id
+        data['user_id'] = self.user_id
+        data['module_id'] = self.module_id
+        return json.dumps(data)
+
+    def load(self, data):
+        data = json.loads(data)
+        self.id = data['id']
+        self.user_id = data['user_id']
+        self.module_id = data['module_id']
+        return 0
 
 
 #DONE
@@ -151,8 +215,35 @@ class Testbattery(db.Model):
     def __repr__(self):
         return f'Modulnév: {self.name}'
 
+    def dump(self):
+        data = {}
+        data['id'] = self.id
+        data['user_id'] = self.user_id
+        data['name'] = self.name
+        data['description'] = self.description
+        data['created'] = self.created.timestamp()
+        data['modules'] = self.modules
+
+        data['added'] = self.added.timestamp()
+        data['last_modified'] = self.last_modified.timestamp()
+        return json.dumps(data)
+
+    def load(self, data):
+        data = json.loads(data)
+        self.id = data['id']
+        self.user_id = data['user_id']
+        self.name = data['name']
+        self.description = data['description']
+        self.created = datetime.fromtimestamp(data['created'])
+        self.modules = data['modules']
+
+        self.added = datetime.fromtimestamp(data['added'])
+        self.last_modifid = datetime.now()
+        return 0
+
 
 #DONE
+#TODO DUMP AND LOAD
 '''
 =================================================
 TESTSESSIONS
@@ -190,8 +281,17 @@ class Testsession(db.Model):
     def get_invitation(self):
         return fernet.decrypt(self.invitation_text).decode('utf-8')
 
+    def dump(self):
+        data = {}
+        return json.dumps(data)
+
+    def load(self, data):
+        tempdata = json.loads(data)
+        return 0
+
 
 #DONE
+#TODO DUMP AND LOAD
 '''
 =========================================
 CLIENTS
@@ -234,8 +334,17 @@ class Client(db.Model):
     def get_email(self):
         return fernet.decrypt(self.email).decode('utf-8')
 
+    def dump(self):
+        data = {}
+        return json.dumps(data)
+
+    def load(self, data):
+        tempdata = json.loads(data)
+        return 0
+
 
 #DONE
+#TODO DUMP AND LOAD
 '''
 =============================================
 CLIENTLOG
@@ -258,8 +367,17 @@ class Clientlog(db.Model):
     def __repr__(self):
         return f'Modulnév: {self.log}'
 
+    def dump(self):
+        data = {}
+        return json.dumps(data)
+
+    def load(self, data):
+        tempdata = json.loads(data)
+        return 0
+
 
 #DONE
+#TODO DUMP AND LOAD
 '''
 ============================================
 RESULTS
@@ -293,8 +411,17 @@ class Result(db.Model):
     def get_result(self):
         return fernet.decrypt(self.result_raw).decode('utf-8')
 
+    def dump(self):
+        data = {}
+        return json.dumps(data)
+
+    def load(self, data):
+        tempdata = json.loads(data)
+        return 0
+
 
 #DONE
+#TODO DUMP AND LOAD
 '''
 ================================
 USERLOG
@@ -319,8 +446,17 @@ class Userlog(db.Model):
     def __repr__(self):
         return f'Timestamp: {self.timestamp}, Message: {self.message}'
 
+    def dump(self):
+        data = {}
+        return json.dumps(data)
+
+    def load(self, data):
+        tempdata = json.loads(data)
+        return 0
+
 
 #DONE
+#TODO DUMP AND LOAD
 '''
 ===================================
 MESSAGES
@@ -365,3 +501,11 @@ class Message(db.Model):
 
     def get_message(self):
         return fernet.decrypt(self.message).decode('utf-8')
+
+    def dump(self):
+        data = {}
+        return json.dumps(data)
+
+    def load(self, data):
+        tempdata = json.loads(data)
+        return 0
