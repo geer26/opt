@@ -11,37 +11,36 @@ from app.models import User, Module, Modaux, Testbattery, Testsession, Client, C
 
 
 def backup_db():
-
     check_backup()
 
-    #user
+    # user
     backup_user()
 
-    #module
+    # module
     backup_modules()
 
-    #modaux
+    # modaux
     backup_modaux()
 
-    #testbattery
+    # testbattery
     backup_testbattery()
 
-    #testsession
+    # testsession
     backup_testsession()
 
-    #client
+    # client
     backup_client()
 
-    #clientlog
+    # clientlog
     backup_clientlog()
 
-    #result
+    # result
     backup_result()
 
-    #userlog
+    # userlog
     backup_userlog()
 
-    #message
+    # message
     backup_message()
 
     logger.upd_log(f'Entire database backed up', 0)
@@ -50,8 +49,7 @@ def backup_db():
 
 
 def restore_db():
-
-    #reset tables
+    # reset tables
     User.query.delete()
     Module.query.delete()
     Modaux.query.delete()
@@ -63,7 +61,7 @@ def restore_db():
 
     logger.upd_log('Database wiped', 1)
 
-    #load backup files and restore tables
+    # load backup files and restore tables
     restore_user()
 
     restore_modules()
@@ -87,52 +85,45 @@ def restore_db():
     return 0
 
 
-#DONE
+# DONE
 def check_backup():
-
-    if not 'backup.zip' in os.listdir(app.config['BACKUP_FOLDER']):
-
-        with ZipFile(os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip'), 'w') as zipObj:
+    if 'backup.zip' not in os.listdir(app.config['BACKUP_FOLDER']):
+        with ZipFile(os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip'), 'w'):
             pass
 
-        #create logfile
+        # create logfile
         logfile_path = os.path.join(app.config['BACKUP_FOLDER'], 'log.file')
-        with open(logfile_path, 'w') as logfile:
+        with open(logfile_path, 'w'):
             pass
 
         add_to_zip(logfile_path)
         os.remove(logfile_path)
 
-        #update logfile
+        # update logfile
         upd_log('Archive created', 0)
 
     return 0
 
 
-#DONE
+# DONE
 def add_to_zip(fileobject_path):
-
     fname = fileobject_path.split('/')[-1]
 
     zippath = os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip')
     newpath = os.path.join(app.config['BACKUP_FOLDER'], 'backup_temp.zip')
 
-
-    #Create nem temp zipfile w/o the new fil to write
+    # Create nem temp zipfile w/o the new fil to write
     with ZipFile(zippath, 'r') as oldzip, ZipFile(newpath, 'a') as newzip:
         for file in oldzip.infolist():
             buffer = oldzip.read(file.filename)
             if file.filename != fname:
-                newzip.writestr(file,buffer)
-
+                newzip.writestr(file, buffer)
 
     # remove orig zipfile
     os.remove(zippath)
 
-
     # rename new zipfile
     os.rename(newpath, zippath)
-
 
     # add file to the ne zipfile(renamed!)
     zipObj = ZipFile(zippath, 'a')
@@ -143,8 +134,7 @@ def add_to_zip(fileobject_path):
 
 
 def upd_log(log_text, type=0):
-
-    log_type = {0 : 'INFO', 1 : 'WARNING', 2 : 'ERROR', 3 : 'FATAL ERROR'}
+    log_type = {0: 'INFO', 1: 'WARNING', 2: 'ERROR', 3: 'FATAL ERROR'}
 
     if current_user.is_authenticated:
         username = current_user.username
@@ -157,57 +147,54 @@ def upd_log(log_text, type=0):
     filename = 'log.file'
 
     message = {
-        'type' : log_type[type],
-        'timestamp' : f'{datetime.now().timestamp()}',
-        'datetime' : f'{datetime.now().strftime("%Y.%m.%d-%H:%M:%S")}',
-        'executor' : f'{username}',
-        'event' : f'{log_text}'
+        'type': log_type[type],
+        'timestamp': f'{datetime.now().timestamp()}',
+        'datetime': f'{datetime.now().strftime("%Y.%m.%d-%H:%M:%S")}',
+        'executor': f'{username}',
+        'event': f'{log_text}'
     }
 
-    #1. get logfile
-    with ZipFile(zippath,'r') as zipObj:
+    # 1. get logfile
+    with ZipFile(zippath, 'r') as zipObj:
         zipObj.extract(filename, filepath)
 
-    #2. add new entry at the end
+    # 2. add new entry at the end
 
     with open(logpath, 'a') as logfile:
         logfile.write(json.dumps(message))
         logfile.write('\n')
 
-    #3. add_to_zip(fileobject_path)
+    # 3. add_to_zip(fileobject_path)
     add_to_zip(logpath)
 
-    #4. delete the non-zipped
+    # 4. delete the non-zipped
     os.remove(logpath)
 
     return 0
 
 
-#DONE
+# DONE
 def restore_from_zip(filename):
-
     zippath = os.path.join(app.config['BACKUP_FOLDER'], 'backup.zip')
     filepath = app.config['BACKUP_FOLDER']
     fp = os.path.join(app.config['BACKUP_FOLDER'], filename)
 
-
-    #1. unzip single file!
-    with ZipFile(zippath,'r') as zipObj:
+    # 1. unzip single file!
+    with ZipFile(zippath, 'r') as zipObj:
         zipObj.extract(filename, filepath)
 
-    #2. create file object
+    # 2. create file object
     with open(fp, 'rb') as file:
         old = file.read()
 
-    #3. delete temp extracted
+    # 3. delete temp extracted
     os.remove(fp)
 
     return old
 
 
-#DONE
+# DONE
 def restore_user():
-
     old = restore_from_zip('user.pic')
 
     usertable = fernet.decrypt(old).decode('utf-8')
@@ -235,9 +222,8 @@ def restore_user():
     return 0
 
 
-#DONE
+# DONE
 def restore_modules():
-
     old = restore_from_zip('module.pic')
 
     moduletable = fernet.decrypt(old).decode('utf-8')
@@ -264,9 +250,8 @@ def restore_modules():
     return 0
 
 
-#DONE
+# DONE
 def restore_modaux():
-
     old = restore_from_zip('modaux.pic')
 
     auxtable = fernet.decrypt(old).decode('utf-8')
@@ -286,9 +271,8 @@ def restore_modaux():
     return 0
 
 
-#DONE
+# DONE
 def restore_testbattery():
-
     old = restore_from_zip('testbattery.pic')
 
     testbattery_table = fernet.decrypt(old).decode('utf-8')
@@ -313,9 +297,8 @@ def restore_testbattery():
     return 0
 
 
-#DONE
+# DONE
 def restore_testsession():
-
     old = restore_from_zip('testsession.pic')
 
     testsession_table = fernet.decrypt(old).decode('utf-8')
@@ -342,9 +325,8 @@ def restore_testsession():
     return 0
 
 
-#DONE
+# DONE
 def restore_client():
-
     old = restore_from_zip('client.pic')
 
     client_table = fernet.decrypt(old).decode('utf-8')
@@ -370,9 +352,8 @@ def restore_client():
     return 0
 
 
-#DONE
+# DONE
 def restore_clientlog():
-
     old = restore_from_zip('clientlog.pic')
 
     clientlog_table = fernet.decrypt(old).decode('utf-8')
@@ -393,9 +374,8 @@ def restore_clientlog():
     return 0
 
 
-#DONE
+# DONE
 def restore_result():
-
     old = restore_from_zip('result.pic')
 
     result_table = fernet.decrypt(old).decode('utf-8')
@@ -419,9 +399,8 @@ def restore_result():
     return 0
 
 
-#DONE
+# DONE
 def restore_userlog():
-
     old = restore_from_zip('userlog.pic')
 
     userlog_table = fernet.decrypt(old).decode('utf-8')
@@ -444,9 +423,8 @@ def restore_userlog():
     return 0
 
 
-#DONE
+# DONE
 def restore_message():
-
     old = restore_from_zip('message.pic')
 
     message_table = fernet.decrypt(old).decode('utf-8')
@@ -473,23 +451,16 @@ def restore_message():
     return 0
 
 
-#DONE
+# DONE
 def backup_user():
     usertable = {}
     users = []
 
     for user in User.query.all():
-        us = {}
-        us['id'] = user.id
-        us['username'] = user.username
-        us['description'] = user.get_description()
-        us['contact'] = user.get_contact()
-        us['is_superuser'] = user.is_superuser
-        us['password_hash'] = user.password_hash
-        us['salt'] = user.salt
-        us['settings'] = user.settings
-        us['added'] = user.added.timestamp()
-        us['last_modified'] = user.last_modified.timestamp()
+        us = {'id': user.id, 'username': user.username, 'description': user.get_description(),
+              'contact': user.get_contact(), 'is_superuser': user.is_superuser, 'password_hash': user.password_hash,
+              'salt': user.salt, 'settings': user.settings, 'added': user.added.timestamp(),
+              'last_modified': user.last_modified.timestamp()}
         users.append(us)
 
     usertable['timestamp'] = datetime.now().timestamp()
@@ -497,7 +468,7 @@ def backup_user():
 
     savepath = os.path.join(app.config['BACKUP_FOLDER'], 'user.pic')
 
-    with open( savepath, 'wb') as enrcypted:
+    with open(savepath, 'wb') as enrcypted:
         enrcypted.write(fernet.encrypt(json.dumps(usertable).encode('utf-8')))
 
     add_to_zip(savepath)
@@ -508,21 +479,15 @@ def backup_user():
     return 0
 
 
-#DONE
+# DONE
 def backup_modules():
     moduletable = {}
     modules = []
 
     for mod in Module.query.all():
-        m = {}
-        m['id'] = mod.id
-        m['uuid'] = mod.uuid
-        m['short_name'] = mod.short_name
-        m['verbose_name'] = mod.verbose_name
-        m['description'] = mod.description
-        m['attributes'] = mod.attributes
-        m['added'] = mod.added.timestamp()
-        m['last_modified'] = mod.last_modified.timestamp()
+        m = {'id': mod.id, 'uuid': mod.uuid, 'short_name': mod.short_name, 'verbose_name': mod.verbose_name,
+             'description': mod.description, 'attributes': mod.attributes, 'added': mod.added.timestamp(),
+             'last_modified': mod.last_modified.timestamp()}
 
         modules.append(m)
 
@@ -542,16 +507,13 @@ def backup_modules():
     return 0
 
 
-#DONE
+# DONE
 def backup_modaux():
     auxtable = {}
     auxs = []
 
     for aux in Modaux.query.all():
-        a = {}
-        a['id'] = aux.id
-        a['user_id'] = aux.user_id
-        a['module_id'] = aux.module_id
+        a = {'id': aux.id, 'user_id': aux.user_id, 'module_id': aux.module_id}
         auxs.append(a)
 
     auxtable['timestamp'] = datetime.now().timestamp()
@@ -570,21 +532,16 @@ def backup_modaux():
     return 0
 
 
-#DONE
+# DONE
 def backup_testbattery():
     testbattery_table = {}
     testbatteries = []
 
     for testbattery in Testbattery.query.all():
-        t = {}
-        t['id'] = testbattery.id
-        t['user_id'] = testbattery.user_id
-        t['name'] = testbattery.name
-        t['description'] = testbattery.description
-        t['modules'] = testbattery.modules
-        t['created'] = testbattery.created.timestamp()
-        t['added'] = testbattery.added.timestamp()
-        t['last_modified'] = testbattery.last_modified.timestamp()
+        t = {'id': testbattery.id, 'user_id': testbattery.user_id, 'name': testbattery.name,
+             'description': testbattery.description, 'modules': testbattery.modules,
+             'created': testbattery.created.timestamp(), 'added': testbattery.added.timestamp(),
+             'last_modified': testbattery.last_modified.timestamp()}
 
         testbatteries.append(t)
 
@@ -604,23 +561,16 @@ def backup_testbattery():
     return 0
 
 
-#DONE
+# DONE
 def backup_testsession():
     testsession_table = {}
     sessions = []
 
     for session in Testsession.query.all():
-        s = {}
-        s['id'] = session.id
-        s['uuid'] = session.uuid
-        s['user_id'] = session.user_id
-        s['testbattery_id'] = session.testbattery_id
-        s['created'] = session.created.timestamp()
-        s['due'] = session.due.timestamp()
-        s['state'] = session.state
-        s['invitation_text'] = session.get_invitation()
-        s['added'] = session.added.timestamp()
-        s['last_modified'] = session.last_modified.timestamp()
+        s = {'id': session.id, 'uuid': session.uuid, 'user_id': session.user_id,
+             'testbattery_id': session.testbattery_id, 'created': session.created.timestamp(),
+             'due': session.due.timestamp(), 'state': session.state, 'invitation_text': session.get_invitation(),
+             'added': session.added.timestamp(), 'last_modified': session.last_modified.timestamp()}
         sessions.append(s)
 
     testsession_table['timestamp'] = datetime.now().timestamp()
@@ -639,22 +589,15 @@ def backup_testsession():
     return 0
 
 
-#DONE
+# DONE
 def backup_client():
     client_table = {}
     clients = []
 
     for client in Client.query.all():
-        c = {}
-        c['id'] = client.id
-        c['uuid'] = client.uuid
-        c['name'] = client.get_name()
-        c['email'] = client.get_email()
-        c['state'] = client.state
-        c['session_id'] = client.session_id
-        c['invitation_status'] = client.invitation_status
-        c['added'] = client.added.timestamp()
-        c['last_modified'] = client.last_modified.timestamp()
+        c = {'id': client.id, 'uuid': client.uuid, 'name': client.get_name(), 'email': client.get_email(),
+             'state': client.state, 'session_id': client.session_id, 'invitation_status': client.invitation_status,
+             'added': client.added.timestamp(), 'last_modified': client.last_modified.timestamp()}
         clients.append(c)
 
     client_table['timestamp'] = datetime.now().timestamp()
@@ -673,18 +616,14 @@ def backup_client():
     return 0
 
 
-#DONE
+# DONE
 def backup_clientlog():
     clientlog_table = {}
     clientlogs = []
 
     for clientlog in Clientlog.query.all():
-        c = {}
-        c['id'] = clientlog.id
-        c['client_id'] = clientlog.client_id
-        c['message'] = clientlog.message
-        c['source'] = clientlog.source
-        c['timestamp'] = clientlog.timestamp.timestamp()
+        c = {'id': clientlog.id, 'client_id': clientlog.client_id, 'message': clientlog.message,
+             'source': clientlog.source, 'timestamp': clientlog.timestamp.timestamp()}
         clientlogs.append(c)
 
     clientlog_table['timestamp'] = datetime.now().timestamp()
@@ -703,21 +642,15 @@ def backup_clientlog():
     return 0
 
 
-#DONE
+# DONE
 def backup_result():
     result_table = {}
     results = []
 
     for res in Result.query.all():
-        r = {}
-        r['id'] = res.id
-        r['client_id'] = res.client_id
-        r['session_id'] = res.session_id
-        r['module_id'] = res.module_id
-        r['timestamp'] = res.timestamp.timestamp()
-        r['result_raw'] =res.get_result()
-        r['added'] = res.added.timestamp()
-        r['last_modified'] = res.last_modified.timestamp()
+        r = {'id': res.id, 'client_id': res.client_id, 'session_id': res.session_id, 'module_id': res.module_id,
+             'timestamp': res.timestamp.timestamp(), 'result_raw': res.get_result(), 'added': res.added.timestamp(),
+             'last_modified': res.last_modified.timestamp()}
         results.append(r)
 
     result_table['timestamp'] = datetime.now().timestamp()
@@ -736,20 +669,14 @@ def backup_result():
     return 0
 
 
-#DONE
+# DONE
 def backup_userlog():
     userlog_table = {}
     userlogs = []
 
     for ul in Userlog.query.all():
-        u = {}
-        u['id'] = ul.id
-        u['user_id'] = ul.user_id
-        u['timestamp'] = ul.timestamp.timestamp()
-        u['type'] = ul.type
-        u['message'] = ul.message
-        u['added'] = ul.added.timestamp()
-        u['last_modified'] = ul.last_modified.timestamp()
+        u = {'id': ul.id, 'user_id': ul.user_id, 'timestamp': ul.timestamp.timestamp(), 'type': ul.type,
+             'message': ul.message, 'added': ul.added.timestamp(), 'last_modified': ul.last_modified.timestamp()}
         userlogs.append(u)
 
     userlog_table['timestamp'] = datetime.now().timestamp()
@@ -768,23 +695,15 @@ def backup_userlog():
     return 0
 
 
-#DONE
+# DONE
 def backup_message():
     message_table = {}
     messages = []
 
     for me in Message.query.all():
-        m = {}
-        m['id'] = me.id
-        m['subject'] = me.get_subject()
-        m['message'] = me.get_message()
-        m['rec_id'] = me.rec_id
-        m['sen_id'] = me.sen_id
-        m['ant'] = me.ant
-        m['status'] = me.status
-        m['timestamp'] = me.timestamp.timestamp()
-        m['added'] = me.added.timestamp()
-        m['last_modified'] = me.last_modified.timestamp()
+        m = {'id': me.id, 'subject': me.get_subject(), 'message': me.get_message(), 'rec_id': me.rec_id,
+             'sen_id': me.sen_id, 'ant': me.ant, 'status': me.status, 'timestamp': me.timestamp.timestamp(),
+             'added': me.added.timestamp(), 'last_modified': me.last_modified.timestamp()}
         messages.append(m)
 
     message_table['timestamp'] = datetime.now().timestamp()

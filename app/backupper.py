@@ -1,23 +1,25 @@
-import json
+
 from os import path, listdir, remove
 from os.path import basename
-from datetime import datetime
 from zipfile import ZipFile
 
 from flask_login import current_user
+
+from app.models import *
 
 
 class Backupper():
 
     def __init__(self,
                  folder,  #backup folder - mandatory
+                 db,  #app db - mandatory
                  acrhive_name = 'backup2.zip',  #name of the backup file - optional
                  log_name = 'log.file',  #log name - optional
                  socket = None,  #inherited socket object to communicate on - optional
                  event_code = None,  #ws event code to send messages thorough - optional
                  tables = None  #tables to save and reload - optional
                  ):
-        from app import db
+
 
         self.folder = folder
         self.archive_name = acrhive_name
@@ -38,8 +40,6 @@ class Backupper():
         self.log_type = {0: 'INFO', 1: 'WRITE', 2: 'READ', 3: 'ERROR'}
 
         self.check()
-
-        self.backup_all()
 
         return
 
@@ -87,7 +87,7 @@ class Backupper():
 
     def backup_all(self):
         for table in self.tables:
-            pass
+            print(table.__name__)
         return 0
 
     def restore_all(self):

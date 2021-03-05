@@ -13,7 +13,6 @@ from app.models import User
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    check_backup()
     #if user is not autheticated, display noauth index.html
     if not current_user.is_authenticated:
         logger.upd_log(f'Non-auth visit from IP: {request.access_route}', 0)
@@ -150,7 +149,7 @@ def new_admin_message(data):
         return True
 
 
-    #ask for refreshed logfile as json
+    #request for refreshed logfile as json
     if data['event'] == 2801:
         mess = {}
         mess['event'] = 1801
