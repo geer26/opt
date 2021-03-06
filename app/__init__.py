@@ -57,8 +57,7 @@ bu.init_app(app, tables=[
         models.User, models.Client, models.Result, models.Message,
         models.Userlog, models.Clientlog, models.Testsession,
         models.Testbattery, models.Modaux, models.Module
-    ]
-            )
+    ])
 
 
 

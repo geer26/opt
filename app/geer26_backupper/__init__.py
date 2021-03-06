@@ -40,6 +40,7 @@ class Backupper():
                 app.extensions = {}
             app.extensions['backupper'] = self
 
+
         self.tables = tables
 
         if 'folder' in kwargs:
@@ -65,7 +66,7 @@ class Backupper():
         if 'db' in kwargs:
             self.db = kwargs.get('db')
         else:
-            self.db = app.extensions.get('sqlalchemy')
+            #self.db = app.extensions.get('sqlalchemy')
             from app import db
             self.db = db
 
@@ -110,6 +111,9 @@ class Backupper():
 
 
     def update_log(self,message, type=0):
+        with open(self.log_path, 'a') as logfile:
+            logfile.write(self.create_log_entry(message, type=type))
+            logfile.write('\n')
         pass
 
 
@@ -159,7 +163,6 @@ class Backupper():
 
 
     def restore_all(self):
-        print('RESTORE HERE!')
         #1. unzip all
         self.extract_all(nodelete=True)
 
@@ -167,38 +170,43 @@ class Backupper():
         for table in self.tables:
             self.wipe_table(table)
 
-        #3. iter over saves, decode and save it again with 'temp_' prefix
+        #3. iter over saves
         for file in listdir(self.folder):
 
             #decode saved data
             if file.endswith('.pic'):
-                temp = self.fernet.decrypt( open(path.join(self.folder, f'{file}'), 'rb').read() ).decode('utf-8')
+                decrypted_db = self.fernet.decrypt( open(path.join(self.folder, f'{file}'), 'rb').read() ).decode('utf-8')
 
-            
+            #create new instances for a table line to line(or record to record)
             for table in self.tables:
                 if table.__name__ == file.split('.')[0]:
-                    self.fill_table( table, list(temp.split('\n')) )
+                    for line in list(decrypted_db.split('\n')):
+                        self.fill_table( table, line)
+
+        #4. update logfile
+        self.update_log('Database fully restored', type=1)
+
+        #5. zip all .pic and .file
+
+        #6. remove temps
+
+
         return 0
 
 
     def wipe_table(self, table):
         table.query.delete()
-        #self.db.session.commit()
-        with open(self.log_path, 'a') as logfile:
-            logfile.write(self.create_log_entry(f'{table.__name__} table wiped into oblivion!', type=1))
-            logfile.write('\n')
+        self.db.session.commit()
+        self.update_log(f'{table.__name__} table wiped into oblivion!', type=1))
         return 0
 
 
-    def fill_table(self, table, content):
-        for rek in content:
-            if rek == '':
-                continue
-            else:
-                rekord = table()
-                rekord.load(rek)
-                self.db.session.add(rekord)
-                #self.db.session.commit()
+    def fill_table(self, table, line):
+        if line == '': return 0
+        new_rekord = table()
+        new_rekord.load(line)
+        self.db.session.add(new_rekord)
+        self.db.session.commit()
 
         with open(self.log_path, 'a') as logfile:
             logfile.write(self.create_log_entry(f'{table.__name__} table restored from save', type=1))
@@ -208,7 +216,6 @@ class Backupper():
 
 
     def extract_all(self, **kwargs):
-        print( path.join(self.backup_path) )
         with ZipFile(path.join(self.backup_path), 'r') as oldzip:
             oldzip.extractall(path.join(self.folder))
         if 'nodelete' not in kwargs or not kwargs.get('nodelete'):
