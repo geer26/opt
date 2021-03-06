@@ -11,8 +11,18 @@ from app.models import User, Module, Modaux, Testbattery, Testsession, Client, C
 
 
 def backup_db():
+    #bu.backup_all()
+    backup_old_db()
+    return 0
 
-    bu.backup_all()
+
+def restore_db():
+    #bu.restore_all()
+    restore_old_db()
+    return 0
+
+
+def backup_old_db():
 
     check_backup()
 
@@ -51,9 +61,7 @@ def backup_db():
     return 0
 
 
-def restore_db():
-    bu.restore_all()
-
+def restore_old_db():
     # reset tables
     User.query.delete()
     Module.query.delete()

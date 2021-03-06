@@ -131,11 +131,11 @@ class Backupper():
             tablename = table.__name__
             temp = ''
             for rekord in table.query.all():
-                temp+= rekord.dump()
-                temp+='\n'
+                temp += rekord.dump()
+                temp += '\n'
 
-            with open(path.join(self.folder, f'{tablename}.pic'), 'wb') as enrcypted:
-                enrcypted.write(self.fernet.encrypt(temp.encode('utf-8')))
+            with open(path.join(self.folder, f'{tablename}.pic'), 'wb') as encrypted:
+                encrypted.write(self.fernet.encrypt(temp.encode('utf-8')))
 
 
             #3. write pic file to zip
@@ -166,16 +166,18 @@ class Backupper():
         #2. Clear all tables entirerly(log it per table!)
         for table in self.tables:
             self.wipe_table(table)
-            pass
 
         #3. iter over saves, decode and save it again with 'temp_' prefix
         for file in listdir(self.folder):
+
+            #decode saved data
             if file.endswith('.pic'):
                 temp = self.fernet.decrypt( open(path.join(self.folder, f'{file}'), 'rb').read() ).decode('utf-8')
 
-                for table in self.tables:
-                    if table.__name__ == file.split('.')[0]:
-                        self.fill_table( table, list(temp.split('\n')) )
+            
+            for table in self.tables:
+                if table.__name__ == file.split('.')[0]:
+                    self.fill_table( table, list(temp.split('\n')) )
         return 0
 
 
@@ -197,9 +199,11 @@ class Backupper():
                 rekord.load(rek)
                 self.db.session.add(rekord)
                 #self.db.session.commit()
-                with open(self.log_path, 'a') as logfile:
-                    logfile.write(self.create_log_entry(f'{table.__name__} table restored from save', type=1))
-                    logfile.write('\n')
+
+        with open(self.log_path, 'a') as logfile:
+            logfile.write(self.create_log_entry(f'{table.__name__} table restored from save', type=1))
+            logfile.write('\n')
+
         return 0
 
 

@@ -84,17 +84,29 @@ class User(UserMixin, db.Model):
         return json.dumps(data)
 
     def load(self, data):
+        print(data)
         data = json.loads(data)
         self.id = data['id']
+        print('Record id restored')
         self.username = data['username']
+        print('Record username restored')
         self.description = self.set_description(str(data['description']))
+        print('Record description restored')
         self.contact = self.set_contact(str(data['contact']))
+        print('Record contact restored')
         self.is_superuser = data['is_superuser']
+        print('Record is_superuser restored')
         self.password_hash = data['password_hash']
+        print('Record password_hash restored')
         self.salt = data['salt']
+        print('Record salt restored')
         self.settings = data['settings']
+        print('Record settings restored')
         self.added = datetime.fromtimestamp(data['added'])  # self.added.timestamp()
+        print('Record added restored')
         self.last_modified = datetime.now()
+        print(self.__dict__)
+        print('User record restored')
         return 0
 
 
@@ -141,6 +153,7 @@ class Module(db.Model):
         self.attributes = data['attributes']
         self.added = datetime.fromtimestamp(data['added'])  # self.added.timestamp()
         self.last_modified = datetime.now()
+        print('Module record restored')
         return 0
 
 
@@ -356,6 +369,7 @@ class Client(db.Model):
         self.invitation_status = data['invitation_status']
         self.added = datetime.fromtimestamp(data['added'])
         self.last_modified = datetime.now()
+        print('Client record restored')
         return 0
 
 
