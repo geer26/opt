@@ -173,11 +173,10 @@ class Backupper():
         #3. iter over saves
         for file in listdir(self.folder):
 
-            #decode saved data
+            #decode saved datab
+            decrypted_db =None
             if file.endswith('.pic'):
                 decrypted_db = self.fernet.decrypt( open(path.join(self.folder, f'{file}'), 'rb').read() ).decode('utf-8')
-            else:
-                pass
 
             #create new instances for a table line to line(or record to record)
             for table in self.tables:
