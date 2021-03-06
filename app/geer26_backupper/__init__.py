@@ -176,6 +176,8 @@ class Backupper():
             #decode saved data
             if file.endswith('.pic'):
                 decrypted_db = self.fernet.decrypt( open(path.join(self.folder, f'{file}'), 'rb').read() ).decode('utf-8')
+            else:
+                pass
 
             #create new instances for a table line to line(or record to record)
             for table in self.tables:
@@ -197,7 +199,7 @@ class Backupper():
     def wipe_table(self, table):
         table.query.delete()
         self.db.session.commit()
-        self.update_log(f'{table.__name__} table wiped into oblivion!', type=1))
+        self.update_log(f'{table.__name__} table wiped into oblivion!', type=1)
         return 0
 
 
