@@ -3,5 +3,9 @@
 /venv/
 /migrations/
 /.env
+<<<<<<< HEAD
 /__pycache__/
 /app/__pycache__/
+=======
+/postgres_uri.txt
+>>>>>>> 91c19333fee23112e024f02149a7fccbf4b2baca

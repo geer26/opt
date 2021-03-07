@@ -49,6 +49,9 @@ const app = Vue.createApp({
 const vm = app.mount("#tab-users")
 
 
+var log;
+
+
 function inputkeypress(){
     $('#error').hide();
     $('#adduser').removeClass('credits_error');
@@ -147,6 +150,50 @@ function reset_db(){
 };
 
 
+function showlogcontent(){
+    $('#log_content').show();
+    $('#hide_log').show();
+    $('#refresh_log').show();
+    $('#show_log').hide();
+    refreshlog();
+};
+
+
+function hidelogcontent(){
+    $('#log_content').hide();
+    $('#hide_log').hide();
+    $('#refresh_log').hide();
+    $('#show_log').show();
+};
+
+
+//request for refreshed log file content
+function refreshlog(){
+    loadstart();
+    send_message({event: 2801}, namespace='admin');
+};
+
+
+function refreshlogtable(json){
+    $("#tablebody").empty();
+    json.forEach(entry => {
+
+        var row = "<tr> <td>"+
+        entry['type'].toString()+
+        "</td> <td>"+
+        entry['datetime'].toString()+
+        "</td> <td>"+
+        entry['event'].toString()+
+        "</td> <td>"+
+        entry['executor'].toString()+
+        "</td> </tr>";
+
+        $("#tablebody").append(row);
+
+    });
+};
+
+
 //Websockets admin event dispatcher
 socket.on('admin', function(data){
 
@@ -185,6 +232,15 @@ socket.on('admin', function(data){
 	            $('#password2').val('');
             }
 
+            else if (data['status'] == 3){
+                //to much su
+                $('#error').text('Nem lehet több admint regisztrálni!');
+                $('#error').show();
+                $('#adduser').addClass('credits_error');
+                $('#password1').val('');
+	            $('#password2').val('');
+            }
+
         }
         break;
 
@@ -207,6 +263,14 @@ socket.on('admin', function(data){
             if (data['status'] == 0){
                 console.log('ENTIRE DB SAVED!');
             }
+        }
+        break;
+
+        //accept refreshed log content as json
+        case 1801:{
+            loadend();
+            console.log('INCOMING LOG UPDATE!');
+            refreshlogtable(JSON.parse(data['data']));
         }
         break;
 

@@ -16,8 +16,12 @@ class Config:
 
     TEMPLATES_AUTO_RELOAD = True
 
-    UPLOAD_FOLDER = path.join('app/uploads/')
+    UPLOAD_FOLDER = path.join(basedir, 'app/uploads/')
+
     BACKUP_FOLDER = path.join(basedir, 'app/backup/')
+
+    LOG_FOLDER = path.join(basedir, 'app/log/')
+
     #CLIENT_LISTS = path.join('app/temp/')
     ALLOWED_EXTENSIONS = {'zip'}
     #SENDGRID_API_KEY = environ.get('SENDGRID_API_KEY') or 'APIKEY'
@@ -26,11 +30,11 @@ class Config:
 
 class PostgreSQL(Config):
     """Production config."""
-    #FLASK_ENV = 'production'
-    #DEBUG = False
-    #TESTING = False
-    #SQLALCHEMY_TRACK_MODIFICATIONS = False
-    #SQLALCHEMY_DATABASE_URI = environ.get('POSTGRES_URI')
+    FLASK_ENV = 'production'
+    DEBUG = False
+    TESTING = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = environ.get('POSTGRES_URI')
 
 
 class SQLite(Config):
