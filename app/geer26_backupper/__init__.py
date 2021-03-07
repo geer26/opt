@@ -35,7 +35,6 @@ class Backupper():
 
     def init_app(self, app, tables,  **kwargs):
         """
-
         :param app: mandtatory
         :param tables: mandtatory
         :param kwargs:

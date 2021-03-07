@@ -42,7 +42,6 @@ socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERNET_SECRET').encode('utf-8')))
-#db_fernet = Fernet(base64.urlsafe_b64encode(os.getenv('DB_SECRET').encode('utf-8')))
 
 logger = Logger(folder=app.config['LOG_FOLDER'], socket=socket)
 
