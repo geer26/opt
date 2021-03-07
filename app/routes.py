@@ -171,6 +171,7 @@ def new_admin_message(data):
         mess = {}
         mess['event'] = 1871
         mess['status'] = bu.restore_all()
+        mess['data'] = get_sudata()
         socket.emit('admin', mess, room=sid)
         return True
 
@@ -180,5 +181,6 @@ def new_admin_message(data):
         mess = {}
         mess['event'] = 1899
         mess['status'] = reset_db()
+        mess['data'] = get_sudata()
         socket.emit('admin', mess, room=sid)
         return True

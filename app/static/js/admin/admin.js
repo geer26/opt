@@ -203,6 +203,9 @@ function refreshlogtable(json){
 };
 
 
+
+
+
 //Websockets admin event dispatcher
 socket.on('admin', function(data){
 
