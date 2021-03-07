@@ -95,7 +95,6 @@ class User(UserMixin, db.Model):
         self.settings = str(data['settings'])
         self.added = datetime.fromtimestamp(data['added'])  # self.added.timestamp()
         self.last_modified = datetime.now()
-        print(f'User {self.username} record restored')
         return 0
 
 
