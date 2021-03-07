@@ -1,0 +1,141 @@
+/* Alkalmazott fontok importálása */
+@font-face {
+	font-family: Roboto;
+	src: url(Roboto-Regular.ttf);
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Globális változók */
+:root {
+	--backgroundColor: #5E7F82;
+	--foregroundColor: #F3F6F6;
+	--stripeColor: #A1BABA;
+
+	--baseFontColor: #33312E;
+
+	--buttonDark: #09485D;
+	--buttonLight: #58C9EE;
+	--buttonMiddle: #16ADDF;
+}
+
+/* Globális beállítások */
+* { box-sizing: border-box; font-family: Roboto, sans; }
+a { display: inline-block; }
+html { font-size: 13pt;}
+body {
+	background-color: var(--backgroundColor);
+	padding: 0.7rem 0 0 0;
+	margin: 0;	
+	color: var(--baseFontColor);
+}
+
+
+/* Az alkalmazást tartalmazó konténer stílusai */
+
+/* APP stílusai */
+/*
+SECTION.app-navbar
+ |--IMG.logo
+ |--DIV.user-info
+ |   |--H1.username
+ |   |--DIV.small-menu
+ |       |--A.button,button-icon   (kilépés)
+ |       |--SPAN.icon-button-wrapper
+ |           |--A.button,button-icon    (beállítások)
+ |--DIV.big-menu
+     |--DIV.icon-button-wrapper  (n darab)
+         |--A.button,button-icon
+COMPONENT (app-tab)
+*/
+.app-navbar {
+	width: 100%;
+	background-color: var(--stripeColor);
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+}
+.app-navbar img.logo { display: block; margin-left: 1rem; }
+.app-navbar .user-info {
+	align-self: stretch;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	margin: 0;
+	margin-left: 1rem;
+}
+.app-navbar .user-info h1 { margin: 0; font-size: 1.2rem; }
+.small-menu { 
+	font-size: 1rem; 
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: flex-end;
+}
+.app-navbar .button-icon {
+	padding: 0.3rem 0.4rem 0.2rem 0.4rem;
+}
+.big-menu {
+	align-self: flex-end;
+	margin-left: 2rem;
+	display: flex;
+	flex-flow: row nowrap;
+}
+.big-menu .button-icon {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+.app-navbar .icon-button-wrapper {
+	background-color: var(--stripeColor);
+	border-radius: 0.5rem 0.5rem 0 0;
+	transition: all 0.3s ease;
+	margin: 0 0.1rem 0 0.1rem;
+}
+.app-navbar .icon-button-wrapper:hover { filter: brightness(1.1); }
+.app-navbar .icon-button-wrapper.selected {
+	background-color: var(--foregroundColor) !important;	
+}
+.app-content {
+	background-color: var(--foregroundColor);
+	padding: 0.5rem 1rem 1rem 1rem;
+}
+
+
+
+
+/* Általános, gombokkal kapcsolatos dolgok */
+.button {
+	cursor: pointer;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	color: var(--buttonDark);
+}
+.button:hover { filter: brightness(1.4); }
+.button:active { filter: brightness(1.7); }
+
+
+/* APP-TAB */
+/*
+*/
+.app-tab .tab-header {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1rem;
+	font-weight: bold;
+	font-style: italic;
+	color: var(--backgroundColor);
+	margin-bottom: 2rem;
+	text-transform: lowercase;
+}
+
+
+/*
+Standard átmenetek
+*/
+.slidedown-enter-from { transform: scale(1,0); }
+.slidedown-enter-active, .slidedown-leave-active { transition: transform 0.3s ease-in-out; transform-origin: top;}
+.slidedown-leave-to { transform: scale(1,0); }

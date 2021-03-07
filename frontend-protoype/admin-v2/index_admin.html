@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<!-- Külső libraryk és egyebek -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+	<script src="https://unpkg.com/vue@next"></script>
+	<script src="js/mitt.js"></script>
+
+	<!-- saját stíluslapok -->
+	<link rel="stylesheet" href="css/opt-adminuser-generic.css"/>
+
+	<!-- komponensek -->
+	<script src="js/components/Fa.js"></script>
+	<script src="js/components/NewUserForm.js"></script>
+	<script src="js/components/InlineForm.js"></script>
+	<script src="js/components/AppTab.js"></script>
+	
+	<script src="js/components/CollapsibleForm.js"></script>
+	<script src="js/components/AdvancedTable.js"></script>
+	<script src="js/components/ActionRouter.js"></script>
+	<script src="js/components/TabSettings.js"></script>
+	<script src="js/components/TabMessages.js"></script>
+	<script src="js/components/TabUsers.js"></script>
+	<script src="js/components/TabModules.js"></script>
+	<script src="js/components/TabTestbatteries.js"></script>
+	<script src="js/components/TabReports.js"></script>
+	<script src="js/components/TabDb.js"></script>
+
+	<!-- admin-specifikus cuccok betöltése -->
+	<script src="js/admin-actions.js"></script>
+	<script src="js/admin-app.js" defer></script>
+
+</head>
+<body>
+
+	<div class="app-container" id="main-app">
+		<section class="app-navbar">
+			<img class="logo" src="http://picsum.photos/100/70">
+			<div class="user-info">
+				<h1 class="username">username</h1>
+				<div class="small-menu">
+					<a class="button button-icon"
+					   title="Kilépés">
+					   <fa icon="power-off"/>
+					</a>
+					<span class="icon-button-wrapper" :class="currentTab == 'tab-settings' ? 'selected' : ''">
+						<a class="button button-icon"
+					   	   title="Beállítások"
+					   	   @click="currentTab = 'tab-settings'">
+					   	   <fa icon="cogs"/>
+						</a>
+					</span>
+				</div>
+			</div>
+			<div class="big-menu">
+				<div v-for="item in menu" class="icon-button-wrapper" :class="currentTab == item.tab ? 'selected' : ''">
+					<a class="button button-icon"
+				   	   :title="item.title"
+				   	   @click="currentTab = item.tab">
+				   	   <fa :icon="item.icon" size="2"></fa>
+				   	   <span>{@ item.label @}</span>
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<transition name="slide" mode="out-in">
+			<component :is="appTab" v-bind="{tab: currentTab, tabData: adminData}"></component>
+		</transition>
+	</div>
+
+</body>
+</html>

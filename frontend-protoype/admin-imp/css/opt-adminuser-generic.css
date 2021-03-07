@@ -5,8 +5,6 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
-
 :root {
 	--fontColor: #444444;
 	--lightBackground: #eeeeee;
@@ -14,15 +12,11 @@
 	--inactive: #b3b3b3;
 	--active: #444444;
 }
-
-
 * {
 	box-sizing: border-box;
 	font-family: Roboto;
 }
-
 html { height: 100%; }
-
 body {
 	height: 100%;
 	margin: 0;
@@ -59,6 +53,7 @@ APP-CONTAINER
 	grid-template-rows: auto 100fr;
 	grid-row-gap: 5px;
 	min-height: 100%;
+	position: relative;
 }
 .app-main-menu {
 	height: 70px;
@@ -68,7 +63,7 @@ APP-CONTAINER
 	background-color: var(--lightBackground);
 }
 .app-main-menu .opt-logo {
-	background-image: url("../img/logo_full.png");
+	background-image: url("../img/logo.png");
 	min-width: 74px;
 	min-height: 60px;
 	margin-left: 30px;
@@ -115,13 +110,16 @@ APP-CONTAINER
 	user-select: none;
 	-ms-user-select: none;
 	-moz-user-select: none;
-	transition: color 0.5s ease;
 	font-weight: bold;
 }
+.app-main-menu a .fa,span { transition: all 0.5s ease; }
 .app-main-menu a:hover .fa,span { filter: brightness(0.85); }
 .app-main-menu a.active { 
 	color: var(--fontColor); 
 	background-color: var(--lightBackground);
+}
+.app-main-menu .info-box .small-menu a {
+	margin: 0 0.5em 0 0;
 }
 
 /* A program ablaka */
@@ -129,19 +127,27 @@ APP-CONTAINER
 	margin-left: auto;
 	margin-right: auto;
 	width: 99%;
-	min-height: 100%;
+
+	position: relative;
+}
+.app-content .app-disabled-modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	opacity: 0.5;
 }
 
 /* A tabok */
 .app-tab {
 	background-color: var(--lightBackground);
-	min-height: 100%;
 	width: 100%;
 	padding: 5px;
-	display: none;
-	transition: all 0.5s ease;
 
 	position: relative;
+	padding: 1em;
 }
 .app-tab.visible {
 	display: block;
@@ -158,48 +164,82 @@ APP-CONTAINER
 }
 .app-tab h1 {
 	font-size: 1.1em;
-	font-weight: bold;
-	font-style: italic;
-	margin: 10px 0 20px 0;
+	margin: 0 0 30px 0;
 	text-align: center;
-	border-bottom: 1px solid var(--darkBackground);
-	padding: 0 20px 0 20px;
-}
-
-
-
-
-
-/* PAGE NAVIGATOR */
-/*
-PAGE-NAVIGATOR
- |- NAVIGATOR-ADDRESS-BAR
- |- NAVIGATOR-PAGES
-     |- PAGE
-*/
-
-.page-navigator {
-	width: 100%;
-}
-.page-navigator .navigator-address-bar {
-	color: var(--darkBackground);
-	font-weight: bold;
-	font-style: italic;
-	padding: 5px 0 5px 10px;
-	font-size: 0.8em;
-}
-.page-navigator .navigator-address-bar a {
 	color: var(--fontColor);
 }
-.page-navigator .navigator-address-bar a.nav-active {
+.app-tab section {
+	margin: 1em 0 1em 0;
+}
+.app-tab a.button {
+	text-decoration: none;
 	cursor: pointer;
-	text-decoration: underline;
-	color: var(--darkBackground);
+	background-color: #e09c2f;
+	color: white;
+	padding: 0.2em 1em 0.2em 1em;
+	border-radius: 1em 0;
+	transition: all 0.3s ease;
 }
-.page {
-	padding: 5px;
-	display: none;
+.app-tab a.button:hover {
+	filter: brightness(0.85);
 }
-.page.visible {
-	display: block;
+
+
+
+
+/* Advanced table stílusozása */
+/* ADVANCED-TABLE komponens felépítése */
+/*
+DIV.advanced-table
+ |--TABLE
+ |   |--THEAD
+ |   |   |--TR
+ |   |       |--TH (n-times)
+ |   |           |--SPAN.sort-icon
+ |   |               |-- I.fa (3x)
+ |   |--TBODY
+ |       |--TR (empty)
+ |           |--TD
+ |               |--DIV.empty-content
+ |       |--TEMPLATE (n-times)
+ |           |--TR.(-/selected)
+ |           |   |--TD (n-times)
+ |           |--TR.record-menu-container
+ |               |--TD
+ |                   |--DIV.record-menu
+ |                       |--A (n-times)
+ |                           |--I.fa
+ |--DIV.page-selector
+     |--A (--> I.fa)
+     |--A (--> I.fa)
+     |--SPAN.page-display
+     |--A (--> I.fa)
+     |--A (--> I.fa)
+
+*/
+.advanced-table tbody {
+	border-top: 1px solid var(--darkBackground);
+	border-bottom: 1px solid var(--darkBackground);
+}
+.advanced-table tbody tr:nth-child(odd) { background-color: #cccccc; }
+.advanced-table tbody tr.selected {
+	background-color: #EDE580;
+}
+.advanced-table tbody tr.record-menu-container {
+	background-color: #EDE580;
+	color: #e09c2f;
+	font-size: 1.2em;
+	text-align: left !important;
+}
+.advanced-table thead {
+	font-size: 0.8em;
+	font-weight: bold;
+}
+.advanced-table tbody td { padding: 0.3em 0.2em 0.3em 0.2em; }
+.advanced-table .record-menu-container a:hover { filter: brightness(0.8); }
+.advanced-table .record-menu { padding-left: 3em; }
+.advanced-table .record-menu a { transition: all 0.5s ease; }
+.advanced-table .page-selector {
+	font-size: 0.8em;
+	margin-top: 0.5em;
 }

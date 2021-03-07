@@ -1,0 +1,250 @@
+@font-face {
+	font-family: Roboto;
+	src: url(Roboto-Regular.ttf);
+	font-weight: normal;
+	font-style: normal;
+}
+:root {
+	--backgroundColor: #5E7F82;
+	--foregroundColor: #F3F6F6;
+	--stripColor: #A1BABA;
+
+	--baseFontColor: #33312E;
+
+	--buttonDark: #09485D;
+	--buttonLight: #58C9EE;
+	--buttonMiddle: #16ADDF;
+}
+* {
+	box-sizing: border-box;
+	font-family: Roboto;
+}
+html { height: 100%; }
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0.7rem 0 0 0;
+	background-color: var(--backgroundColor);
+
+	font-size: 13pt;
+	color: var(--baseFontColor);
+}
+
+
+/* APP stílusai */
+/* APP felépítése
+DIV.app-container
+ |--SECTION.app-navbar
+ |   |--IMG.logo
+ |   |--DIV.user-info
+ |   |   |--H1.username
+ |   |   |--DIV.small-menu
+ |--SECTION.app-content
+*/
+.app-container .app-navbar {
+	width: 100%;
+	background-color: var(--stripColor);
+
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+}
+.app-container .app-navbar img.logo {
+	display: block;
+	margin-left: 1rem;
+}
+.app-container .app-content {
+	padding: 0.5rem;
+	background-color: var(--foregroundColor);
+}
+
+.app-container .app-navbar .user-info {
+	align-self: stretch;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	margin-left: 1rem;
+}
+.app-container .app-navbar .user-info h1 {
+	margin: 0;
+	font-size: 1.2rem;
+}
+.app-container .app-navbar .user-info .small-menu {
+	font-size: 1rem;
+}
+.app-container .app-navbar .user-info .small-menu .button-icon { 
+	padding: 0.3rem 0.4rem 0.1rem 0.4rem; 
+}
+.app-container .app-navbar .big-menu {
+	align-self: flex-end;
+	margin-left: 2rem;
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+
+.app-container .app-navbar .icon-button-wrapper {
+	background-color: var(--stripColor);
+	border-radius: 0.5rem 0.5rem 0 0;
+	transition: all 0.3s ease;
+	margin: 0 0.1rem 0 0.1rem;
+}
+.app-container .app-navbar .icon-button-wrapper.selected {
+	background-color: var(--foregroundColor) !important;
+}
+.app-container .app-navbar .icon-button-wrapper:hover {
+	background-color: #C7EDFA;
+}
+.app-container .app-navbar .big-menu .button-icon {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	padding: 0.3rem 0.4rem 0.2rem 0.4rem;
+}
+
+.app-content {
+	perspective: 1;
+	transform-origin: top;
+}
+
+
+
+/* TRANSITIONS */
+.fade-enter-from { opacity: 0; }
+.fade-enter-active { transition: all 0.3s ease; }
+.fade-leave-to { opacity: 0; }
+.fade-leave-active { transition: all 0.2s ease; }
+
+
+.slide-enter-from { transform: scale(1,0);}
+.slide-enter-active { transition: all 0.3s ease-in-out; transform-origin: top }
+.slide-leave-to { transform: scale(1,0);}
+.slide-leave-active { transition: all 0.2s ease-in-out; transform-origin: top }
+
+
+
+/* TAB-ok tartalma */
+.app-content .app-tab h1 {
+	font-size: 1.1rem;
+	font-style: italic;
+	font-weight: bold;
+	margin: 1rem 0 2rem 1.5rem;
+	text-align: right;
+	color: var(--backgroundColor);
+}
+
+
+
+
+
+/* Táblázatok */
+/* ADVANCED-TABLE komponens felépítése */
+/*
+DIV.advanced-table
+ |--TABLE
+ |   |--THEAD
+ |   |   |--TR
+ |   |       |--TH (n-times)
+ |   |           |--SPAN.sort-icon
+ |   |               |-- I.fa (3x)
+ |   |--TBODY
+ |       |--TR (empty)
+ |           |--TD
+ |               |--DIV.empty-content
+ |       |--TEMPLATE (n-times)
+ |           |--TR.(-/selected)
+ |           |   |--TD (n-times)
+ |           |--TR.record-menu-container
+ |               |--TD
+ |                   |--DIV.record-menu
+ |                       |--A (n-times)
+ |                           |--I.fa
+ |--DIV.page-selector
+     |--A (--> I.fa)
+     |--A (--> I.fa)
+     |--SPAN.page-display
+     |--A (--> I.fa)
+     |--A (--> I.fa)
+
+*/
+.advanced-table {
+	width: 90%;
+	margin: 2rem auto 1rem auto;
+}
+.advanced-table tbody {
+	border-bottom: 1px solid var(--baseFontColor);
+}
+.advanced-table thead {
+	background-color: var(--baseFontColor);
+	color: var(--foregroundColor);
+	font-size: 0.9rem;
+	font-weight: bold;
+}
+.advanced-table tbody tr:nth-child(odd) {
+	background-color: #dddddd;
+}
+.advanced-table tbody tr.selected {
+	background-color: #F9E177;
+}
+.advanced-table tbody tr td.record-menu {
+	background-color: #F9E177;
+}
+.advanced-table tbody td,th {
+	padding: 0.1rem 0.2rem 0.1rem 0.2rem !important;
+}
+
+
+
+
+
+/* Collapsible form */
+.collapsible-form .button-title {
+	color: var(--backgroundColor);
+}
+.collapsible-form .form-footer { 
+	text-align: center; 
+	padding-top: 0.5rem;
+}
+.collapsible-form .form-footer a {
+	margin: 0.5rem;
+}
+.collapsible-form .form-container {
+	border: 1px solid var(--backgroundColor);
+	border-radius: 0.5rem;
+	padding: 1rem;
+}
+
+
+
+
+
+
+/* GOMBOK */
+.button {
+	display: inline-block;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+.button:hover { filter: brightness(1.4); }
+.button:active { filter: brightness(1.7); }
+
+
+
+.button-icon {
+	color: var(--buttonDark);
+	cursor: pointer;
+	padding: 0.2rem 0.1rem 0.2rem 0.1rem;
+}
+.button-text {
+	text-decoration: underline;
+	font-size: 0.8rem;
+}.
+.button-solid {
+	background-color: #F9E177; 
+	border-radius: 0.4rem;
+	padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+}
+/* GOMBOK */
+
+

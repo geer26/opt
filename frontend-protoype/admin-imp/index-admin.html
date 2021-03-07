@@ -4,93 +4,90 @@
 	<meta charset="utf-8"/>
 	<link rel="stylesheet" href="css/opt-adminuser-generic.css"/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
-	<script src="js/opt-adminuser-generic.js" defer></script>
-	<script src="js/opt-ui-admin.js" defer></script>
+	<script src="https://unpkg.com/vue@next"></script>
 	
 	<!-- komponensek -->
-	<script src="static/js/components/ActionRouter.js"></script>
+	<script src="js/components/AdvancedTable.js"></script>
+	<script src="js/components/ActionRouter.js"></script>
+	<script src="js/components/SettingsTab.js"></script>
+	<script src="js/components/MessagesTab.js"></script>
+	<script src="js/components/UsersTab.js"></script>
+	<script src="js/components/ModulesTab.js"></script>
+	<script src="js/components/TestbatteriesTab.js"></script>
+	<script src="js/components/ReportsTab.js"></script>
+	<script src="js/components/DbTab.js"></script>
 	<!-- komponensek -->
 
-	<script>var admin_data = {{data|safe}};</script>
-	<script src="/static/js/admin/admin.js"></script>
+	<script src="js/admin-actions.js"></script>
+	<script src="js/admin-app.js" defer></script>
 </head>
 
 
 
 <body>
 
-	<div class="app-container">
+	<div class="app-container" id="main-app">
 		<div class="app-main-menu">
 			<div class="opt-logo"></div>
 			<div class="info-box">
-				<div class="username">{{current_user.username}}</div>
+				<div class="username">current_user.username</div>
 				<div class="small-menu">
-					<a class="menuitem" id="menuitem_logout"><i class="fa fa-power-off"></i></a>
+					<a class="menuitem" 
+					   id="menuitem_logout"
+					   @click="callLogout">
+					   <i class="fa fa-power-off"></i>
+					</a>
+					<a class="menuitem" 
+					   id="menuitem_logout"
+					   @click="currentTab = 'settings-tab'">
+					   <i class="fa fa-cogs"></i>
+					</a>
 				</div>
 			</div>
 			<div class="big-menu">
-				<a class="menuitem" id="menuitem_messages"><i class="fa fa-envelope" @click="currentTab = 'messages-tab'"></i><span>üzenetek</span></a>
-				<a class="menuitem" id="menuitem_users" @click="currentTab = 'users-tab"><i class="fa fa-users"></i><span>felhasználók</span></a>
-				<a class="menuitem" id="menuitem_modules" @click="currentTab = 'modules-tab'"><i class="fa fa-box-open"></i><span>modulok</span></a>
-				<a class="menuitem" id="menuitem_reports"><i class="fa fa-chart-bar"></i><span>kimutatások</span></a>
-				<a class="menuitem" id="menuitem_db"><i class="fa fa-book"></i><span>adatbázis</span></a>
+				<a class="menuitem"
+				   id="menuitem_messages"
+				   @click="currentTab = 'messages-tab'"
+				   :class="currentTab == 'messages-tab' ? 'active' : ''">
+				   <i class="fa fa-envelope"></i><span>üzenetek</span>
+				</a>
+				<a class="menuitem" 
+				   id="menuitem_users" 
+				   @click="currentTab = 'users-tab'"
+				   :class="currentTab == 'users-tab' ? 'active' : ''">
+				   <i class="fa fa-users"></i><span>felhasználók</span>
+				</a>
+				<a class="menuitem" 
+				   id="menuitem_modules" 		
+				   @click="currentTab = 'modules-tab'"
+				   :class="currentTab == 'modules-tab' ? 'active' : ''">
+				   <i class="fa fa-box-open"></i><span>modulok</span>
+				</a>
+				<a class="menuitem" 
+				   id="menuitem_testbatteries"
+				   @click="currentTab = 'testbatteries-tab'"
+				   :class="currentTab == 'testbatteries-tab' ? 'active' : ''">
+				   <i class="fa fa-clipboard-list"></i><span>tesztcsomagok</span>
+				</a>				
+				<a class="menuitem" 
+				   id="menuitem_reports"
+				   @click="currentTab = 'reports-tab'"
+				   :class="currentTab == 'reports-tab' ? 'active' : ''">
+				   <i class="fa fa-chart-bar"></i><span>kimutatások</span>
+				</a>
+				<a class="menuitem" 
+				   id="menuitem_db"
+				   @click="currentTab = 'db-tab'"
+				   :class="currentTab == 'db-tab' ? 'active' : ''">
+				   <i class="fa fa-book"></i><span>adatbázis</span>
+				</a>
 			</div>
 		</div>
 		<div class="app-content">
-			<component :is="currentTab"/>
+			<component v-if="currentTab" :is="currentTab" v-bind="tabProperties">
+			</component>
 		</div>
-		<div>
-			<!-- ÜZENETEK -->
-			<div id="tab-messages" class="app-tab">
-			</div>
-
-			<!-- USERS -->
-			<div id="tab-users" class="app-tab">
-				<div id="users-pages" class="page-navigator">
-
-					<div class="navigator-address-bar">
-						<a><i class="fa fa-home"></i></a>
-						<a>új felhasználó</a>
-						<a>aktuális oldal</a>
-					</div>
-
-					USERS
-					<!--<a @click="showAddUser">ADDUSER</a>-->
-					<i class="fa fa-user-plus" @click="showAddUser"></i>
-
-					<advanced-table
-						:fields="[
-							{name: 'id', title: 'ID', alignment: 'right', sortable: false},
-							{name: 'username', title: 'felhasználónév', alignment: 'left', sortable: true},
-							{name: 'contact', title: 'kontakt', alignment: 'left', stretch: true, sortable: false},
-							{name: 'added', title: 'regisztráció', alignment: 'left', stretch: true, sortable: true}
-			 			]"
-						:records="users"
-						:page="0"
-						:records-per-page="10"	
-						:record-menu="[
-							{title: 'Felhasználó törlése', icon: 'fa-trash-alt', action: 'del_user'}
-						]"
-						:action-router="actionRouter"
-					>
-					</advanced-table>
-
-				</div>
-			</div>
-
-			<!-- MODULES -->
-			<div id="tab-modules" class="app-tab">
-			</div>
-
-			<!-- REPORTS -->
-			<div id="tab-reports" class="app-tab">
-			</div>
-
-			<!-- DB -->
-			<div id="tab-db" class="app-tab">
-				{% include 'admin/db_operate.html' %}
-			</div>
-		</div>
+		<div v-if="disabled" class="app-disabled-modal"></div>		
 	</div>
 
 

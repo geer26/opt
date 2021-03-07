@@ -1,0 +1,12 @@
+{"type": "INFO", "timestamp": "1615124311.510802", "datetime": "2021.03.07-14:38:31", "executor": "ANONYMUS", "event": "Logfile created"}
+{"type": "SYSTEM EVENT", "timestamp": "1615124311.511306", "datetime": "2021.03.07-14:38:31", "executor": "ANONYMUS", "event": "App started"}
+{"type": "SYSTEM EVENT", "timestamp": "1615124311.511511", "datetime": "2021.03.07-14:38:31", "executor": "ANONYMUS", "event": "Backupper init"}
+{"type": "SYSTEM EVENT", "timestamp": "1615124359.512678", "datetime": "2021.03.07-14:39:19", "executor": "ANONYMUS", "event": "App started"}
+{"type": "SYSTEM EVENT", "timestamp": "1615124359.513016", "datetime": "2021.03.07-14:39:19", "executor": "ANONYMUS", "event": "Backupper init"}
+{"type": "INFO", "timestamp": "1615124372.985043", "datetime": "2021.03.07-14:39:32", "executor": "ANONYMUS", "event": "Non-auth visit from IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615124382.778003", "datetime": "2021.03.07-14:39:42", "executor": "LeoMinor", "event": "Successful login: LeoMinor from IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615124382.805123", "datetime": "2021.03.07-14:39:42", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615124382.817045", "datetime": "2021.03.07-14:39:42", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615124395.670683", "datetime": "2021.03.07-14:39:55", "executor": "ANONYMUS", "event": "Non-auth visit from IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615124461.151312", "datetime": "2021.03.07-14:41:01", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615124461.163455", "datetime": "2021.03.07-14:41:01", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
