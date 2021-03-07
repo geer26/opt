@@ -1,4 +1,5 @@
 import base64
+import random
 from os import listdir, remove, path, getenv
 from zipfile import ZipFile
 
@@ -6,20 +7,28 @@ from cryptography.fernet import Fernet
 from flask_login import current_user
 from os.path import basename
 from datetime import datetime
+from random import SystemRandom
 import json
 
 
 __version__ = '0.1'
 
 
-class Backupper():
+
+class Backupper:
 
 
-    def __init__(self, app=None, **kwargs):
+    def __init__(self, **kwargs):
 
         self.app = None
-        self.folder = None
-        self.archive_name = None
+        if 'folder' in kwargs:
+            self.folder = kwargs.get('folder')
+        else:
+            self.folder = None
+        if 'archive_name' in kwargs:
+            self.archive_name = kwargs.get('archive_name')
+        else:
+            self.archive_name = None
         self.log_name = None
         self.socket = None
         self.event_code = None
@@ -28,6 +37,8 @@ class Backupper():
         self.log_path = None
         self.temp_log_path = None
         self.fernet = None
+        self.logger = None
+        self.dotenvpath = None
         self.log_type = {0: 'INFO', 1: 'WRITE', 2: 'READ', 3: 'ERROR'}  #related to daíabase itself, not the backup!
 
         return
@@ -54,6 +65,9 @@ class Backupper():
 
         self.tables = tables
 
+        if 'logger' in kwargs:
+            self.logger = kwargs.get('logger')
+
         if 'zippassword' in kwargs:
             self.archive_password = kwargs.get( bytes( 'zippassword'.encode('utf-8') ) )
         else:
@@ -68,6 +82,8 @@ class Backupper():
 
         if 'folder' in kwargs:
             self.folder = kwargs.get('folder')
+        elif 'folder' not in kwargs and self.folder:
+            pass
         else:
             self.folder = app.config['BACKUP_FOLDER']
 
@@ -109,6 +125,8 @@ class Backupper():
                 #create first log entry
                 with open(self.log_path, 'a') as logfile:
                     logfile.write(self.create_log_entry('Archive created'))
+                    if self.logger:
+                        self.logger.upd_log('Database archive created', type=0)
                     logfile.write('\n')
                 archive.write(self.log_path, basename(self.log_path))
                 archive.setpassword(self.archive_password)
@@ -179,13 +197,16 @@ class Backupper():
                 logfile.write(self.create_log_entry(f'{tablename} table flushed', type=2))
                 logfile.write('\n')
 
+        self.update_log('Entire database flushed and zipped', type=2)
+        if self.logger:
+            self.logger.upd_log('Entire database flushed and zipped', type=0)
+
         #6. add log to zip
         self.to_zip(path.join(self.folder, 'log.file'))
 
         #7. remove unzipped logfile
         remove(path.join(self.folder, 'log.file'))
 
-        self.update_log('Database fully saved', type=2)
 
         return 0
 
@@ -215,6 +236,8 @@ class Backupper():
 
         #4. update logfile
         self.update_log('Database fully restored', type=1)
+        if self.logger:
+            self.logger.upd_log('Database fully restored', type=0)
 
         #5. zip all .pic and .file
         # replace this with pyminizip.compress
@@ -265,3 +288,58 @@ class Backupper():
         zipObj.setpassword(self.archive_password)
         zipObj.close()
         return 0
+
+
+    #HAZMAT starts here!
+    def change_backup_password(self, **kwargs):
+        '''
+        changes the password in the backup zip for a random selected pw
+        :param kwargs:
+            password_length = <32>
+            iterations = <1000> the bigger the slower
+        :return: 0
+        '''
+
+        if 'iterates' in kwargs:
+            iterates = kwargs.get('iterates')
+        else: iterates = 1000
+        if 'password_length' in kwargs:
+            password_length = kwargs.get('password_length')
+        else: password_length = 32
+
+        #1. generate passwordlist
+        pwlist = []
+        for _ in range(iterates):
+            pwlist.append(self.generate_rnd(password_length))
+
+        #2. instantiate new fernet class with a randomly choosen password
+        temp_fernet = Fernet(base64.urlsafe_b64encode(random.choice(pwlist).encode('utf-8')))
+
+        #3. unzip all file from old backup zip, and delete the old zipfile
+        self.extract_all(nodelete=True)
+
+        #4. decode .pic files and copy its content into temp file
+
+        #5. delete old .pic files and rename new .pics
+
+        #6. zip .pic and .file files back into a new backup zipfile
+
+        #7. delete .pic and .file files
+
+        #8. change self.fernet into the temp
+
+        #9. Overwrite the .env file! IMPORTANT!!!
+
+        return 0
+
+
+    def generate_rnd(self,N=32):
+
+        chars = ''
+        for i in range(33, 127):
+            chars += chr(i)
+
+        # Generates N lenght random text and returns it
+        return ''.join(
+            SystemRandom().choice(chars) for _ in
+            range(N))

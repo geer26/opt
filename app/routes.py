@@ -177,10 +177,9 @@ def new_admin_message(data):
 
     #init password change
     if data['event'] == 2889:
-        print('INIT PWD CHANGE')
         mess = {}
         mess['event'] = 1889
-        mess['status'] = 0   #insert method here
+        mess['status'] = bu.change_backup_password(iterates=100, password_length=32)
         socket.emit('admin', mess, room=sid)
         return True
 
