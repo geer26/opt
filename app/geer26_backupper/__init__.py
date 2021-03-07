@@ -58,7 +58,7 @@ class Backupper():
         if 'zippassword' in kwargs:
             self.archive_password = kwargs.get( bytes( 'zippassword'.encode('utf-8') ) )
         else:
-            self.archive_password = bytes( getenv('DBARCHIVE_SECRET').encode('utf-8') )
+            self.archive_password = bytes( getenv( 'DBARCHIVE_SECRET'.encode('utf-8') ) )
 
         #print( self.archive_password )
 
