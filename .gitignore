@@ -8,4 +8,10 @@
 /app/__pycache__/
 =======
 /postgres_uri.txt
+<<<<<<< HEAD
 >>>>>>> 91c19333fee23112e024f02149a7fccbf4b2baca
+=======
+/app/log/log.file
+/app/log/log_archive.zip
+/app/backup/backup.zip
+>>>>>>> bd16e23eae0cd37b3c6c89d07775c90ad779b085
