@@ -1,4 +1,4 @@
-/* Roboto font betöltése (csak regular) */
+/* Alkalmazott fontok importálása */
 @font-face {
 	font-family: Roboto;
 	src: url(Roboto-Regular.ttf);
@@ -6,201 +6,137 @@
 	font-style: normal;
 }
 
-
+/* Globális változók */
 :root {
-	--fontColor: #444444;
-	--lightBackground: #eeeeee;
-	--darkBackground: #54668e;
-	--inactive: #b3b3b3;
-	--active: #444444;
+	--backgroundColor: #5E7F82;
+	--foregroundColor: #F3F6F6;
+	--stripeColor: #A1BABA;
+
+	--baseFontColor: #33312E;
+
+	--buttonDark: #09485D;
+	--buttonLight: #58C9EE;
+	--buttonMiddle: #16ADDF;
 }
 
-
-* {
-	box-sizing: border-box;
-	font-family: Roboto;
-}
-
-html { height: 100%; }
-
+/* Globális beállítások */
+* { box-sizing: border-box; font-family: Roboto, sans; }
+a { display: inline-block; }
+html { font-size: 13pt;}
 body {
-	height: 100%;
-	margin: 0;
-	padding: 10px 0 0 0;
-	background-color: var(--darkBackground);
-	font-size: 13pt;
-	color: var(--fontColor);
+	background-color: var(--backgroundColor);
+	padding: 0.7rem 0 0 0;
+	margin: 0;	
+	color: var(--baseFontColor);
+
+    /* NOSELECT! */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
 
 
+/* Az alkalmazást tartalmazó konténer stílusai */
 
-/* ************************* */
-/* A felhasználói felület alapvető szerkezete */
-/* 
-APP-CONTAINER 
- |- APP-MAIN-MENU (1)
- |   |- OPT-LOGO (1)
- |   |- INFO-BOX (1)
- |   |   |- USERNAME (1)
- |   |   |- SMALL-MENU (1)
- |   |       |- MENUITEM (n)
- |   |
- |   |- BIG-MENU (1)
- |       |- MENUITEM (n)
- |
- |- APP-CONTENT
-     |- APP-TAB (n)
-         |- APP-TAB-CONTENT (1)
-
+/* APP stílusai */
+/*
+SECTION.app-navbar
+ |--IMG.logo
+ |--DIV.user-info
+ |   |--H1.username
+ |   |--DIV.small-menu
+ |       |--A.button,button-icon   (kilépés)
+ |       |--SPAN.icon-button-wrapper
+ |           |--A.button,button-icon    (beállítások)
+ |--DIV.big-menu
+     |--DIV.icon-button-wrapper  (n darab)
+         |--A.button,button-icon
+COMPONENT (app-tab)
 */
-
-.app-container {
-	display: grid;
-	grid-template-rows: auto 100fr;
-	grid-row-gap: 5px;
-	min-height: 100%;
-}
-.app-main-menu {
-	height: 70px;
+.app-navbar {
+	width: 100%;
+	background-color: var(--stripeColor);
 	display: flex;
 	flex-flow: row nowrap;
+	justify-content: flex-start;
 	align-items: center;
-	background-color: var(--lightBackground);
 }
-.app-main-menu .opt-logo {
-	background-image: url("/static/img/logo.png");
-	min-width: 74px;
-	min-height: 60px;
-	margin-left: 30px;
-}
-.app-main-menu .info-box {
+.app-navbar img.logo { display: block; margin-left: 1rem; }
+.app-navbar .user-info {
+	align-self: stretch;
 	display: flex;
 	flex-flow: column nowrap;
-	align-items: flex-start;
-	justify-content: flex-start;
-	margin-left: 10px;
+	justify-content: space-between;
+	margin: 0;
+	margin-left: 1rem;
 }
-.app-main-menu .info-box .username { 
-	font-size: 1.3em;
-	font-weight: bold;
-	margin-bottom: 5px;
-}
-.app-main-menu .info-box .small-menu {
-	font-size: 1em;
-	color: var(--darkBackground);
-}
-.app-main-menu .big-menu {
-	margin-left: 30px;
+.app-navbar .user-info h1 { margin: 0; font-size: 1.2rem; }
+.small-menu { 
+	font-size: 1rem; 
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-start;
 	align-items: flex-end;
-	align-self: flex-end;
-	position: relative;
-	bottom: -5px;
 }
-.app-main-menu .big-menu a {
+.app-navbar .button-icon {
+	padding: 0.3rem 0.4rem 0.2rem 0.4rem;
+}
+.big-menu {
+	align-self: flex-end;
+	margin-left: 2rem;
+	display: flex;
+	flex-flow: row nowrap;
+}
+.big-menu .button-icon {
 	display: flex;
 	flex-flow: column nowrap;
-	padding: 5px 10px 5px 10px;
-	justify-content: flex-start;
 	align-items: center;
-	margin: 0 5px 0 5px;
-
-	color: var(--inactive);
 }
-.app-main-menu .big-menu a .fa { font-size: 2em; }
-.app-main-menu a {
-	cursor: pointer;
-	user-select: none;
-	-ms-user-select: none;
-	-moz-user-select: none;
-	transition: color 0.5s ease;
-	font-weight: bold;
+.app-navbar .icon-button-wrapper {
+	background-color: var(--stripeColor);
+	border-radius: 0.5rem 0.5rem 0 0;
+	transition: all 0.3s ease;
+	margin: 0 0.1rem 0 0.1rem;
 }
-.app-main-menu a:hover .fa,span { filter: brightness(0.85); }
-.app-main-menu a.active { 
-	color: var(--fontColor); 
-	background-color: var(--lightBackground);
+.app-navbar .icon-button-wrapper:hover { filter: brightness(1.1); }
+.app-navbar .icon-button-wrapper.selected {
+	background-color: var(--foregroundColor) !important;	
 }
-
-/* A program ablaka */
 .app-content {
-	margin-left: auto;
-	margin-right: auto;
-	width: 99%;
-	min-height: 100%;
-}
-
-/* A tabok */
-.app-tab {
-	background-color: var(--lightBackground);
-	min-height: 100%;
-	width: 100%;
-	padding: 5px;
-	display: none;
-	transition: all 0.5s ease;
-    overflow: auto;
-	position: relative;
-}
-.app-tab.visible {
-	display: block;
-}
-.app-tab .preloader {
-	top: 5px;
-	right: 5px;
-	background-image: url("/static/img/loader.gif");
-	width: 30px;
-	height: 30px;
-	position: absolute;
-	border: 1px solid red;
-	top: 5px;
-	right: 5px;
-}
-.app-tab h1 {
-	font-size: 1.1em;
-	font-weight: bold;
-	font-style: italic;
-	margin: 10px 0 20px 0;
-	text-align: center;
-	border-bottom: 1px solid var(--darkBackground);
-	padding: 0 20px 0 20px;
+	background-color: var(--foregroundColor);
+	padding: 0.5rem 1rem 1rem 1rem;
 }
 
 
 
 
-
-/* PAGE NAVIGATOR */
-/*
-PAGE-NAVIGATOR
- |- NAVIGATOR-ADDRESS-BAR
- |- NAVIGATOR-PAGES
-     |- PAGE
-*/
-
-.page-navigator {
-	width: 100%;
-}
-.page-navigator .navigator-address-bar {
-	color: var(--darkBackground);
-	font-weight: bold;
-	font-style: italic;
-	padding: 5px 0 5px 10px;
-	font-size: 0.8em;
-}
-.page-navigator .navigator-address-bar a {
-	color: var(--fontColor);
-}
-.page-navigator .navigator-address-bar a.nav-active {
+/* Általános, gombokkal kapcsolatos dolgok */
+.button {
 	cursor: pointer;
-	text-decoration: underline;
-	color: var(--darkBackground);
+	text-decoration: none;
+	transition: all 0.3s ease;
+	color: var(--buttonDark);
 }
-.page {
-	padding: 5px;
-	display: none;
+.button:hover { filter: brightness(1.4); }
+.button:active { filter: brightness(1.7); }
+
+
+/* APP-TAB */
+/*
+*/
+.app-tab .tab-header {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1rem;
+	font-weight: bold;
+	font-style: italic;
+	color: var(--backgroundColor);
+	margin-bottom: 2rem;
+	text-transform: lowercase;
 }
-.page.visible {
-	display: block;
-}
+

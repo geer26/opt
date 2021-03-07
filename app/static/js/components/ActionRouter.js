@@ -15,4 +15,4 @@ class ActionRouter {
 			this.actions[action](param);
 	}
 
-}
+};

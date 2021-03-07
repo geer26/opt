@@ -1,52 +1,27 @@
 
-
-const adminActions = ActionRouter.create({
+// Végrehajtható akciók definiálása
+const actionRouter = ActionRouter.create({
 	debug: false,
 	actions: {
+        say_hello(payload) {
+            console.log("Hello " + payload.name);
+        },
+
+        // USer törlése
 		del_user(record) {
 		    /*
 			let index = vm.konyvek.findIndex(konyv => record.id == konyv.id)
 			vm.konyvek.splice(index, 1);
 			*/
 			send_message({event:2251, id: record.id}, namespace='admin');
-            loadstart();
 			console.log('DEL USER!');
-		}
+		},
+
+        logout() {
+            console.log("Kilépés");
+        }
 	}
 })
-
-
-const app = Vue.createApp({
-    delimiters: ["{@", "@}"],
-
-	data() {
-		return {
-			users: admin_data['users'],
-			//TODO add all table!
-			currentTab: ''
-		}
-	},
-
-	methods: {
-
-	    showAddUser() {
-	        $('#adduser_modal').show();
-	        $('#username').val('');
-	        $('#description').val('');
-	        $('#contact').val('');
-	        $('#password1').val('');
-	        $('#password2').val('');
-	        $('#is_superuser').prop( "checked", false );
-	        inputkeypress();
-	    }
-	},
-
-	components: {
-		advancedTable: AdvancedTable,
-        usersTab: UsersTab
-	}
-});
-const vm = app.mount("#tab-users")
 
 
 var log;

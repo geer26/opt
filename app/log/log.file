@@ -10,3 +10,79 @@
 {"type": "INFO", "timestamp": "1615124395.670683", "datetime": "2021.03.07-14:39:55", "executor": "ANONYMUS", "event": "Non-auth visit from IP: ImmutableList(['127.0.0.1'])"}
 {"type": "INFO", "timestamp": "1615124461.151312", "datetime": "2021.03.07-14:41:01", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
 {"type": "WARNING", "timestamp": "1615124461.163455", "datetime": "2021.03.07-14:41:01", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "SYSTEM EVENT", "timestamp": "1615129890.798408", "datetime": "2021.03.07-16:11:30", "executor": "ANONYMUS", "event": "App started"}
+{"type": "SYSTEM EVENT", "timestamp": "1615129890.799006", "datetime": "2021.03.07-16:11:30", "executor": "ANONYMUS", "event": "Backupper init"}
+{"type": "INFO", "timestamp": "1615129897.952542", "datetime": "2021.03.07-16:11:37", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615129897.9705", "datetime": "2021.03.07-16:11:37", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615129923.059743", "datetime": "2021.03.07-16:12:03", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615129923.06706", "datetime": "2021.03.07-16:12:03", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615129942.862678", "datetime": "2021.03.07-16:12:22", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615129942.870395", "datetime": "2021.03.07-16:12:22", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615129993.081757", "datetime": "2021.03.07-16:13:13", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615129993.089316", "datetime": "2021.03.07-16:13:13", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130027.269385", "datetime": "2021.03.07-16:13:47", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130027.276128", "datetime": "2021.03.07-16:13:47", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130027.636429", "datetime": "2021.03.07-16:13:47", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130027.651612", "datetime": "2021.03.07-16:13:47", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130028.006501", "datetime": "2021.03.07-16:13:48", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130028.028517", "datetime": "2021.03.07-16:13:48", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130030.030356", "datetime": "2021.03.07-16:13:50", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130030.041273", "datetime": "2021.03.07-16:13:50", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130194.250805", "datetime": "2021.03.07-16:16:34", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130194.2584", "datetime": "2021.03.07-16:16:34", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130256.61774", "datetime": "2021.03.07-16:17:36", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130256.625334", "datetime": "2021.03.07-16:17:36", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130311.375447", "datetime": "2021.03.07-16:18:31", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130311.382609", "datetime": "2021.03.07-16:18:31", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130320.344452", "datetime": "2021.03.07-16:18:40", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130320.351564", "datetime": "2021.03.07-16:18:40", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130361.983197", "datetime": "2021.03.07-16:19:21", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130361.991672", "datetime": "2021.03.07-16:19:21", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130467.973407", "datetime": "2021.03.07-16:21:07", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130467.979261", "datetime": "2021.03.07-16:21:07", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130565.966215", "datetime": "2021.03.07-16:22:45", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130565.974415", "datetime": "2021.03.07-16:22:45", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130684.774117", "datetime": "2021.03.07-16:24:44", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130684.78077", "datetime": "2021.03.07-16:24:44", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130836.443384", "datetime": "2021.03.07-16:27:16", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130836.449879", "datetime": "2021.03.07-16:27:16", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615130882.42358", "datetime": "2021.03.07-16:28:02", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615130882.430011", "datetime": "2021.03.07-16:28:02", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131026.474696", "datetime": "2021.03.07-16:30:26", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131026.482041", "datetime": "2021.03.07-16:30:26", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131027.864292", "datetime": "2021.03.07-16:30:27", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131027.871155", "datetime": "2021.03.07-16:30:27", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131029.264902", "datetime": "2021.03.07-16:30:29", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131029.27293", "datetime": "2021.03.07-16:30:29", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131213.49238", "datetime": "2021.03.07-16:33:33", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131213.498511", "datetime": "2021.03.07-16:33:33", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131249.43356", "datetime": "2021.03.07-16:34:09", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131249.441644", "datetime": "2021.03.07-16:34:09", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131260.27809", "datetime": "2021.03.07-16:34:20", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131260.28423", "datetime": "2021.03.07-16:34:20", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131310.052866", "datetime": "2021.03.07-16:35:10", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131310.06051", "datetime": "2021.03.07-16:35:10", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131472.477066", "datetime": "2021.03.07-16:37:52", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131472.484394", "datetime": "2021.03.07-16:37:52", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131487.195774", "datetime": "2021.03.07-16:38:07", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131487.201404", "datetime": "2021.03.07-16:38:07", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131529.741913", "datetime": "2021.03.07-16:38:49", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131529.748949", "datetime": "2021.03.07-16:38:49", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131588.016337", "datetime": "2021.03.07-16:39:48", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131588.024771", "datetime": "2021.03.07-16:39:48", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131588.685751", "datetime": "2021.03.07-16:39:48", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131588.697685", "datetime": "2021.03.07-16:39:48", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131724.624298", "datetime": "2021.03.07-16:42:04", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131724.631739", "datetime": "2021.03.07-16:42:04", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131754.776902", "datetime": "2021.03.07-16:42:34", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131754.782408", "datetime": "2021.03.07-16:42:34", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131832.981236", "datetime": "2021.03.07-16:43:52", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131832.98959", "datetime": "2021.03.07-16:43:52", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131963.731099", "datetime": "2021.03.07-16:46:03", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131963.737661", "datetime": "2021.03.07-16:46:03", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131973.491566", "datetime": "2021.03.07-16:46:13", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131973.498724", "datetime": "2021.03.07-16:46:13", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615131986.631078", "datetime": "2021.03.07-16:46:26", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615131986.640995", "datetime": "2021.03.07-16:46:26", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
+{"type": "INFO", "timestamp": "1615132044.698374", "datetime": "2021.03.07-16:47:24", "executor": "LeoMinor", "event": "Admin visit from IP: ImmutableList(['127.0.0.1']), admin: LeoMinor"}
+{"type": "WARNING", "timestamp": "1615132044.70737", "datetime": "2021.03.07-16:47:24", "executor": "LeoMinor", "event": "All data provided to IP: ImmutableList(['127.0.0.1'])"}
