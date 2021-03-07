@@ -11,13 +11,13 @@ from app.models import User, Module, Modaux, Testbattery, Testsession, Client, C
 
 
 def backup_db():
-    bu.backup_all()
+    #bu.backup_all()
     #backup_old_db()
     return 0
 
 
 def restore_db():
-    bu.restore_all()
+    #bu.restore_all()
     #restore_old_db()
     return 0
 
