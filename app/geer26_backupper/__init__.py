@@ -56,9 +56,9 @@ class Backupper():
         self.tables = tables
 
         if 'zippassword' in kwargs:
-            self.archive_password = kwargs.get( bytes( 'zippassword' ) )
+            self.archive_password = kwargs.get( bytes( 'zippassword'.encode('utf-8') ) )
         else:
-            self.archive_password = bytes( getenv( 'DBARCHIVE_SECRET' ) )
+            self.archive_password = bytes( getenv( 'DBARCHIVE_SECRET'.encode('utf-8') ) )
 
         #print( self.archive_password )
 
