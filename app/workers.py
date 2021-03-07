@@ -5,11 +5,10 @@ from random import SystemRandom
 
 from flask import request
 
-from app import db, app, fernet, logger
+from app import db, fernet, logger
 from flask_login import current_user
 from datetime import datetime
 
-from app.backup import upd_log
 from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result, Userlog, Message
 
 

@@ -84,29 +84,17 @@ class User(UserMixin, db.Model):
         return json.dumps(data)
 
     def load(self, data):
-        print(data)
         data = json.loads(data)
-        self.id = data['id']
-        print('Record id restored')
-        self.username = data['username']
-        print('Record username restored')
-        self.description = self.set_description(str(data['description']))
-        print('Record description restored')
-        self.contact = self.set_contact(str(data['contact']))
-        print('Record contact restored')
+        self.id = int(data['id'])
+        self.username = str(data['username'])
+        self.set_description(data['description'])
+        self.set_contact(data['contact'])
         self.is_superuser = data['is_superuser']
-        print('Record is_superuser restored')
-        self.password_hash = data['password_hash']
-        print('Record password_hash restored')
-        self.salt = data['salt']
-        print('Record salt restored')
-        self.settings = data['settings']
-        print('Record settings restored')
+        self.password_hash = str(data['password_hash'])
+        self.salt = str(data['salt'])
+        self.settings = str(data['settings'])
         self.added = datetime.fromtimestamp(data['added'])  # self.added.timestamp()
-        print('Record added restored')
         self.last_modified = datetime.now()
-        print(self.__dict__)
-        print('User record restored')
         return 0
 
 
@@ -291,11 +279,9 @@ class Testsession(db.Model):
         self.state = data['state']
         self.created = datetime.fromtimestamp(data['created'])
         self.due = datetime.fromtimestamp(data['due'])
-        self.invitation_text = self.set_invitation(data['invitation_text'])
-
+        self.set_invitation(data['invitation_text'])
         self.added = datetime.fromtimestamp(data['added'])
         self.last_modified = datetime.now()
-
         self.id = data['id']
         self.user_id = data['user_id']
         self.name = data['name']

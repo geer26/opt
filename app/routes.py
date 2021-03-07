@@ -4,9 +4,8 @@ import os
 from flask import render_template, redirect, request, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, AddUserForm
-from app import app, socket, db, logger
+from app import app, socket, db, logger, bu
 from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, reset_db
-from app.backup import backup_db, restore_db, upd_log, check_backup
 from app.models import User
 
 
@@ -162,7 +161,7 @@ def new_admin_message(data):
     if data['event'] == 2851:
         mess = {}
         mess['event'] = 1850
-        mess['status'] = backup_db()
+        mess['status'] = bu.backup_all()
         socket.emit('admin', mess, room=sid)
         return True
 
@@ -171,7 +170,7 @@ def new_admin_message(data):
     if data['event'] == 2871:
         mess = {}
         mess['event'] = 1871
-        mess['status'] = restore_db()
+        mess['status'] = bu.restore_all()
         socket.emit('admin', mess, room=sid)
         return True
 
