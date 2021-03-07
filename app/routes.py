@@ -175,6 +175,16 @@ def new_admin_message(data):
         return True
 
 
+    #init password change
+    if data['event'] == 2889:
+        print('INIT PWD CHANGE')
+        mess = {}
+        mess['event'] = 1889
+        mess['status'] = 0   #insert method here
+        socket.emit('admin', mess, room=sid)
+        return True
+
+
     #reset entire db
     if data['event'] == 2899:
         mess = {}
