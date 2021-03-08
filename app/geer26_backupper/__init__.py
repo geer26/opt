@@ -74,8 +74,6 @@ class Backupper:
         else:
             self.archive_password = bytes( getenv( 'DBARCHIVE_SECRET' ).encode('utf-8') )
 
-        #print( self.archive_password )
-
         if 'fernet' in kwargs:
             self.fernet = kwargs.get('fernet')
         else:
@@ -125,7 +123,7 @@ class Backupper:
 
         if self.archive_name not in files:
             #Create archive
-            with ZipFile(self.backup_path, 'w', password=self.zippw) as archive:
+            with ZipFile(self.backup_path, 'w') as archive:
                 #create first log entry
                 with open(self.log_path, 'a') as logfile:
                     logfile.write(self.create_log_entry('Archive created'))
@@ -295,6 +293,7 @@ class Backupper:
 
 
     #HAZMAT starts here!
+    #TODO examin overkill issue!
     def change_backup_password(self, **kwargs):
         '''
         changes the password in the backup zip for a random selected pw
@@ -317,10 +316,10 @@ class Backupper:
             pwlist.append(self.generate_rnd(password_length))
 
         #2. instantiate new fernet class with a randomly choosen password
-        temp_fernet = Fernet(base64.urlsafe_b64encode(random.choice(pwlist).encode('utf-8')))
+        #temp_fernet = Fernet(base64.urlsafe_b64encode(random.choice(pwlist).encode('utf-8')))
 
         #3. unzip all file from old backup zip, and delete the old zipfile
-        self.extract_all(nodelete=True)
+        #self.extract_all(nodelete=True)
 
         #4. decode .pic files and copy its content into temp file
 
