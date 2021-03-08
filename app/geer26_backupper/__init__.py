@@ -2,7 +2,7 @@ import base64
 import random
 from os import listdir, remove, path, getenv
 from zipfile import ZipFile
-
+import pyzipper
 from cryptography.fernet import Fernet
 from flask_login import current_user
 from os.path import basename
@@ -37,6 +37,7 @@ class Backupper:
         self.log_path = None
         self.temp_log_path = None
         self.fernet = None
+        self.zippw = None
         self.logger = None
         self.dotenvpath = None
         self.log_type = {0: 'INFO', 1: 'WRITE', 2: 'READ', 3: 'ERROR'}  #related to daíabase itself, not the backup!
@@ -80,6 +81,9 @@ class Backupper:
         else:
             self.fernet = Fernet(base64.urlsafe_b64encode(getenv('DB_SECRET').encode('utf-8')))
 
+        #TODO finish here later!
+        self.zippw = b'TF@H@(Omnnasq%o>-qJFMZqbNJ7TXnVY'
+
         if 'folder' in kwargs:
             self.folder = kwargs.get('folder')
         elif 'folder' not in kwargs and self.folder:
@@ -118,10 +122,10 @@ class Backupper:
         """
 
         files = listdir(self.folder)
-        #replace this with pyminizip.compress
+
         if self.archive_name not in files:
             #Create archive
-            with ZipFile(self.backup_path, 'w') as archive:
+            with ZipFile(self.backup_path, 'w', password=self.zippw) as archive:
                 #create first log entry
                 with open(self.log_path, 'a') as logfile:
                     logfile.write(self.create_log_entry('Archive created'))
