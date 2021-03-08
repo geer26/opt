@@ -311,9 +311,9 @@ class Backupper:
         else: password_length = 32
 
         #1. generate passwordlist
-        pwlist = []
+        '''pwlist = []
         for _ in range(iterates):
-            pwlist.append(self.generate_rnd(password_length))
+            pwlist.append(self.generate_rnd(password_length))'''
 
         #2. instantiate new fernet class with a randomly choosen password
         #temp_fernet = Fernet(base64.urlsafe_b64encode(random.choice(pwlist).encode('utf-8')))
