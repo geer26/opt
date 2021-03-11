@@ -45,12 +45,13 @@ socket.init_app(app, cors_allowed_origins="*")
 
 mail = Mail(app)
 
-message = Message()
+'''message = Message()
 message.subject = 'TEST FROM OPT'
 message.body = 'THIS MESSAGE WAS SENT FROM A LIVING APP'
 message.add_recipient('gergo.kurucz@gmail.com')
 
 mail.send(message)
+'''
 
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERNET_SECRET').encode('utf-8')))
 
