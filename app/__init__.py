@@ -11,6 +11,8 @@ from flask_migrate import Migrate
 
 from flask_socketio import SocketIO
 
+from flask_mail import Mail, Message
+
 from app.geer26_backupper import Backupper
 
 from flask_login import LoginManager
@@ -40,6 +42,15 @@ with app.app_context():
 
 socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
+
+mail = Mail(app)
+
+message = Message()
+message.subject = 'TEST FROM OPT'
+message.body = 'THIS MESSAGE WAS SENT FROM A LIVING APP'
+message.add_recipient('gergo.kurucz@gmail.com')
+
+mail.send(message)
 
 fernet = Fernet(base64.urlsafe_b64encode(os.getenv('FERNET_SECRET').encode('utf-8')))
 

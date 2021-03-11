@@ -7,3 +7,4 @@
 /app/log/log.file
 /app/log/log_archive.zip
 /app/backup/backup.zip
+/postfix.txt
