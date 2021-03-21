@@ -175,6 +175,15 @@ def new_admin_message(data):
         return True
 
 
+    #init password change
+    if data['event'] == 2889:
+        mess = {}
+        mess['event'] = 1889
+        mess['status'] = bu.change_backup_password(iterates=100, password_length=32)
+        socket.emit('admin', mess, room=sid)
+        return True
+
+
     #reset entire db
     if data['event'] == 2899:
         mess = {}

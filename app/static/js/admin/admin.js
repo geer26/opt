@@ -150,6 +150,13 @@ function reset_db(){
 };
 
 
+function change_pwd(){
+    console.log('INIT PASSWORD CHANGE!')
+    loadstart();
+    send_message({event: 2889}, namespace='admin');
+};
+
+
 function showlogcontent(){
     $('#log_content').show();
     $('#hide_log').show();
@@ -280,6 +287,15 @@ socket.on('admin', function(data){
             if (data['status'] == 0){
                 console.log('ENTIRE DB RESTORED!');
                 //TODO refresh all vm data!
+            }
+        }
+        break;
+
+        //accept password change status report
+        case 1889:{
+            loadend();
+            if (data['status'] == 0){
+                console.log('PASSWORD CHANGED!');
             }
         }
         break;

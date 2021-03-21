@@ -14,4 +14,8 @@
 /app/log/log.file
 /app/log/log_archive.zip
 /app/backup/backup.zip
+<<<<<<< HEAD
 >>>>>>> bd16e23eae0cd37b3c6c89d07775c90ad779b085
+=======
+/postfix.txt
+>>>>>>> 3d60df08c819e1232182a7bd0126d02e3b7df72c
