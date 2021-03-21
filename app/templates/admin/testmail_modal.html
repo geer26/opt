@@ -1,0 +1,74 @@
+<link rel="stylesheet" href="static/css/modals2.css"/>
+
+<div id="sendmail_modal" class="modalback" style="display:none;">
+    <div id="adduser_frame" class="frame">
+
+        <div class="closeicon" onclick="$('#sendmail_modal').hide();">
+            <i class="material-icons" style="color: red;">disabled_by_default</i>
+        </div>
+
+        <div class="logoimg">
+            <img src="/static/img/logo.png">
+        </div>
+
+        <div class="tbar">
+            <a id="adduser_titlebar">tesztüzenet küldése</a>
+        </div>
+
+        <br>
+    <div class="credits" id="credits">
+
+        <a id="error">
+            Hibás adatok!
+        </a>
+
+        <form id="adduser" method="POST" onsubmit=loadstart()">
+
+            <div class="inp">
+                <span>
+                    <i class="fa fa-at"></i>
+                    <input type="text" placeholder="címzett" id="addr" style="text-align: center; width: 80%;">
+                </span>
+            </div>
+
+            <div class="inp">
+                <span>
+                    <i class="fa fa-bone"></i>
+                    <input type="text" placeholder="tárgy" id="subj" style="text-align: center; width: 80%;">
+                </span>
+            </div>
+
+            <div class="inp">
+                <span>
+                    <i class="fa fa-envelope-open-text"></i>
+                    <input type="text" placeholder="Üzenet" id="body" style="text-align: center; width: 80%;">
+                </span>
+            </div>
+
+            <label class="inp">
+                <span style="color: #333333; font-size: .8em;">
+                {{ adduserform.is_superuser(id="is_superuser", type="checkbox") }}
+                    Üres!
+                </span>
+            </label>
+
+        </form>
+
+    </div>
+
+    <br>
+    <span class="submit_btn">
+
+        <button id="adduser_submitbutton" class="btn_gen" onclick="adm_post_adduser()">
+            <i class="fa fa-user-plus"></i>
+            hozzáadás
+        </button>
+
+    </span>
+
+    </div>
+
+    <script>
+    </script>
+
+</div>

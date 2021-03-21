@@ -138,6 +138,12 @@ function hide_adduser_modal(){
 }
 
 
+function show_testmail(){
+    $('#sendmail_modal').show();
+
+}
+
+
 function backup_db_all(){
     console.log('BACKUP ENTIRE DB!');
     loadstart();
