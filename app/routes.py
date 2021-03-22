@@ -161,8 +161,7 @@ def new_admin_message(data):
                       recipients = [data['body']])
         msg.body = data['body']
         msg.html = '<h1>HTML body</h1>'
-        #mail.send(msg)
-        print(app.config['MAIL_DEFAULT_SENDER'])
+        mail.send(msg)
 
         mess = {}
         mess['event'] = 1701
