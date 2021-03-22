@@ -152,16 +152,9 @@ def new_admin_message(data):
 
     #send test mail
     if data['event'] == 2701:
-
-        #TODO:send mail here
-
-        print(data)
-
-        sendmail(data)
-
         mess = {}
         mess['event'] = 1701
-        mess['status'] = 0
+        mess['status'] = sendmail(data)
         socket.emit('admin', mess, room=sid)
         return True
 
