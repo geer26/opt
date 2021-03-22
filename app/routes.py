@@ -157,10 +157,12 @@ def new_admin_message(data):
 
         print(data)
 
-        #msg = Message('test subject',sender=app.config['ADMINS'][0],recipients = ['your-email@example.com'])
-        #msg.body = 'text body'
-        #msg.html = '<h1>HTML body</h1>'
-        #mail.send(msg)
+        msg = Message(data['subject'],
+                      sender = 'test@test.test',
+                      recipients = [data['body']])
+        msg.body = data['body']
+        msg.html = '<h1>HTML body</h1>'
+        mail.send(msg)
 
         mess = {}
         mess['event'] = 1701
