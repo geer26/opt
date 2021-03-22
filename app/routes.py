@@ -158,7 +158,6 @@ def new_admin_message(data):
         print(data)
 
         msg = Message(data['subject'],
-                      sender = 'test@test.test',
                       recipients = [data['body']])
         msg.body = data['body']
         msg.html = '<h1>HTML body</h1>'
