@@ -274,7 +274,7 @@ def sendmail(data):
 
     smtp_server = "localhost"
     port = 25
-    sender_email = 'no-reply@tesztelgeto.tk'
+    sender_email = 'info@mail.tesztelgeto.tk'
     username = 'info'
     password = '123456aA?'
 
@@ -287,7 +287,7 @@ def sendmail(data):
         server.ehlo()  # Can be omitted
         server.starttls(context=context)  # Secure the connection
         server.ehlo()  # Can be omitted
-        server.login(username, password)
+        server.login(sender_email, password)
         # TODO: Send email here
 
         server.sendmail(sender_email, data['recepient'], data['body'])
