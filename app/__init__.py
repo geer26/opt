@@ -44,6 +44,11 @@ socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
 print(app.config['MAIL_SERVER'])
+print(app.config['MAIL_PORT'])
+print(app.config['MAIL_USE_TLS'])
+print(app.config['MAIL_USERNAME'])
+print(app.config['MAIL_PASSWORD'])
+
 mail = Mail(app)
 
 '''message = Message()
