@@ -1,5 +1,6 @@
 
 
+
 const adminActions = ActionRouter.create({
 	debug: false,
 	actions: {
@@ -127,6 +128,32 @@ function hide_adduser_modal(){
 	$('#is_superuser').prop( "checked", false );
 	$('#adduser_modal').hide();
 }
+
+
+function show_testmail(){
+    $('#sendmail_modal').show();
+    $('#addr').val('');
+    $('#subj').val('');
+    //$('#body').val('');
+    //$('#editor').text();
+}
+
+
+function sendmail(){
+    //WS EVENT = 2701
+
+    //TODO implement checks!
+
+    var recipient = $('#addr').val();
+    var subject = $('#subj').val();
+    //var body =$('#body').val();
+    var body = $('#editor').text();
+
+    data = {event: 2701, recepient: recipient, subject: subject, body: body};
+    send_message(data, namespace='admin');
+    loadstart();
+    console.log(data);
+};
 
 
 function backup_db_all(){
@@ -261,6 +288,16 @@ socket.on('admin', function(data){
                 admin_data.users.pop();
             }
             new_users.forEach(item => admin_data.users.push(item));
+        }
+        break;
+
+        //accept mailing status report
+        case 1701:{
+            loadend();
+            if(data['status'] == 0){
+                $('#sendmail_modal').hide();
+                console.log('MAIL SENT!');
+            }
         }
         break;
 

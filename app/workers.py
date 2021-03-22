@@ -265,3 +265,8 @@ def reset_db():
     logger.upd_log('Database wiped except superusers', 1)
 
     return 0
+
+
+def sendmail(data):
+
+    return 0
