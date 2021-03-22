@@ -265,3 +265,37 @@ def reset_db():
     logger.upd_log('Database wiped except superusers', 1)
 
     return 0
+
+
+def sendmail(data):
+    import smtplib, ssl
+    from app import mail
+    from flask_mail import Message as M
+
+    smtp_server = "localhost"
+    port = 25
+    sender_email = 'no-reply@tesztelgeto.tk'
+    username = 'info'
+    password = '123456aA?'
+
+    # Create a secure SSL context
+    context = ssl.create_default_context()
+
+    # Try to log in to server and send email
+    try:
+        server = smtplib.SMTP(smtp_server, port)
+        server.ehlo()  # Can be omitted
+        server.starttls(context=context)  # Secure the connection
+        server.ehlo()  # Can be omitted
+        server.login(username, password)
+        # TODO: Send email here
+
+        server.sendmail(sender_email, data['recepient'], data['body'])
+
+    except Exception as e:
+        # Print any error messages to stdout
+        print(e)
+    finally:
+        server.quit()
+
+    return 0

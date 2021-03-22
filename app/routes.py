@@ -7,7 +7,7 @@ from app.forms import LoginForm, AddUserForm
 from app import app, socket, db, logger, bu
 from flask_mail import Message
 from app import mail
-from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, reset_db
+from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, reset_db, sendmail
 from app.models import User
 
 
@@ -157,15 +157,7 @@ def new_admin_message(data):
 
         print(data)
 
-        msg = Message(
-            data['subject'],
-            sender = app.config['MAIL_DEFAULT_SENDER'],
-            recipients = [data['recepient']]
-            )
-
-        msg.body = data['body']
-        msg.html = '<h1>HTML body</h1>'
-        mail.send(msg)
+        sendmail(data)
 
         mess = {}
         mess['event'] = 1701
