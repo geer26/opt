@@ -157,12 +157,15 @@ def new_admin_message(data):
 
         print(data)
 
-        msg = Message(data['subject'],
-                      sender = app.config['MAIL_DEFAULT_SENDER'],
-                      recipients = [data['recepient']])
+        msg = Message(
+            data['subject'],
+            sender = app.config['MAIL_DEFAULT_SENDER'],
+            recipients = [data['recepient']]
+            )
+
         msg.body = data['body']
         msg.html = '<h1>HTML body</h1>'
-        print(mail.__dict__)
+        print()
         mail.send(msg)
 
         mess = {}
