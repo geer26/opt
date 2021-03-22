@@ -43,6 +43,7 @@ with app.app_context():
 socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
+print(app.config['MAIL_SERVER'])
 mail = Mail(app)
 
 '''message = Message()
