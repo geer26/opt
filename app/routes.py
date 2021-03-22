@@ -165,8 +165,7 @@ def new_admin_message(data):
 
         msg.body = data['body']
         msg.html = '<h1>HTML body</h1>'
-        print()
-        mail.send(msg)
+        #mail.send(msg)
 
         mess = {}
         mess['event'] = 1701
