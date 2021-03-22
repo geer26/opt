@@ -158,7 +158,7 @@ function sendmail(){
     //var body =$('#body').val();
     var body = $('#editor').text();
 
-    data = {event: 2701, recipient: recipient, subject: subject, body: body};
+    data = {event: 2701, recepient: recipient, subject: subject, body: body};
     send_message(data, namespace='admin');
     loadstart();
     console.log(data);
