@@ -1,5 +1,11 @@
 <link rel="stylesheet" href="static/css/modals2.css"/>
 
+<!-- Main Quill library -->
+<script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+<!-- Theme included stylesheets -->
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
 <div id="sendmail_modal" class="modalback" style="display:none;">
     <div id="adduser_frame" class="frame">
 
@@ -22,7 +28,7 @@
             Hibás adatok!
         </a>
 
-        <form id="adduser" method="POST" onsubmit=loadstart()">
+        <form id="sendmail" method="POST" onsubmit=loadstart()">
 
             <div class="inp">
                 <span>
@@ -38,19 +44,22 @@
                 </span>
             </div>
 
-            <div class="inp">
+            <!--<div class="inp">
                 <span>
                     <i class="fa fa-envelope-open-text"></i>
-                    <input type="text" placeholder="Üzenet" id="body" style="text-align: center; width: 80%;">
+                    <input type="text" placeholder="üzenet" id="body" style="text-align: center; width: 80%;">
                 </span>
+            </div>-->
+
+            <div id="editor" style="min-height:120px;">
+
             </div>
 
-            <label class="inp">
-                <span style="color: #333333; font-size: .8em;">
-                {{ adduserform.is_superuser(id="is_superuser", type="checkbox") }}
-                    Üres!
-                </span>
-            </label>
+            <script>
+                var quill = new Quill('#editor', {
+                theme: 'snow'
+                });
+            </script>
 
         </form>
 
@@ -59,9 +68,9 @@
     <br>
     <span class="submit_btn">
 
-        <button id="adduser_submitbutton" class="btn_gen" onclick="adm_post_adduser()">
+        <button id="adduser_submitbutton" class="btn_gen" onclick="sendmail()">
             <i class="fa fa-user-plus"></i>
-            hozzáadás
+            levél küldése
         </button>
 
     </span>

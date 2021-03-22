@@ -5,6 +5,8 @@ from flask import render_template, redirect, request, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, AddUserForm
 from app import app, socket, db, logger, bu
+from flask_mail import Message
+from app import mail
 from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, reset_db
 from app.models import User
 
@@ -144,6 +146,25 @@ def new_admin_message(data):
         mess['event'] = 1251
         mess['status'] = del_user(data)
         mess['new_users'] = json.dumps(json.loads(get_sudata())['users'])
+        socket.emit('admin', mess, room=sid)
+        return True
+
+
+    #send test mail
+    if data['event'] == 2701:
+
+        #TODO:send mail here
+
+        print(data)
+
+        #msg = Message('test subject',sender=app.config['ADMINS'][0],recipients = ['your-email@example.com'])
+        #msg.body = 'text body'
+        #msg.html = '<h1>HTML body</h1>'
+        #mail.send(msg)
+
+        mess = {}
+        mess['event'] = 1701
+        mess['status'] = 0
         socket.emit('admin', mess, room=sid)
         return True
 
