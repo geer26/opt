@@ -158,7 +158,8 @@ def new_admin_message(data):
         print(data)
 
         msg = Message(data['subject'],
-                      recipients = [data['body']])
+                      sender = app.config['MAIL_DEFAULT_SENDER'],
+                      recipients = [data['recepient']])
         msg.body = data['body']
         msg.html = '<h1>HTML body</h1>'
         mail.send(msg)
