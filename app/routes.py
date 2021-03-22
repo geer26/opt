@@ -162,6 +162,7 @@ def new_admin_message(data):
                       recipients = [data['recepient']])
         msg.body = data['body']
         msg.html = '<h1>HTML body</h1>'
+        print(mail.__dict__)
         mail.send(msg)
 
         mess = {}
