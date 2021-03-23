@@ -43,8 +43,8 @@ with app.app_context():
 socket = SocketIO(app)
 socket.init_app(app, cors_allowed_origins="*")
 
-mail = Mail()
-mail.init_app(app)
+mail = Mail(app)
+print(f'MAIL USERNAME: {mail.username}\nMAIL PASSWORD: {mail.password}')
 
 '''message = Message()
 message.subject = 'TEST FROM OPT'
