@@ -274,7 +274,7 @@ def sendmail(data):
 
     print (data)
 
-    msg = MAIL(data['subj'], recipients=[data['recepient']])
+    msg = MAIL(data['subject'], recipients=[data['recepient']])
     msg.body = data['body']
     #msg.html = html_body
     mail.send(msg)
