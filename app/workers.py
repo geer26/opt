@@ -284,7 +284,7 @@ def sendmail(data):
     #msg.html = html_body
     mail.send(msg)"""
 
-    fromaddr = environ.get['MAIL_DEFAUILT_SENDER']
+    fromaddr = environ.get('MAIL_DEFAUILT_SENDER')
     toaddr = str(data['recepient'])
     subject = data['subject']
     body = data['body']
