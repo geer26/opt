@@ -2,6 +2,7 @@
 import json
 import re
 from random import SystemRandom
+from os import environ
 
 from flask import request
 
@@ -10,6 +11,10 @@ from flask_login import current_user
 from datetime import datetime
 
 from flask_mail import Message as MAIL
+
+import smtplib
+from email.message import EmailMessage
+
 from app import mail
 
 from app.models import User, Module, Modaux, Testbattery, Testsession, Client, Clientlog, Result, Userlog, Message
@@ -274,12 +279,35 @@ def sendmail(data):
 
     print (data)
 
-    msg = MAIL(data['subject'], recipients=[data['recepient']])
+    """msg = MAIL(data['subject'], recipients=[data['recepient']])
     msg.body = data['body']
     #msg.html = html_body
-    mail.send(msg)
+    mail.send(msg)"""
+
+    fromaddr = environ.get['MAIL_DEFAUILT_SENDER']
+    toaddr = str(data['recepient'])
+    subject = data['subject']
+    body = data['body']
+
+    server = smtplib.SMTP('localhost', 25)
+    server.connect("localhost", 25)
+    server.ehlo()
+    server.starttls()
+
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg["Subject"] = subject
+    msg["From"] = fromaddr
+    msg["To"] = toaddr
+
+    server.send_message(msg)
+
+    #server.sendmail(fromaddr, toaddr, text)
+
+    server.quit()
 
     return 0
+
 
 def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
