@@ -1,5 +1,5 @@
 <style>
-    #mailframe{
+    .mailframe{
         max-width: 700px;
         max-height: 300px;
         background-color: rgba(66, 135, 245, .5);
@@ -9,7 +9,7 @@
         color: #333333;
     }
 
-    #logoimg{
+    .logoimg{
         position: relative;
         display: inline-block;
         float: left;
@@ -18,7 +18,7 @@
 
 </style>
 
-<div id="mailframe">
+<div id="mailframe" class="mailframe">
 
     <div class="logoimg">
         <img src="/static/img/logo.png">
@@ -26,6 +26,6 @@
 
     <h1>OPT STANDARD ÜZENET</h1>
 
-    <p>{{body}}</p>
+    {{body}}
 
 </div>

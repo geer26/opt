@@ -315,7 +315,7 @@ def sendmail_flaskmail(data):
     subject = str(data['subject'])
     body = str(data['body'])
 
-    html_body = render_template('mailform.html', body = str(data['body']))
+    html_body = render_template('mailform.html', body = data['htmlbody'])
 
     return send_email(subject, fromaddr, [toaddr], body, html_body)
 
