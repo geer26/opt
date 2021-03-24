@@ -15,8 +15,10 @@ class Config:
     TEMPLATES_FOLDER = 'templates'
 
     MAIL_SERVER = environ.get('MAIL_SERVER') or 'mail.tesztelgeto.tk'
-    MAIL_USERNAME = environ.get('MAIL_USERNAME') or None
-    MAIL_PASSWORD = environ.get('MAIL_PASSWORD') or None
+    #MAIL_USERNAME = environ.get('MAIL_USERNAME') or None
+    MAIL_USERNAME = None
+    #MAIL_PASSWORD = environ.get('MAIL_PASSWORD') or None
+    MAIL_PASSWORD = None
     MAIL_DEFAULT_SENDER = environ.get('MAIL_DEFAULT_SENDER') or None
     MAIL_PORT = environ.get('MAIL_PORT') or 25
     MAIL_USE_TLS = environ.get('MAIL_USE_TLS') or True
