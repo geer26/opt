@@ -4,7 +4,7 @@ import re
 from random import SystemRandom
 from os import environ
 
-from flask import request
+from flask import request, render_template
 
 from app import db, fernet, logger
 from flask_login import current_user
@@ -314,14 +314,8 @@ def sendmail_flaskmail(data):
     toaddr = str(data['recepient'])
     subject = str(data['subject'])
     body = str(data['body'])
-    html_body = f'''
-                <div style="background-color: #42b6f5">
-                    <div class="logoimg">
-                        <img src="/static/img/logo.png">
-                    </div>
-                    <h1>{str(data["body"])}</h1>
-                </div>
-                '''
+
+    html_body = render_template('mailform.html', body = str(data['dody']))
 
     return send_email(subject, fromaddr, [toaddr], body, html_body)
 
