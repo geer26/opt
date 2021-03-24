@@ -286,8 +286,8 @@ def sendmail(data):
 
     fromaddr = environ.get('MAIL_DEFAULT_SENDER').encode('utf-8')
     toaddr = str(data['recepient']).encode('utf-8')
-    subject = data['subject'].encode('utf-8')
-    body = data['body'].encode('utf-8')
+    subject = str(data['subject']).encode('utf-8')
+    body = str(data['body']).encode('utf-8')
 
     server = smtplib.SMTP('localhost', 25)
     server.connect("localhost", 25)
