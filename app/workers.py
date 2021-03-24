@@ -309,6 +309,15 @@ def sendmail(data):
     return 0
 
 
+def sendmail_flaskmail(data):
+    fromaddr = environ.get('MAIL_DEFAULT_SENDER')
+    toaddr = str(data['recepient'])
+    subject = str(data['subject'])
+    body = str(data['body'])
+    html_body = f'<h1>{str(data["body"])}</h1>'
+    return send_email(subject, fromaddr, [toaddr], body, html_body)
+
+
 def send_email(subject, sender, recipients, text_body, html_body):
     msg = MAIL(subject, sender=sender, recipients=recipients)
     msg.body = text_body

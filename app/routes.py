@@ -7,7 +7,7 @@ from app.forms import LoginForm, AddUserForm
 from app import app, socket, db, logger, bu
 from flask_mail import Message
 from app import mail
-from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, reset_db, sendmail
+from app.workers import hassu, generate_rnd, get_sudata, check_adduser, del_user, reset_db, sendmail, sendmail_flaskmail
 from app.models import User
 
 
@@ -154,7 +154,7 @@ def new_admin_message(data):
     if data['event'] == 2701:
         mess = {}
         mess['event'] = 1701
-        mess['status'] = sendmail(data)
+        mess['status'] = sendmail_flaskmail(data)
         socket.emit('admin', mess, room=sid)
         return True
 
