@@ -295,12 +295,12 @@ def sendmail(data):
     server.starttls()
 
     msg = EmailMessage()
-    msg.set_content(body)
-    msg["Subject"] = subject
+    msg.set_content(body.encode('utf-8'))
+    msg["Subject"] = subject.encode('utf-8')
     msg["From"] = fromaddr
     msg["To"] = toaddr
 
-    server.send_message(msg, msg.encode("utf8"))
+    server.send_message(msg)
 
     #server.sendmail(fromaddr, toaddr, text)
 
