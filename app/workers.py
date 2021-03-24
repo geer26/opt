@@ -314,13 +314,14 @@ def sendmail_flaskmail(data):
     toaddr = str(data['recepient'])
     subject = str(data['subject'])
     body = str(data['body'])
-    html_body = f'' \
-                f'<div style="background-color: #42b6f5">'\
-                f'<div class="logoimg">'\
-                f'<img src="/static/img/logo.png">'\
-                f'</div>'\
-                f'<h1>{str(data["body"])}</h1>'\
-                f'</div>'
+    html_body = f'''
+                <div style="background-color: #42b6f5">
+                    <div class="logoimg">
+                        <img src="/static/img/logo.png">
+                    </div>
+                    <h1>{str(data["body"])}</h1>
+                </div>
+                '''
 
     return send_email(subject, fromaddr, [toaddr], body, html_body)
 
