@@ -295,8 +295,8 @@ def sendmail(data):
     server.starttls()
 
     msg = EmailMessage()
-    msg.set_content(body.encode('utf-8'))
-    msg["Subject"] = subject.encode('utf-8')
+    msg.set_content(body)
+    msg["Subject"] = subject
     msg["From"] = fromaddr
     msg["To"] = toaddr
 
