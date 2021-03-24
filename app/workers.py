@@ -284,10 +284,10 @@ def sendmail(data):
     #msg.html = html_body
     mail.send(msg)"""
 
-    fromaddr = environ.get('MAIL_DEFAULT_SENDER')
-    toaddr = str(data['recepient'])
-    subject = data['subject']
-    body = data['body']
+    fromaddr = environ.get('MAIL_DEFAULT_SENDER').encode('utf-8')
+    toaddr = str(data['recepient']).encode('utf-8')
+    subject = data['subject'].encode('utf-8')
+    body = data['body'].encode('utf-8')
 
     server = smtplib.SMTP('localhost', 25)
     server.connect("localhost", 25)
@@ -310,7 +310,8 @@ def sendmail(data):
 
 
 def send_email(subject, sender, recipients, text_body, html_body):
-    msg = Message(subject, sender=sender, recipients=recipients)
+    msg = MAIL(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
     mail.send(msg)
+    return 0
