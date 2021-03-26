@@ -1,43 +1,28 @@
 <template>
-  <!--
   <section class="app-navbar">
-    <img class="logo" src="http://picsum.photos/100/70"/>
+    <img class="logo" src="img/logo.png"/>
     <div class="user-info">
       <h1 class="username" v-if="data != null">{{ data.current_user.username }}</h1>
       <div class="small-menu">
-        <a class="button button-icon"
-           title="Kilépés"
-           @click="startLogout()">
-           <font-awesome-icon icon="power-off"/>
-        </a>
-        <span class="icon-button-wrapper" :class="(currentTab != null && currentTab.tab) == 'tab-settings' ? 'selected' : ''">
-          <a class="button button-icon"
-               title="Beállítások"
-               @click="currentTab = {title: 'Beállítások', tab: 'tab-settings', icon: 'cogs'}">
-               <font-awesome-icon icon="cogs"/>
-          </a>
+        <btn icon="power-off" title="Kilépés" @click="startLogout()"/>
+        <span class="icon-button-wrapper" :class="(currentTab != null && currentTab.tab == 'tab-settings' ? 'selected' : '')">
+          <btn icon="cogs" title="Beállítások" 
+            @click="currentTab = {title: 'Beállítások', tab: 'tab-settings', icon: 'cogs'}"/>
         </span>
       </div>
     </div>
 
     <div class="big-menu">
-      <div v-for="item in tabs" class="icon-button-wrapper" :class="(currentTab != null && currentTab.tab) == item.tab ? 'selected' : ''">
-        <a class="button button-icon"
-             :title="item.title"
-             @click="currentTab = item">
-             <font-awesome-icon :icon="item.icon" size="2x"/>
-             <span>{{ item.label }}</span>
-        </a>
+      <div v-for="item in tabs" class="icon-button-wrapper"
+        :class="(currentTab != null && currentTab.tab == item.tab) ? 'selected' : ''">
+        <btn :icon="item.icon" :title="item.title" @click="currentTab = item" icon-size="2x"
+          :label="item.label" vertical/>
       </div>
     </div>
   </section>
 
   <section v-if="currentTab != null" class="app-content">
     <component is="app-tab" v-bind="{tab: currentTab, tabData: data}" ref="currentTab"></component>
-  </section>
--->
-  <section>
-    <btn id="btValami" icon="power-off" icon-size="2x" underline bold @click="startLogout('btv')"/>
   </section>
 </template>
 
@@ -97,7 +82,6 @@ export default {
 
   methods: {
     startLogout(data) {
-      console.log(data);
       // Kijelentkezés kezdeményezése
       if (confirm("Biztosan kijelentkezel az alkalmazásból?")) {
         console.log("KILÉPÉS");
@@ -114,21 +98,22 @@ export default {
 
 .app-navbar {
   width: 100%;
-  background-color: var(--stripeColor);
+  background-color: #A1BABA;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
 }
-.app-navbar img.logo { display: block; margin-left: 1rem; }
+.app-navbar img.logo { display: block; margin: 5px 0 5px 1rem; }
 .app-navbar .user-info {
   align-self: stretch;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin: 0;
   margin-left: 1rem;
 }
+.app-navbar .user-info .username { margin-bottom: 0.3rem; }
 .app-navbar .user-info h1 { margin: 0; font-size: 1.2rem; }
 .small-menu { 
   font-size: 1rem; 
@@ -136,9 +121,6 @@ export default {
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: flex-end;
-}
-.app-navbar .button-icon {
-  padding: 0.3rem 0.4rem 0.2rem 0.4rem;
 }
 .big-menu {
   align-self: flex-end;
@@ -152,17 +134,15 @@ export default {
   align-items: center;
 }
 .app-navbar .icon-button-wrapper {
-  background-color: var(--stripeColor);
+  background-color: #A1BABA;
   border-radius: 0.5rem 0.5rem 0 0;
   transition: all 0.3s ease;
   margin: 0 0.1rem 0 0.1rem;
 }
 .app-navbar .icon-button-wrapper:hover { filter: brightness(1.1); }
-.app-navbar .icon-button-wrapper.selected {
-  background-color: var(--foregroundColor) !important;  
-}
+.app-navbar .icon-button-wrapper.selected { background-color: #F3F6F6 !important; }
 .app-content {
-  background-color: var(--foregroundColor);
+  background-color: #F3F6F6;
   padding: 0.5rem 1rem 1rem 1rem;
 }
 

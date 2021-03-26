@@ -1,3 +1,10 @@
+@font-face {
+	font-family: Roboto;
+	src: url(Roboto-Regular.ttf);
+	font-weight: normal;
+	font-style: normal;
+}
+
 /* Globális változók */
 :root {
 	--backgroundColor: #5E7F82;
@@ -32,7 +39,7 @@ body {
 
 
 /* Az alkalmazást tartalmazó konténer stílusai */
-
+s
 /* APP stílusai */
 /*
 SECTION.app-navbar
