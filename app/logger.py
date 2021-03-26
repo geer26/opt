@@ -115,7 +115,7 @@ class Logger():
             logfile.write(json.dumps(message))
             logfile.write('\n')
 
-        self.send_updated_json()
+        # self.send_updated_json()
 
         self.check()
 

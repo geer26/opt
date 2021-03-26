@@ -78,6 +78,7 @@ def get_sudata():
 
 
     cu = {}
+    """
     cu['id'] = current_user.id
     cu['username'] = current_user.username
     cu['description'] = current_user.get_description()
@@ -88,7 +89,16 @@ def get_sudata():
     cu['added'] = current_user.added.strftime("%Y-%m-%dT%H:%M:%S")
     #cu['last_modified'] = current_user.last_modified
     cu['last_modified'] = current_user.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
-
+	"""
+	
+    cu['id'] = 198
+    cu['username'] = "TestUser"
+    cu['description'] = "Teszt felhasználó" 
+    cu['contact'] = "no@mail.com"
+    cu['is_superuser'] = True
+    cu['settings'] = {}
+    cu['added'] = ""
+    cu['last_modified'] = ""
     data['current_user'] = cu
 
 

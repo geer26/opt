@@ -119,7 +119,7 @@ def addsu(suname, password):
 @socket.on('admin')
 def new_admin_message(data):
 
-    # A fejlesztés idejére az autentikációt kivesszük
+    # A fejlesztés idejére az autentikációt kivettem (gy')
     """
     if not current_user.is_authenticated or not current_user.is_superuser:
         logger.upd_log(f'Non-superuser tried to reach ws admin namespace from IP {request.access_route}', 2)
@@ -128,8 +128,18 @@ def new_admin_message(data):
 
     # where to send the answer -> sid
     sid = request.sid
-    print("Message: " + data + ", sid=" + sid)
-    return True
+    print("query received")
+
+    # Összes admin-adat lekérdezése
+    if data['event'] == 2999:
+        mess = {}
+        mess['event'] = 1999
+        mess['status'] = 0
+        mess['su_data'] = get_sudata()
+        socket.emit('admin', mess, room = sid)
+        print("query sent")
+        # LOG üzenetet kihagytam innen
+        return True
 
     #check adduser creditentials
     if data['event'] == 2201:
