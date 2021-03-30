@@ -74,6 +74,17 @@ var menuRoutes = {
 		}
 	},
 
+	menuitem_game: {
+	    fun: function() {
+			console.log("Showing game");
+		},
+		activate: true,
+		tab_id: "tab-game",
+		on_hide: function() {
+			console.log("Hiding game");
+		}
+	},
+
 	menuitem_logout: {
 		fun: function() {
 			location.href='/logout';

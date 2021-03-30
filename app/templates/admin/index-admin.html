@@ -39,6 +39,7 @@
 				<a class="menuitem" id="menuitem_reports"><i class="fa fa-chart-bar"></i><span>kimutatások</span></a>
 				<a class="menuitem" id="menuitem_db"><i class="fa fa-book"></i><span>adatbázis</span></a>
 				<a class="menuitem" id="menuitem_log"><i class="fa fa-file-alt"></i><span>naplózás</span></a>
+				<a class="menuitem" id="menuitem_game"><i class="fa fa-puzzle-piece"></i><span>játék</span></a>
 			</div>
 		</div>
 		<div class="app-content">
@@ -97,6 +98,11 @@
 			<!-- LOGGING -->
 			<div id="tab-log" class="app-tab">
 				{% include 'admin/log_operate.html' %}
+			</div>
+
+			<!-- GAME -->
+			<div id="tab-game" class="app-tab">
+				{% include 'admin/spacechase.html' %}
 			</div>
 
 		</div>
