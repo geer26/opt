@@ -24,13 +24,14 @@ var ship;
 var emitter;
 var particles;
 var deg;
-var fuel = 1000;
+var fuel = 100;
 var thrust = 100;
 var mouseX;
 var mouseY;
 var xspeed
 var yspeed
 var angle;
+var bar_bar;
 
 var game = new Phaser.Game(config);
 
@@ -41,15 +42,21 @@ function preload (){
     this.load.image('sky', '/static/assets/bg1.jpg');
     this.load.image('ship', '/static/assets/ship1.png');
     this.load.image('red', '/static/assets/fire.png');
-    this.load.image('statusbar', '/static/assets/statusbar.png');
+    this.load.image('bar', '/static/assets/bar_bar.png');
+    this.load.image('statusbar', '/static/assets/bar_foreground.png');
 }
 
 function create (){
 
     var image = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'sky');
-    var sb = this.add.image(100, 100, 'statusbar');
-    sb.displayWidth = w;
-    sb.displayHeight = 300;
+
+    var bar_bar = this.add.image(10, 10, 'bar').setOrigin(0,0);
+    bar_bar.displayWidth = 26;
+    bar_bar.displayHeight = h-40;
+
+    var sb = this.add.image(10, 10, 'statusbar').setOrigin(0,0);
+    sb.displayWidth = 30;
+    sb.displayHeight = h-40;
 
     let scaleX = this.cameras.main.width / image.width
     let scaleY = this.cameras.main.height / image.height
@@ -87,7 +94,12 @@ function create (){
     this.input.on('pointerdown', function (pointer) {
         if(fuel > 0){
             emitter.on = true;
-            ship.setAcceleration(xspeed, yspeed)
+            ship.setAcceleration(xspeed, yspeed);
+            //bar_bar.displayHeight = fuel*100/h-40;
+            bar_bar.scaleY = fuel/100;
+            }
+            else{
+            bar_bar.visible = false;
             };
     });
 
@@ -100,6 +112,8 @@ function create (){
 
 function update(){
     ship.setRotation(angle);
-    if(emitter.on){fuel -= 1};
+    if(emitter.on){
+        fuel -= .1;
+        };
     emitter.setAngle({min: deg-5, max: deg+5});
 }
