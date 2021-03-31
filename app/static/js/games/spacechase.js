@@ -95,8 +95,8 @@ function create (){
         if(fuel > 0){
             emitter.on = true;
             ship.setAcceleration(xspeed, yspeed);
-            //bar_bar.displayHeight = fuel*100/h-40;
-            bar_bar.scaleY = fuel/100;
+            bar_bar.displayHeight = fuel*h-40/100;
+            //bar_bar.scaleY = fuel/100;
             }
             else{
             bar_bar.visible = false;
