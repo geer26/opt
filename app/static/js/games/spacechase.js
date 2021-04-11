@@ -50,13 +50,13 @@ function create (){
 
     var image = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'sky');
 
-    var bar_bar = this.add.image(10, 10, 'bar').setOrigin(0,0);
+    var bar_bar = this.add.image(10, -3, 'bar').setOrigin(0,0);
     bar_bar.displayWidth = 26;
-    bar_bar.displayHeight = h-40;
+    bar_bar.displayHeight = h;
 
-    var sb = this.add.image(10, 10, 'statusbar').setOrigin(0,0);
+    var sb = this.add.image(10, 0, 'statusbar').setOrigin(0,0);
     sb.displayWidth = 30;
-    sb.displayHeight = h-40;
+    sb.displayHeight = h;
 
     let scaleX = this.cameras.main.width / image.width
     let scaleY = this.cameras.main.height / image.height
@@ -95,8 +95,7 @@ function create (){
         if(fuel > 0){
             emitter.on = true;
             ship.setAcceleration(xspeed, yspeed);
-            bar_bar.displayHeight = fuel*h-40/100;
-            //bar_bar.scaleY = fuel/100;
+            bar_bar.scaleY *= fuel/100;
             }
             else{
             bar_bar.visible = false;

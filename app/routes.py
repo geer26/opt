@@ -202,3 +202,12 @@ def new_admin_message(data):
         mess['status'] = reset_db()
         socket.emit('admin', mess, room=sid)
         return True
+
+
+@socket.on('message')
+def echo_message(data):
+    print('received message: ' + data)
+    message = {}
+    message['rec'] = 'rec: '+ str(data)
+    message['ech'] = 'ech: ' + str(data)
+    socket.send(message)
